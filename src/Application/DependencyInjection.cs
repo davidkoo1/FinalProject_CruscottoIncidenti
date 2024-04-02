@@ -11,6 +11,11 @@ namespace Application
         {
             //FluentValidation
 
+            //AutoMapper
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            //Repos
+
             services.AddScoped<IUserRepository, UserRepository>();
 
             return services;

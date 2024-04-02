@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Application.DTO.User;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
@@ -14,6 +15,8 @@ namespace Application.Common.Repository
         {
             _dbContext = dbContext;
         }
+
+        public async Task<User> GetUserByIdAsync(int id) => await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
 
         public async Task<UserDto> GetUserByUserNameAsync(LoginDto loginVM)
         {
@@ -43,5 +46,7 @@ namespace Application.Common.Repository
 
             return null;
         }
+
+        public async Task<IEnumerable<User>> GetUsersAsync() => await _dbContext.Users.ToListAsync();
     }
 }
