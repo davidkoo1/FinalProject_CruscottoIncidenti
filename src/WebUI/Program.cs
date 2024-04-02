@@ -1,6 +1,6 @@
+using Infrastructure.Persistance;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Infrastructure;
-
+using Application;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -13,6 +13,9 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddPersistence(builder.Configuration);
 
+builder.Services.AddApplicationServices();
+
+
 builder.Services.AddMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -20,13 +23,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 var app = builder.Build();
 
-/*
-if (args.Length == 1 && args[0].ToLower() == "seeddata")
-{
-   await Seed.SeedUsersAndRolesAsync(app);
-    //Seed.SeedData(app);
-}
-*/
+
 
 
 // Configure the HTTP request pipeline.
@@ -50,7 +47,7 @@ app.UseAuthentication();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Anime}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
 app.Run();

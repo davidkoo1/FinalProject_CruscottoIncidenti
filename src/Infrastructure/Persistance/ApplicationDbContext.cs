@@ -3,7 +3,7 @@ using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace Infrastructure
+namespace Infrastructure.Persistance
 {
     public class ApplicationDbContext : DbContext, IApplicationDbContext
     {

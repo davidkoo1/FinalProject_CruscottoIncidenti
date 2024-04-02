@@ -1,112 +1,82 @@
-﻿using Domain.Entities;
-using Infrastructure.Seed;
-using Microsoft.AspNetCore.Identity;
+﻿using Application.Common.Interfaces;
+using Application.DTO.User;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebUI.ViewModels;
+using System.Security.Claims;
 
 namespace WebUI.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly IUserRepository _userRepository;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(IUserRepository userService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _userRepository = userService;
         }
+
+        [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
-            var response = new LoginViewModel();
+            var response = new LoginDto();
             return View(response);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginDto loginVM)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return View(loginViewModel);
-            }
+                var userVm = await _userRepository.GetUserByUserNameAsync(loginVM);
 
-            var user = await _userManager.FindByEmailAsync(loginViewModel.Email);
-
-            if (user != null)
-            {
-                var passwordCheck = await _userManager.CheckPasswordAsync(user, loginViewModel.Password);
-                if (passwordCheck)
+                if (userVm == null || !userVm.IsEnabled)
                 {
-                    var result = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password, false, false);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
+                    TempData["Error"] = "Please try again";
+                    return View(loginVM);
                 }
-                TempData["Error"] = "Please try again";
-                return View(loginViewModel);
+                else
+                {
+                    await HttpContext.SignOutAsync();
+
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, userVm.Id.ToString()),
+                        new Claim(ClaimTypes.Name, userVm.UserName),
+                        new Claim("FullName", userVm.FullName),
+                        new Claim(ClaimTypes.Email, userVm.Email)
+                    };
+
+                    foreach (var role in userVm.UserRoles)
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, role));
+                    }
+
+                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var principal = new ClaimsPrincipal(identity);
+
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                    return LocalRedirect("/Home");
+                }
             }
-            TempData["Error"] = "Please try again";
-            return View(loginViewModel);
-
-
+            catch (Exception ex)
+            {
+                // Обработка исключения
+                return View(loginVM);
+            }
         }
 
-        public IActionResult Register()
+        [HttpGet]
+        public async Task<IActionResult> LogOut()
         {
-            var response = new RegisterViewModel();
-            return View(response);
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login");
         }
-
-
-        [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(registerViewModel);
-            }
-
-            var user = await _userManager.FindByEmailAsync(registerViewModel.Email);
-            if (user != null)
-            {
-                TempData["Error"] = "This email address is already in use";
-                return View(registerViewModel);
-            }
-
-            var newUser = new User()
-            {
-                Email = registerViewModel.Email,
-                UserName = registerViewModel.UserName
-            };
-
-            var newUserRegister = await _userManager.CreateAsync(newUser, registerViewModel.Password);
-
-            if (newUserRegister.Succeeded)
-            {
-                await _userManager.AddToRoleAsync(newUser, UserRoles.User);
-                // Optionally, you can sign the user in after successful registration
-                await _signInManager.SignInAsync(newUser, isPersistent: false);
-                return RedirectToAction("Index", "Home");
-            }
-
-            // Handle registration failure
-            foreach (var error in newUserRegister.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-
-            return View(registerViewModel);
-        }
-
-
-        [HttpPost]
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
-        }
-
-
     }
+
 }
