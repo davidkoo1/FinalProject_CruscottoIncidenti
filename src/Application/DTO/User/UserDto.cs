@@ -12,6 +12,6 @@
         public string Email { get; set; }
         public bool IsEnabled { get; set; }
 
-        public List<string> UserRoles { get; set; } = new List<string>();
+        public ICollection<string> UserRoles { get; set; } = new HashSet<string>();
     }
 }

@@ -23,26 +23,37 @@ namespace Application.Common.Repository
 
         public async Task<bool> Add(UserDto userDto)
         {
-            string defaultPW = "Cedacri1234567!";
-            var currentUser = _httpContextAccessor.HttpContext?.User.GetUserId();
-            var user = _mapper.Map<User>(userDto);
-            user.CreatedBy = currentUser;
-            user.Created = DateTime.UtcNow;
-            //user.LastModifiedBy = currentUser;
-            // user.LastModified = DateTime.UtcNow;
-            user.Password = HashPW(defaultPW);
+            var existing = await _dbContext.Users.AnyAsync(x => x.UserName == userDto.UserName || x.Email == userDto.Email);
 
-            _dbContext.Users.Add(user);
+            if (userDto == null || existing == true)
+            {
+                return false;
+            }
+            else
+            {
+                string defaultPW = "Cedacri1234567!";
+                var currentUser = _httpContextAccessor.HttpContext?.User.GetUserId();
 
+                var user = _mapper.Map<User>(userDto);
+
+                user.CreatedBy = currentUser;
+                user.Created = DateTime.UtcNow;
+                user.Password = HashPW(defaultPW);
+
+                _dbContext.Users.Add(user);
+
+                return await _dbContext.SaveAsync();
+            }
+        }
+
+        public async Task<bool> Delete(int id)
+        {
+            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
+            _dbContext.Users.Remove(user);
             return await _dbContext.SaveAsync();
         }
 
-        public bool Delete(UserDto user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<UserDto> GetUserByIdAsync(int id) => _mapper.Map<UserDto>(await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == id));
+        public async Task<UserDto> GetUserByIdAsync(int id) => _mapper.Map<UserDto>(await _dbContext.Users.Include(x => x.UserRoles).ThenInclude(x => x.Role).FirstOrDefaultAsync(x => x.Id == id));
 
         private string HashPW(string password)
         {
@@ -57,20 +68,23 @@ namespace Application.Common.Repository
         public async Task<UserDto> GetUserByUserNameAsync(LoginDto loginVM)
         {
 
-            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == loginVM.Username);
-            var UserRoles = await _dbContext.UserRoles.Where(x => x.UserId == user.Id).Select(ur => ur.Role.Name).ToListAsync();
+            var user = await _dbContext.Users.Include(x => x.UserRoles).ThenInclude(x => x.Role).FirstOrDefaultAsync(u => u.UserName == loginVM.Username);
+            //var UserRoles = await _dbContext.UserRoles.Where(x => x.UserId == user.Id).Select(ur => ur.Role.Name).ToListAsync();
             var encrypted = HashPW(loginVM.Password);
             if (user != null && user.Password == encrypted)
             {
-                var userVM = new UserDto
-                {
-                    Id = user.Id,
-                    UserName = user.UserName,
-                    FullName = user.FullName,
-                    Email = user.Email,
-                    IsEnabled = user.IsEnabled,
-                    UserRoles = UserRoles
-                };
+
+                var userVM = _mapper.Map<UserDto>(user);
+
+                //    new UserDto
+                //{
+                //    Id = user.Id,
+                //    UserName = user.UserName,
+                //    FullName = user.FullName,
+                //    Email = user.Email,
+                //    IsEnabled = user.IsEnabled,
+                //    UserRoles = user.UserRoles.Where(u => u.UserId == user.Id).Select(ur => ur.Role.Name).ToList()
+                //};
 
                 return userVM;
             }
@@ -85,5 +99,7 @@ namespace Application.Common.Repository
         {
             throw new NotImplementedException();
         }
+
+        public async Task<bool> UserExists(int userId) => await _dbContext.Users.AnyAsync(x => x.Id == userId);
     }
 }

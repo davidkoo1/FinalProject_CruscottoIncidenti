@@ -71,7 +71,8 @@ namespace WebUI.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
+        [Authorize]
         public async Task<IActionResult> LogOut()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

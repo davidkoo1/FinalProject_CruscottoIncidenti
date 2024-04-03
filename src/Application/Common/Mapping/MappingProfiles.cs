@@ -8,11 +8,10 @@ namespace Application.Common.Mapping
     {
         public MappingProfiles()
         {
+            CreateMap<User, UserDto>()
+                .ForMember(dest => dest.UserRoles, opt => opt.MapFrom(src => src.UserRoles.Select(ur => ur.Role.Name)));
 
-            CreateMap<User, UserDto>();
             CreateMap<UserDto, User>();
-
-
         }
     }
 }

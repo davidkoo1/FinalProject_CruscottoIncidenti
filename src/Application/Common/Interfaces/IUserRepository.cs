@@ -8,8 +8,9 @@ namespace Application.Common.Interfaces
         Task<UserDto> GetUserByUserNameAsync(LoginDto loginVM);
         Task<UserDto> GetUserByIdAsync(int id);
         Task<IEnumerable<UserDto>> GetUsersAsync();
+        Task<bool> UserExists(int userId);
         Task<bool> Add(UserDto userDto);
         bool Update(User user);
-        bool Delete(UserDto user);
+        Task<bool> Delete(int id);
     }
 }
