@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -30,6 +31,8 @@ namespace Infrastructure.Configuration
 
             builder.Property(user => user.IsEnabled)
                 .HasDefaultValue(true);
+
+            builder.HasData(DbContextSeed.Admin);
 
         }
     }

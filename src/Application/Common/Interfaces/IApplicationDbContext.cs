@@ -9,5 +9,7 @@ namespace Application.Common.Interfaces
         DbSet<Role> Roles { get; set; }
         DbSet<UserRole> UserRoles { get; set; }
 
+        Task<bool> SaveAsync();
+
     }
 }

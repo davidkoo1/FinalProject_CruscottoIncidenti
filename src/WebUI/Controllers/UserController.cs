@@ -1,31 +1,27 @@
 ﻿using Application.Common.Interfaces;
 using Application.DTO.User;
-using AutoMapper;
-using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace WebUI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private readonly IUserRepository _context;
-        private readonly IMapper _mapper;
 
-        public UserController(IUserRepository context, IMapper mapper)
+        public UserController(IUserRepository context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            return View( _mapper.Map<List<UserDto>>(await _context.GetUsersAsync()));
+            return View(await _context.GetUsersAsync());
         }
 
-        // GET: Users/Details/5
+        // GET: User/Details/5
         public async Task<IActionResult> Details(int id)
         {
             if (id == null)
@@ -33,36 +29,33 @@ namespace WebUI.Controllers
                 return NotFound();
             }
 
-            var user = await _context.GetUserByIdAsync(id);
-            if (user == null)
+            var userDto = await _context.GetUserByIdAsync(id);
+            if (userDto == null)
             {
                 return NotFound();
             }
 
-            return View(user);
+            return View(userDto);
         }
 
-        //// GET: Users/Create
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
+        // GET: User/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
 
-        //// POST: Users/Create
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Id,CreatedBy,Created,LastModifiedBy,LastModified,UserName,Password,FullName,Email,IsEnabled")] User user)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(user);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(user);
-        //}
+        // POST: User/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,CreatedBy,Created,LastModifiedBy,LastModified,UserName,FullName,Email,IsEnabled")] UserDto userDto)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(userDto);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(userDto);
+        }
 
         //// GET: Users/Edit/5
         //public async Task<IActionResult> Edit(int? id)

@@ -1,6 +1,8 @@
 ﻿using Application.Common.Interfaces;
 using Application.DTO.User;
+using AutoMapper;
 using Domain.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
@@ -10,25 +12,54 @@ namespace Application.Common.Repository
     public class UserRepository : IUserRepository
     {
         private readonly IApplicationDbContext _dbContext;
-
-        public UserRepository(IApplicationDbContext dbContext)
+        private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public UserRepository(IApplicationDbContext dbContext, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<User> GetUserByIdAsync(int id) => await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
+        public async Task<bool> Add(UserDto userDto)
+        {
+            string defaultPW = "Cedacri1234567!";
+            var currentUser = _httpContextAccessor.HttpContext?.User.GetUserId();
+            var user = _mapper.Map<User>(userDto);
+            user.CreatedBy = currentUser;
+            user.Created = DateTime.UtcNow;
+            //user.LastModifiedBy = currentUser;
+            // user.LastModified = DateTime.UtcNow;
+            user.Password = HashPW(defaultPW);
 
+            _dbContext.Users.Add(user);
+
+            return await _dbContext.SaveAsync();
+        }
+
+        public bool Delete(UserDto user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<UserDto> GetUserByIdAsync(int id) => _mapper.Map<UserDto>(await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == id));
+
+        private string HashPW(string password)
+        {
+
+            using (SHA256 hash = SHA256.Create())
+            {
+                return string.Concat(hash
+                    .ComputeHash(Encoding.UTF8.GetBytes(password))
+                    .Select(item => item.ToString("x2")));
+            }
+        }
         public async Task<UserDto> GetUserByUserNameAsync(LoginDto loginVM)
         {
 
             var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == loginVM.Username);
-            string encrypted = "";
-            using (SHA256 hash = SHA256.Create())
-            {
-                encrypted = string.Concat(hash
-                    .ComputeHash(Encoding.UTF8.GetBytes(loginVM.Password))
-                    .Select(item => item.ToString("x2")));
-            }
+            var UserRoles = await _dbContext.UserRoles.Where(x => x.UserId == user.Id).Select(ur => ur.Role.Name).ToListAsync();
+            var encrypted = HashPW(loginVM.Password);
             if (user != null && user.Password == encrypted)
             {
                 var userVM = new UserDto
@@ -38,7 +69,7 @@ namespace Application.Common.Repository
                     FullName = user.FullName,
                     Email = user.Email,
                     IsEnabled = user.IsEnabled,
-                    UserRoles = user.UserRoles.Where(u => u.UserId == user.Id).Select(ur => ur.Role.Name).ToList()
+                    UserRoles = UserRoles
                 };
 
                 return userVM;
@@ -47,6 +78,12 @@ namespace Application.Common.Repository
             return null;
         }
 
-        public async Task<IEnumerable<User>> GetUsersAsync() => await _dbContext.Users.ToListAsync();
+        public async Task<IEnumerable<UserDto>> GetUsersAsync() => _mapper.Map<List<UserDto>>(await _dbContext.Users.ToListAsync());
+
+
+        public bool Update(User user)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

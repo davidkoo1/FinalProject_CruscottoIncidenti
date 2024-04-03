@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,6 +19,8 @@ namespace Infrastructure.Configuration
             builder.HasIndex(role => role.Name)
                 .IsClustered(true)
                 .IsUnique();
+
+            builder.HasData(DbContextSeed.AdminRole, DbContextSeed.OperatorRole, DbContextSeed.UserRole);
 
         }
     }

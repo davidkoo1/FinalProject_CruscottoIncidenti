@@ -4,9 +4,9 @@ namespace Application
 {
     public static class ClaimsPrincipalExtensions
     {
-        public static string GetUserId(this ClaimsPrincipal user)
+        public static int GetUserId(this ClaimsPrincipal user)
         {
-            return user.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return int.Parse(user.FindFirst(ClaimTypes.NameIdentifier).Value);
         }
     }
 }

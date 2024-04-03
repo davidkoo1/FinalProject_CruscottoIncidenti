@@ -1,9 +1,10 @@
 ﻿using Application.Common.Interfaces;
+using Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infrastructure.Persistance
+namespace Infrastructure
 {
     public static class DependencyInjection
     {

@@ -19,6 +19,11 @@ namespace Infrastructure.Persistance
 
         }
 
+        public async Task<bool> SaveAsync()
+        {
+            return await base.SaveChangesAsync() > 0 ? true : false;
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
