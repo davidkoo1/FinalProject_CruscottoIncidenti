@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
+using System.Web.Mvc;
 
 namespace Application.Common.Repository
 {
@@ -21,11 +23,11 @@ namespace Application.Common.Repository
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<bool> Add(UserDto userDto)
+        public async Task<bool> Add(CreateUserDto createUserDto)
         {
-            var existing = await _dbContext.Users.AnyAsync(x => x.UserName == userDto.UserName || x.Email == userDto.Email);
+            var existing = await _dbContext.Users.AnyAsync(x => x.UserName == createUserDto.UserName || x.Email == createUserDto.Email);
 
-            if (userDto == null || existing == true)
+            if (createUserDto == null || existing == true)
             {
                 return false;
             }
@@ -34,12 +36,12 @@ namespace Application.Common.Repository
                 string defaultPW = "Cedacri1234567!";
                 var currentUser = _httpContextAccessor.HttpContext?.User.GetUserId();
 
-                var user = _mapper.Map<User>(userDto);
+                var user = _mapper.Map<User>(createUserDto);
 
                 user.CreatedBy = currentUser;
                 user.Created = DateTime.UtcNow;
                 user.Password = HashPW(defaultPW);
-
+                user.UserRoles = createUserDto.RolesId.Select(id => new UserRole { RoleId = id }).ToList();
                 _dbContext.Users.Add(user);
 
                 return await _dbContext.SaveAsync();
@@ -65,6 +67,7 @@ namespace Application.Common.Repository
                     .Select(item => item.ToString("x2")));
             }
         }
+       
         public async Task<UserDto> GetUserByUserNameAsync(LoginDto loginVM)
         {
 
@@ -101,5 +104,19 @@ namespace Application.Common.Repository
         }
 
         public async Task<bool> UserExists(int userId) => await _dbContext.Users.AnyAsync(x => x.Id == userId);
+
+        public async Task<IEnumerable<RoleDto>> GetRolesAsync()
+        {
+            var result = _dbContext.Roles
+                .Select(x => new RoleDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                })
+                .ToListAsync();
+
+            return await result;
+        }
     }
 }

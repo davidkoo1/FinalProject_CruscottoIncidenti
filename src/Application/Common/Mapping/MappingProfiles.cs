@@ -12,6 +12,12 @@ namespace Application.Common.Mapping
                 .ForMember(dest => dest.UserRoles, opt => opt.MapFrom(src => src.UserRoles.Select(ur => ur.Role.Name)));
 
             CreateMap<UserDto, User>();
+
+            //TODO Mapping with roles and delete oneOfThisMap
+            //EditUser, dontDeleteCurrentUser
+            //Validation(UserRoleSet), Resources
+            CreateMap<User, CreateUserDto>();
+            CreateMap<CreateUserDto, User>();
         }
     }
 }

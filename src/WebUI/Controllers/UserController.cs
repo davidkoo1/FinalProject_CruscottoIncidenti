@@ -2,6 +2,8 @@
 using Application.DTO.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 
 namespace WebUI.Controllers
 {
@@ -37,27 +39,38 @@ namespace WebUI.Controllers
 
             return View(userDto);
         }
-
-        // GET: User/Create
-        public IActionResult Create()
+        private async Task<IEnumerable<SelectListItem>> GetRolesSelectListAsync()
         {
+            var rolesListVm = await _userRepository.GetRolesAsync();
+
+            return rolesListVm.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name,
+                Selected = false,
+            });
+        }
+        // GET: User/Create
+        public async Task<IActionResult> Create()
+        {
+            ViewBag.Roles = await GetRolesSelectListAsync();
             return View();
         }
 
         // POST: User/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(UserDto userDto)
+        public async Task<IActionResult> Create(CreateUserDto createUserDto)
         {
             if (ModelState.IsValid)
             {
-                if (await _userRepository.Add(userDto))
+                if (await _userRepository.Add(createUserDto))
                 {
                     return RedirectToAction(nameof(Index));
                 }
                 TempData["Error"] = "Email or username in use!";
             }
-            return View(userDto);
+            return RedirectToAction(nameof(Create));
         }
 
         //// GET: Users/Edit/5

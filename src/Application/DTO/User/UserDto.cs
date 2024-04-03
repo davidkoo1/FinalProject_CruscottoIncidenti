@@ -13,5 +13,7 @@
         public bool IsEnabled { get; set; }
 
         public ICollection<string> UserRoles { get; set; } = new HashSet<string>();
+
+        public List<int> RolesId { get; set; }
     }
 }
