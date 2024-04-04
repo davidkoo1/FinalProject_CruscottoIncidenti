@@ -3,7 +3,6 @@ using Application.DTO.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 
 namespace WebUI.Controllers
 {
@@ -39,21 +38,20 @@ namespace WebUI.Controllers
 
             return View(userDto);
         }
-        private async Task<IEnumerable<SelectListItem>> GetRolesSelectListAsync()
-        {
-            var rolesListVm = await _userRepository.GetRolesAsync();
 
-            return rolesListVm.Select(x => new SelectListItem
+        // GET: User/Create
+        public async Task<IActionResult> Create()
+        {
+            var rolesVm = await _userRepository.GetRolesAsync();
+
+            var selectListItemRoleVm = rolesVm.Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.Name,
                 Selected = false,
             });
-        }
-        // GET: User/Create
-        public async Task<IActionResult> Create()
-        {
-            ViewBag.Roles = await GetRolesSelectListAsync();
+            ViewBag.Roles = selectListItemRoleVm;
+
             return View();
         }
 
@@ -73,56 +71,68 @@ namespace WebUI.Controllers
             return RedirectToAction(nameof(Create));
         }
 
-        //// GET: Users/Edit/5
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        //// GET: User/Edit/5
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //    var user = await _context.Users.FindAsync(id);
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(user);
-        //}
+            var rolesVm = await _userRepository.GetRolesAsync();
+            var updateUserVm = await _userRepository.GetUserForEdit(id); // Include user roles here as well
 
-        //// POST: Users/Edit/5
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("Id,CreatedBy,Created,LastModifiedBy,LastModified,UserName,Password,FullName,Email,IsEnabled")] User user)
-        //{
-        //    if (id != user.Id)
-        //    {
-        //        return NotFound();
-        //    }
+            var selectListItemRoleVm = rolesVm.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name,
+                // Check if this role is one of the user's roles
+                Selected = updateUserVm.RolesId.Contains(x.Id)
+            });
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(user);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!UserExists(user.Id))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(user);
-        //}
+            ViewBag.Roles = selectListItemRoleVm; // All Exist Roles
+
+            if (updateUserVm == null)
+            {
+                return NotFound();
+            }
+
+            return View(updateUserVm);
+        }
+
+
+        //// POST: User/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, UpdateUserDto updateUserDto)
+        {
+            if (id != updateUserDto.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    //Add if
+                    await _userRepository.Update(updateUserDto);
+                }
+                catch (Exception ex)
+                {
+                    if (!await _userRepository.UserExists(updateUserDto.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(updateUserDto);
+        }
 
         //GET: User/Delete/5
         public async Task<IActionResult> Delete(int id)

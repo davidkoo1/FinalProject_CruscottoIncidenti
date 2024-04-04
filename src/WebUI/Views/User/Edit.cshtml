@@ -1,5 +1,5 @@
 ﻿@using Application.DTO.User
-@model UserDto
+@model UpdateUserDto
 
 @{
     ViewData["Title"] = "Edit";
@@ -9,41 +9,21 @@
 
 <h4>User</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+<form asp-action="Edit">
+    <div class="row">
+        <div class="col-md-4">
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="CreatedBy" class="control-label"></label>
-                <input asp-for="CreatedBy" class="form-control" />
-                <span asp-validation-for="CreatedBy" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Created" class="control-label"></label>
-                <input asp-for="Created" class="form-control" />
-                <span asp-validation-for="Created" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastModifiedBy" class="control-label"></label>
-                <input asp-for="LastModifiedBy" class="form-control" />
-                <span asp-validation-for="LastModifiedBy" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastModified" class="control-label"></label>
-                <input asp-for="LastModified" class="form-control" />
-                <span asp-validation-for="LastModified" class="text-danger"></span>
-            </div>
+            <input type="hidden" asp-for="CreatedBy" />
+            <input type="hidden" asp-for="Created" />
+            <input type="hidden" asp-for="Password" />
             <div class="form-group">
                 <label asp-for="UserName" class="control-label"></label>
                 <input asp-for="UserName" class="form-control" />
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
-@*SetDefaulPW - Cedacri1234567!             <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div> *@
             <div class="form-group">
                 <label asp-for="FullName" class="control-label"></label>
                 <input asp-for="FullName" class="form-control" />
@@ -59,17 +39,40 @@
                     <input class="form-check-input" asp-for="IsEnabled" /> @Html.DisplayNameFor(model => model.IsEnabled)
                 </label>
             </div>
+
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
-        </form>
+
+        </div>
+        <div class="col-md-2">
+            <!-- Этот div создает пространство между левой и правой колонками -->
+            <!-- Пустой div для отступа -->
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="RolesId">Role</label>
+                @foreach (var role in ViewBag.Roles)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="RolesId" value="@role.Value" id="role_@role.Value" @(Model.RolesId.Contains(Convert.ToInt32(role.Value)) ? "checked" : "")>
+                        <label class="form-check-label" for="role_@role.Value">
+                            @role.Text
+                        </label>
+                    </div>
+                }
+            </div>
+        </div>
+
     </div>
-</div>
+</form>
 
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

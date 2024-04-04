@@ -10,9 +10,10 @@ namespace Application.Common.Interfaces
         Task<UserDto> GetUserByIdAsync(int id);
         Task<IEnumerable<UserDto>> GetUsersAsync();
         Task<IEnumerable<RoleDto>> GetRolesAsync();
+        Task<UpdateUserDto> GetUserForEdit(int id);
         Task<bool> UserExists(int userId);
         Task<bool> Add(CreateUserDto createUserDto);
-        bool Update(User user);
+        Task<bool> Update(UpdateUserDto user);
         Task<bool> Delete(int id);
     }
 }

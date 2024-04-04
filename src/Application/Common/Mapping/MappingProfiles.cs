@@ -14,10 +14,16 @@ namespace Application.Common.Mapping
             CreateMap<UserDto, User>();
 
             //TODO Mapping with roles and delete oneOfThisMap
-            //EditUser, dontDeleteCurrentUser
+            //dontDeleteCurrentUser
             //Validation(UserRoleSet), Resources
-            CreateMap<User, CreateUserDto>();
+            //UserController add method for getRolesViewBag
+            //Clear code Repos&Controllers
+
             CreateMap<CreateUserDto, User>();
+
+
+            CreateMap<User, UpdateUserDto>().ForMember(dest => dest.RolesId, opt => opt.MapFrom(src => src.UserRoles.Select(ur => ur.Role.Id)));
+            CreateMap<UpdateUserDto, User>(); //Here also map
         }
     }
 }

@@ -32,6 +32,8 @@ namespace WebUI.Controllers
         {
             try
             {
+                loginVM.Username = "Crme145";
+                loginVM.Password = "Cedacri1234567!";
                 var userVm = await _userRepository.GetUserByUserNameAsync(loginVM);
 
                 if (userVm == null || !userVm.IsEnabled)

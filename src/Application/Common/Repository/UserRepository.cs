@@ -56,6 +56,9 @@ namespace Application.Common.Repository
         }
 
         public async Task<UserDto> GetUserByIdAsync(int id) => _mapper.Map<UserDto>(await _dbContext.Users.Include(x => x.UserRoles).ThenInclude(x => x.Role).FirstOrDefaultAsync(x => x.Id == id));
+        public async Task<UpdateUserDto> GetUserForEdit(int id) => _mapper.Map<UpdateUserDto>(await _dbContext.Users.Include(x => x.UserRoles).ThenInclude(x => x.Role).AsNoTracking().FirstOrDefaultAsync(x => x.Id == id));
+
+
 
         private string HashPW(string password)
         {
@@ -67,7 +70,7 @@ namespace Application.Common.Repository
                     .Select(item => item.ToString("x2")));
             }
         }
-       
+
         public async Task<UserDto> GetUserByUserNameAsync(LoginDto loginVM)
         {
 
@@ -98,9 +101,28 @@ namespace Application.Common.Repository
         public async Task<IEnumerable<UserDto>> GetUsersAsync() => _mapper.Map<List<UserDto>>(await _dbContext.Users.ToListAsync());
 
 
-        public bool Update(User user)
+        public async Task<bool> Update(UpdateUserDto user)
         {
-            throw new NotImplementedException();
+            var existing = await _dbContext.Users.AnyAsync(x => x.UserName == user.UserName || x.Email == user.Email);
+
+            if (user == null || existing != true)
+            {
+                return false;
+            }
+            else
+            {
+                
+                var currentUser = _httpContextAccessor.HttpContext?.User.GetUserId();
+
+                var userDB = _mapper.Map<User>(user);
+                userDB.LastModified = DateTime.UtcNow;
+                userDB.LastModifiedBy = currentUser;
+
+                userDB.UserRoles = user.RolesId.Select(id => new UserRole { UserId = user.Id, RoleId = id }).ToList();
+                _dbContext.Users.Update(userDB);
+
+                return await _dbContext.SaveAsync();
+            }
         }
 
         public async Task<bool> UserExists(int userId) => await _dbContext.Users.AnyAsync(x => x.Id == userId);
