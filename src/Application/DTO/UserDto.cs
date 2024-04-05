@@ -1,4 +1,4 @@
-﻿namespace Application.DTO.User
+﻿namespace Application.DTO
 {
     public class UserDto
     {
@@ -13,7 +13,5 @@
         public bool IsEnabled { get; set; }
 
         public ICollection<string> UserRoles { get; set; } = new HashSet<string>();
-
-        
     }
 }

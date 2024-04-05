@@ -1,21 +1,21 @@
-﻿using Application.Common.Interfaces;
-using Application.Common.Repository;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace Application
 {
 
     public static class DependencyInjection
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+        public static IServiceCollection AddApplication(this IServiceCollection services)
         {
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
             //FluentValidation
 
             //AutoMapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            //Repos
-            services.AddScoped<IUserRepository, UserRepository>();
+
 
             return services;
         }

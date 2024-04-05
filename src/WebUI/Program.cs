@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Application;
 using Infrastructure;
+using Microsoft.AspNetCore.Authentication.Cookies;
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -12,9 +12,9 @@ builder.Services.AddControllersWithViews();//.AddFluentValidation();
 
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddPersistence(builder.Configuration);
+builder.Services.AddInfrastructure(builder.Configuration);
 
-builder.Services.AddApplicationServices();
+builder.Services.AddApplication();
 
 builder.Services.AddMemoryCache();
 builder.Services.AddSession();

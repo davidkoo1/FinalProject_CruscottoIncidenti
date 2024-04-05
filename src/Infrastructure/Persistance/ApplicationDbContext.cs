@@ -1,11 +1,10 @@
-﻿using Application.Common.Interfaces;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace Infrastructure.Persistance
 {
-    public class ApplicationDbContext : DbContext, IApplicationDbContext
+    public class ApplicationDbContext : DbContext
     {
 
         public DbSet<User> Users { get; set; }
@@ -17,11 +16,6 @@ namespace Infrastructure.Persistance
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 
-        }
-
-        public async Task<bool> SaveAsync()
-        {
-            return await base.SaveChangesAsync() > 0 ? true : false;
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

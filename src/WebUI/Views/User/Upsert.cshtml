@@ -1,42 +1,51 @@
-﻿@using Application.DTO.User
-@model UpdateUserDto
+﻿@using Application.DTO
+@model UpsertUserDto
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Create";
 }
 
-<h1>Edit</h1>
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        <strong>Sorry!</strong> - @TempData["Error"]
+    </div>
+}
+
+<h1>Create</h1>
 
 <h4>User</h4>
 <hr />
-<form asp-action="Edit">
+<form asp-action="Upsert">
     <div class="row">
         <div class="col-md-4">
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="CreatedBy" />
             <input type="hidden" asp-for="Created" />
-            <input type="hidden" asp-for="Password" />
             <div class="form-group">
                 <label asp-for="UserName" class="control-label"></label>
                 <input asp-for="UserName" class="form-control" />
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="FullName" class="control-label"></label>
                 <input asp-for="FullName" class="form-control" />
                 <span asp-validation-for="FullName" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
+
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsEnabled" /> @Html.DisplayNameFor(model => model.IsEnabled)
+                    <input class="form-check-input" asp-for="IsEnabled" />
+                    @Html.DisplayNameFor(model => model.IsEnabled)
                 </label>
             </div>
 
@@ -54,19 +63,21 @@
                 <label for="RolesId">Role</label>
                 @foreach (var role in ViewBag.Roles)
                 {
+                    string check = (Model.RolesId != null && Model.RolesId.Contains(Convert.ToInt32(role.Value))) ? "checked" : "";
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="RolesId" value="@role.Value" id="role_@role.Value" @(Model.RolesId.Contains(Convert.ToInt32(role.Value)) ? "checked" : "")>
+                        <input class="form-check-input" type="checkbox" name="RolesId" value="@role.Value" id="role_@role.Value" @check>
                         <label class="form-check-label" for="role_@role.Value">
                             @role.Text
                         </label>
                     </div>
                 }
+
+
             </div>
         </div>
 
     </div>
 </form>
-
 <div>
     <a asp-action="Index">Back to List</a>
 </div>

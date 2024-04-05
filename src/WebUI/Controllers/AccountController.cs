@@ -1,5 +1,5 @@
-﻿using Application.Common.Interfaces;
-using Application.DTO.User;
+﻿using Application.DTO;
+using Application.UserCQRS.Queries;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -8,21 +8,15 @@ using System.Security.Claims;
 
 namespace WebUI.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
-        private readonly IUserRepository _userRepository;
-
-        public AccountController(IUserRepository userService)
-        {
-            _userRepository = userService;
-        }
 
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Login()
         {
-            var response = new LoginDto();
-            return View(response);
+            //var response = new LoginDto();
+            return View();
         }
 
         [HttpPost]
@@ -34,7 +28,11 @@ namespace WebUI.Controllers
             {
                 loginVM.Username = "Crme145";
                 loginVM.Password = "Cedacri1234567!";
-                var userVm = await _userRepository.GetUserByUserNameAsync(loginVM);
+                var userVm = await Mediator.Send(new GetUserForLogin
+                {
+                    Username = loginVM.Username,
+                    Password = loginVM.Password
+                });
 
                 if (userVm == null || !userVm.IsEnabled)
                 {
@@ -55,7 +53,7 @@ namespace WebUI.Controllers
 
                     foreach (var role in userVm.UserRoles)
                     {
-                        claims.Add(new Claim(ClaimTypes.Role, role));
+                        claims.Add(new Claim(ClaimTypes.Role, role.Role.Name));
                     }
 
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

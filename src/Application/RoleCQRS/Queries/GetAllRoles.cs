@@ -1,6 +1,9 @@
-﻿namespace Application.DTO.User
+﻿using Domain.Entities;
+using MediatR;
+
+namespace Application.RoleCQRS.Queries
 {
-    public class RoleDto
+    public class GetAllRoles : IRequest<IEnumerable<Role>>
     {
         public int Id { get; set; }
         public string Name { get; set; }

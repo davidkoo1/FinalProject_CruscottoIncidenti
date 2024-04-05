@@ -1,19 +1,22 @@
-﻿using Application.DTO.User;
+﻿using Application.DTO;
 using Domain.Entities;
-using System.Web.Mvc;
 
 namespace Application.Common.Interfaces
 {
     public interface IUserRepository
     {
-        Task<UserDto> GetUserByUserNameAsync(LoginDto loginVM);
-        Task<UserDto> GetUserByIdAsync(int id);
-        Task<IEnumerable<UserDto>> GetUsersAsync();
-        Task<IEnumerable<RoleDto>> GetRolesAsync();
-        Task<UpdateUserDto> GetUserForEdit(int id);
-        Task<bool> UserExists(int userId);
-        Task<bool> Add(CreateUserDto createUserDto);
-        Task<bool> Update(UpdateUserDto user);
-        Task<bool> Delete(int id);
+        Task<ICollection<UserDto>> GetAll();
+
+        Task<UserDto> GetUserById(int userId);
+        Task<UpsertUserDto> GetUserForUpsertById(int userId);
+        Task<bool> UpsertUser(UpsertUserDto upsertUserDto);
+        //Task<bool> AddUser(CreateUser toCreateUser);
+
+        //Task<bool> UpdateUser(UpdateUser toUpdateUser);
+
+        Task<bool> DeleteUser(int userId);
+        Task<bool> Save();
+        Task<User> GetUserForLogin(LoginDto UserToLogin);
+        Task<IEnumerable<Role>> GetRolesAsync();
     }
 }
