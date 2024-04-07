@@ -1,14 +1,30 @@
 using Application;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc.Razor;
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddControllersWithViews();//.AddFluentValidation();
-//builder.Services.AddTransient<IValidator<AuthRecoverpwViewModel>, AuthRecoverpwViewModelValidator>();
+builder.Services.AddControllersWithViews();
 
 
 
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+// Add services to the container.
+builder.Services.AddMvc()
+        .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+        .AddDataAnnotationsLocalization();
+
+
+
+builder.Services.Configure<RequestLocalizationOptions>(opt =>
+{
+    var supportedCultures = new[] { "en", "ro", "ru" };
+    opt.SetDefaultCulture(supportedCultures[0])
+        .AddSupportedCultures(supportedCultures)
+        .AddSupportedUICultures(supportedCultures);
+});
 
 builder.Services.AddHttpContextAccessor();
 
@@ -32,7 +48,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 var app = builder.Build();
 
 
+var supportedCultures = new[] { "en", "ro", "ru" };
+var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
+.AddSupportedCultures(supportedCultures)
+.AddSupportedUICultures(supportedCultures);
 
+app.UseRequestLocalization(localizationOptions);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -56,7 +77,7 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
         name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
+        pattern: "{controller=Account}/{action=Login}/{id?}");
 
 });
 app.Run();

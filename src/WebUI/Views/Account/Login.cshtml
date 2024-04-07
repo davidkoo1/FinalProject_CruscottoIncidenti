@@ -29,55 +29,116 @@
         border-radius: 10px;
     }
 
-    .btn-primary {
-        background-color: #007bff;
-        border: none;
-        transition: background-color 0.3s;
-    }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-    /* Добавьте этот стиль в ваш блок <style> */
-    .center-line {
-        width: 80%;
-        margin: 10px auto; /* Центрирование линии по горизонтали */
-        border: none;
-        height: 2px;
-        background-color: #fff; /* Цвет линии */
-    }
 
     .control-label {
         color: #fff;
     }
+
+
+    .btn-white {
+        color: #fff; /* Set text color to white */
+        background-color: transparent;
+        border-color: transparent;
+    }
+
+        .btn-white:hover,
+        .btn-white:focus,
+        .btn-white:active,
+        .btn-white.active,
+        .open > .dropdown-toggle.btn-white {
+            color: #fff; /* Maintain text color white on hover/focus/active states */
+            background-color: transparent;
+            border-color: transparent;
+        }
+
+            /* Remove the box shadow when active for a cleaner look */
+            .btn-white:active:focus,
+            .btn-white.active:focus {
+                box-shadow: none;
+            }
+
+    /* Additional adjustments for alignment */
+    .dropdown {
+        display: flex; /* Ensures that the dropdown button is vertically aligned */
+        align-items: center; /* Aligns the dropdown vertically */
+    }
+
 </style>
-    @if (TempData["Error"] != null)
-    {
+
+
+@if (TempData["Error"] != null)
+{
     <div class="col-md-12 alert alert-danger">
         <span><b>Sorry!</b> - @TempData["Error"]</span>
     </div>
-    }
+}
+
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-4 login-container">
             <h1 class="login-header">Log in</h1>
             <form id="login-form" asp-action="Login">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <!-- Username input -->
                 <div class="form-group">
                     <label asp-for="Username" class="control-label">Username</label>
                     <input type="Username" asp-for="Username" class="form-control" placeholder="Username">
                     <span asp-validation-for="Username" class="text-danger"></span>
                 </div>
+
+                <!-- Password input -->
                 <div class="form-group">
                     <label asp-for="Password" class="control-label">Password</label>
                     <input type="password" asp-for="Password" class="form-control" id="inputPassword" placeholder="Password">
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
-                <div class="form-group mt-4 text-center">
+
+                <!-- Language selection and Log in button -->
+                <div class="form-group mt-4 d-flex justify-content-between">
+
+                    <!-- Flag dropdown -->
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @switch (Localization.languageState)
+                            {
+                                case "en":
+                                    <img src="~/assets/images/flags/us.jpg" alt="Header Language" height="12">
+                                    <span class="align-middle"> English</span>
+                                    break;
+                                case "ru":
+                                    {
+                                        <img src="~/assets/images/flags/russia.jpg" alt="Header Language" height="12">
+                                        <span class="align-middle"> Русский</span>
+                                        break;
+                                    }
+                                case "ro":
+                                    <img src="~/assets/images/flags/ro.png" alt="Header Language" height="12"> <span class="align-middle"> Română</span>
+                                    break;
+                                default:
+                                    <img src="~/assets/images/flags/us.jpg" alt="Header Language" height="12">
+                                    <span class="align-middle"> English</span>
+                                    break;
+                            }
+                        </button>
+                        <div class="dropdown-menu">
+                            <!-- Flag options here -->
+                            <a class="dropdown-item" asp-controller="Account" asp-action="ChangeCultureLogin" asp-route-shortLang="ro">
+                                <img src="~/assets/images/flags/ro.png" alt="user-image" class="me-1" height="12"> <span class="align-middle"> Română</span>
+                            </a>
+                            <a class="dropdown-item" asp-controller="Account" asp-action="ChangeCultureLogin" asp-route-shortLang="ru">
+                                <img src="~/assets/images/flags/russia.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle"> Русский</span>
+                            </a>
+                            <a class="dropdown-item" asp-controller="Account" asp-action="ChangeCultureLogin" asp-route-shortLang="en">
+                                <img src="~/assets/images/flags/us.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle"> English</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Login button -->
                     <button class="btn btn-success btn-login" type="submit">Log in</button>
-                    <a class="btn btn-outline-secondary btn-cancel" asp-controller="Home" asp-action="Index">Cancel</a>
                 </div>
-                <hr class="center-line">
             </form>
         </div>
     </div>

@@ -17,8 +17,7 @@ namespace Application.Common.Mapping
             //TODO Mapping with roles and delete oneOfThisMap
             //dontDeleteCurrentUser
             //Validation(UserRoleSet), Resources
-            //UserController add method for getRolesViewBag
-            //Clear code Repos&Controllers
+            
 
             CreateMap<UpsertUserDto, User>();
             CreateMap<User, UpsertUserDto>().ForMember(dest => dest.RolesId, opt => opt.MapFrom(src => src.UserRoles.Select(ur => ur.Role.Id)));
