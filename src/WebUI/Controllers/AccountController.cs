@@ -82,7 +82,7 @@ namespace WebUI.Controllers
             }
         }
 
-        [HttpPost]
+        //[HttpPost]
         [Authorize]
         public async Task<IActionResult> LogOut()
         {

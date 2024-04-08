@@ -33,12 +33,12 @@ namespace WebUI.Controllers
             {
                 return NotFound();
             }
-
-            return View(user);
+            return PartialView("~/Views/User/Details.cshtml", user);
+            //return View(user);
         }
 
         //// GET: User/Create
-        public async Task<IActionResult> Upsert(int id)
+        public async Task<IActionResult> GetUpsert(int id)
         {
             var rolesVm = await Mediator.Send(new GetAllRoles());
             var updateUserVm = await Mediator.Send(new GetUserForUpsert { Id = id });
@@ -51,8 +51,8 @@ namespace WebUI.Controllers
             });
 
             ViewBag.Roles = selectListItemRoleVm;
+            return View("~/Views/User/Upsert.cshtml", updateUserVm);
 
-            return View(updateUserVm);
         }
 
 
