@@ -71,68 +71,6 @@ namespace WebUI.Controllers
             return RedirectToAction(nameof(Upsert));
         }
 
-        ////// GET: User/Edit/5
-        //public async Task<IActionResult> Edit(int id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var rolesVm = await Mediator.Send(new GetAllRoles());
-        //    var updateUserVm = await Mediator.Send(new GetUserById { Id = id });
-
-        //    var selectListItemRoleVm = rolesVm.Select(x => new SelectListItem
-        //    {
-        //        Value = x.Id.ToString(),
-        //        Text = x.Name,
-        //        // Check if this role is one of the user's roles
-        //        Selected = updateUserVm.RolesId.Contains(x.Id)
-        //    });
-
-        //    ViewBag.Roles = selectListItemRoleVm; // All Exist Roles
-
-        //    if (updateUserVm == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(updateUserVm);
-        //}
-
-
-        ////// POST: User/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, UpdateUserDto updateUserDto)
-        //{
-        //    if (id != updateUserDto.Id)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            //Add if
-        //            await _userRepository.Update(updateUserDto);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            if (!await _userRepository.UserExists(updateUserDto.Id))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(updateUserDto);
-        //}
 
         //GET: User/Delete/5
         public async Task<IActionResult> Delete(int id)
@@ -157,13 +95,6 @@ namespace WebUI.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return RedirectToAction(nameof(Index));
-            //if (await _userRepository.UserExists(id))
-            //{
-            //    await _userRepository.Delete(id);
-            //    //return RedirectToAction(nameof(Index));
-            //}
-
-
         }
 
     }

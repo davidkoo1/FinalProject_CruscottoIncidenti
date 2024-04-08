@@ -71,31 +71,15 @@ namespace WebUI.Controllers
                 }
                 Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName, CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(shortLang)), new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) });
 
-                return await ChangeLanguage((int)uiLanguage, returnUrl);
+                return LocalRedirect(returnUrl ?? "/");
             }
             catch (Exception ex)
             {
                 var uiLanguage = EnUiLanguage.RU;
-                return await ChangeLanguage((int)uiLanguage, returnUrl);
+                return await ChangeCulture(nameof(uiLanguage), returnUrl);
             }
         }
 
-
-        [HttpGet]
-        public async Task<IActionResult> ChangeLanguage(int lang, string returnUrl)
-        {
-            try
-            {
-                return await ChangeLanguage(lang, returnUrl);
-
-
-            }
-            catch (Exception ex)
-            {
-                return LocalRedirect(returnUrl ?? "/");
-            }
-            return LocalRedirect(returnUrl ?? "/");
-        }
 
         public string GetLanguageCookie()
         {

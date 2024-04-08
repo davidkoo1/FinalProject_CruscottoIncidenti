@@ -5,11 +5,11 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+
 
 <p>
-    @* <a asp-action="Create">Create New</a> *@
-    <a type="text" href="@Url.Action("Upsert", "User", new {id = 0})">Create New</a>
+    <a type="button" href="@Url.Action("Upsert", "User", new {id = 0})" style="margin-top: 10px;" class="btn btn-primary">Create New</a>
+    
 </p>
 <table class="table">
     <thead>
