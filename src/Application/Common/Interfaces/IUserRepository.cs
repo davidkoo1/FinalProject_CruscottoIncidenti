@@ -5,7 +5,7 @@ namespace Application.Common.Interfaces
 {
     public interface IUserRepository
     {
-        Task<ICollection<UserDto>> GetAll();
+        Task<IEnumerable<UserDto>> GetAll();
 
         Task<UserDto> GetUserById(int userId);
         Task<UpsertUserDto> GetUserForUpsertById(int userId);

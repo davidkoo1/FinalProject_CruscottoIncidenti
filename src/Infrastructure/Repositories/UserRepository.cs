@@ -34,7 +34,7 @@ namespace Infrastructure.Repositories
             return await Save();
         }
 
-        public async Task<ICollection<UserDto>> GetAll() => _mapper.Map<ICollection<UserDto>>(await _dbContext.Users.ToListAsync());
+        public async Task<IEnumerable<UserDto>> GetAll() => _mapper.Map<IEnumerable<UserDto>>(await _dbContext.Users.ToListAsync());
 
         public async Task<IEnumerable<Role>> GetRolesAsync() => await _dbContext.Roles.ToListAsync();
 
@@ -85,6 +85,7 @@ namespace Infrastructure.Repositories
 
                 string defaultPW = "Cedacri1234567!";
 
+                userToUpsert.Created = DateTime.UtcNow;
                 userToUpsert.CreatedBy = currentUser;
                 userToUpsert.Password = HashPW(defaultPW);
                 userToUpsert.UserRoles = upsertUserDto.RolesId.Select(id => new UserRole { RoleId = id }).ToList();

@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.UserCQRS.QueryHandlers
 {
-    public class GetAllUsersHandler : IRequestHandler<GetAllUsers, ICollection<UserDto>>
+    public class GetAllUsersHandler : IRequestHandler<GetAllUsers, IEnumerable<UserDto>>
     {
         private readonly IUserRepository _userRepository;
 
@@ -14,7 +14,7 @@ namespace Application.UserCQRS.QueryHandlers
             _userRepository = userRepository;
         }
 
-        public async Task<ICollection<UserDto>> Handle(GetAllUsers request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<UserDto>> Handle(GetAllUsers request, CancellationToken cancellationToken)
         {
             //var users = request;
             return await _userRepository.GetAll();

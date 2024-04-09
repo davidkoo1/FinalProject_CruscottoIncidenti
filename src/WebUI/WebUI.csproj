@@ -9,9 +9,9 @@
 
   <ItemGroup>
     <PackageReference Include="bootstrap" Version="5.3.3" />
-    <PackageReference Include="bootstrap-select" Version="1.13.18" />
-    <PackageReference Include="datatables.net" Version="2.0.3" />
+    <PackageReference Include="bootstrap-select" Version="1.14.0-beta2" />
     <PackageReference Include="jQuery" Version="3.7.1" />
+    <PackageReference Include="jquery.datatables" Version="1.10.15" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.3">
       <PrivateAssets>all</PrivateAssets>

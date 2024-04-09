@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.UserCQRS.Queries
 {
-    public class GetAllUsers : IRequest<ICollection<UserDto>>
+    public class GetAllUsers : IRequest<IEnumerable<UserDto>>
     {
         public int Id { get; set; }
         public string UserName { get; set; }

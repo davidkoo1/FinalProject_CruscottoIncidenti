@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WebUI.styles.css" asp-append-version="true" />
-
+    <link rel="stylesheet" href="~/lib/bootstrap-select/dist/css/bootstrap-select.css" />
+    <link href="~/lib/jquery-datatables/css/jquery.dataTables.css" rel="stylesheet" />
 </head>
 <body>
     @Html.Partial("~/Views/Shared/_Modals.cshtml")
@@ -123,9 +124,13 @@
             &copy; 2024 - WebUI - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap-select/dist/js/bootstrap-select.js"></script>
+    @* <script src="~/lib/DataTables/datatables.min.js"></script> *@
+    <script src="~/lib/jquery-datatables/js/jquery.dataTables.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

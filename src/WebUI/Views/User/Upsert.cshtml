@@ -3,17 +3,9 @@
 
 @{
    
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = (Model.Id == 0 ? "Create" : "Edit");
 }
 
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 
 @if (TempData["Error"] != null)
 {
@@ -22,7 +14,7 @@
     </div>
 }
 
-<h1>Create</h1>
+<h1>@(Model.Id == 0 ? "Create" : "Edit")</h1>
 
 <h4>User</h4>
 <hr />
@@ -59,10 +51,6 @@
                 </label>
             </div>
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-
         </div>
         <div class="col-md-2">
             <!-- Этот div создает пространство между левой и правой колонками -->
@@ -74,7 +62,9 @@
                 @Html.ListBoxFor(model => model.RolesId, new MultiSelectList(ViewBag.Roles, "Value", "Text"), new { @class = "form-control selectpicker", @multiple = "multiple", @title = "Choose..." })
                 @Html.ValidationMessageFor(model => model.RolesId, "", new { @class = "text-danger" })
             </div>
-
+            <div class="form-group">
+                <input type="submit" value="@(Model.Id == 0 ? "Create" : "Edit")" class="@(Model.Id == 0 ? " btn btn-success" : "btn btn-primary" )" style="width: 80px;" />
+            </div>
         </div>
 
     </div>
@@ -84,9 +74,11 @@
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        $('.selectpicker').selectpicker();
-    });
+
+    // $(document).ready(function () {
+        //$('.selectpicker').selectpicker();
+        //$('select').selectpicker();
+    // });
 </script>
 
 
