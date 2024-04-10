@@ -147,7 +147,7 @@ namespace WebUI.Controllers
         }
 
         // POST: User/Delete/5
-        [HttpPost]
+        [HttpPost/*ActionName*/]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -160,7 +160,6 @@ namespace WebUI.Controllers
             {
                 return Json(new { success = false, message = "Не удалось удалить пользователя." });
             }
-            return Json(new { success = true });
         }
 
 

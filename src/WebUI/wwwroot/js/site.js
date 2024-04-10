@@ -61,6 +61,7 @@ function deleteCurrentItem(userId) {
             if (response.success) {
                 // Перезагрузка данных таблицы и закрытие модального окна
                 //$('#demoGrid').DataTable().ajax.reload();
+                $('#actions').hide();
                 $('#demoGrid').DataTable().ajax.reload(null, false); // Перезагрузите таблицу без сброса пагинации
             } else {
                 alert("Ошибка: " + response.message);
