@@ -7,12 +7,6 @@
 }
 
 
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger">
-        <strong>Sorry!</strong> - @TempData["Error"]
-    </div>
-}
 <form asp-action="Upsert" asp-controller="User" method="post">
     <div class="modal-body">
         <div class="col-sm-12">
@@ -69,14 +63,14 @@
                     <!-- Этот div создает пространство между левой и правой колонками -->
                     <!-- Пустой div для отступа -->
                 </div>
-                <div class="col-md-4">
+                @* <div class="col-md-4">
                     <div class="form-group">
                         <label for="RolesId">Roles</label>
                         @Html.ListBoxFor(model => model.RolesId, new MultiSelectList(ViewBag.Roles, "Value", "Text"), new { @class = "form-control selectpicker", @title = "Choose..." })
-                        @Html.ValidationMessageFor(model => model.RolesId, "", new { @class = "text-danger" })
+                        <span asp-validation-for="RolesId" class="text-danger"></span>
                     </div>
 
-                </div>
+                </div> *@
 
             </div>
 
@@ -86,7 +80,6 @@
     <div class="modal-footer">
         <button type="submit" class="btn btn-success" style="width: 80px;" data-bs-dismiss="modal">Save</button>
         <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Cancel</button>
-
     </div>
 </form>
 <script type="text/javascript">

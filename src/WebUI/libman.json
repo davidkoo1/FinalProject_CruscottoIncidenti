@@ -11,6 +11,17 @@
       "provider": "unpkg",
       "library": "jquery-datatables@1.10.18",
       "destination": "wwwroot/lib/jquery-datatables/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "datatables@1.10.21",
+      "destination": "wwwroot/lib/datatables/"
     }
-  ]
+  ,
+{
+  "provider": "cdnjs",
+  "library": "toastr.js@2.1.4",
+  "destination": "wwwroot/lib/toastr.js/"
+}
+]
 }

@@ -20,6 +20,36 @@ function drawPatrialView(url, divId) {
     });
 }
 
+function openModal(parameters) {
+    const id = parameters.data;
+    const url = parameters.url;
+    const modal = $('#modal');
+
+    if (id == undefined || url == undefined) {
+        alert('Упсс...')
+        return;
+    }
+
+    $.ajax(
+        {
+            type: 'GET',
+            url: url,
+            data: { Id: id },
+            success: function (response) {
+                $('.modal-dialog');
+                modal.find(".modal-content").html(response);
+                modal.modal('show')
+            },
+            failure: function () {
+                modal.modal('hide')
+            },
+            error: function (response) {
+                alert(response.responseText)
+            }
+        });
+};
+
+
 function deleteUser(id) {
     // This function appears correct; it dynamically sets the view for deleting a user
     drawPatrialView('/User/Delete/' + id, 'lgModalBody');
@@ -49,7 +79,23 @@ function deleteUser(id) {
 }
 
 function deleteCurrentItem(userId) {
-    // Предотвращение стандартного поведения формы не требуется, так как вызов идет через onclick, а не через submit
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
     debugger;
     $.ajax({
         url: '../User/DeleteConfirmed/' + userId,//"@Url.Action("Delete", "User", new {id = 0})",
@@ -59,46 +105,17 @@ function deleteCurrentItem(userId) {
         //data: JSON.stringify(userId),
         success: function (response) {
             if (response.success) {
-                // Перезагрузка данных таблицы и закрытие модального окна
                 //$('#demoGrid').DataTable().ajax.reload();
+                toastr.success("Success", "Delete");
                 $('#actions').hide();
                 $('#demoGrid').DataTable().ajax.reload(null, false); // Перезагрузите таблицу без сброса пагинации
             } else {
-                alert("Ошибка: " + response.message);
+                toastr.alert("SuccessError", "Delete" + response.message);
             }
         },
         error: function () {
-            alert("Произошла ошибка при удалении.");
+            toastr.alert("Global error");
         }
     });
 }
 
-
-function openModal(parameters) {
-    const id = parameters.data;
-    const url = parameters.url;
-    const modal = $('#modal');
-
-    if (id == undefined || url == undefined) {
-        alert('Упсс...')
-        return;
-    }
-
-    $.ajax(
-        {
-            type: 'GET',
-            url: url,
-            data: { Id: id },
-            success: function (response) {
-                $('.modal-dialog');
-                modal.find(".modal-content").html(response);
-                modal.modal('show')
-            },
-            failure: function () {
-                modal.modal('hide')
-            },
-            error: function (response) {
-                alert(response.responseText)
-            }
-        });
-};

@@ -119,7 +119,7 @@ namespace WebUI.Controllers
 
         // POST: User/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Upsert(UpsertUserDto createUser)
         {
             if (ModelState.IsValid)
@@ -129,7 +129,7 @@ namespace WebUI.Controllers
                     return RedirectToAction(nameof(Index));
                 }
             }
-            return RedirectToAction(nameof(Upsert));
+            return PartialView("~/Views/User/Upsert.cshtml", createUser);
         }
 
 

@@ -4,116 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - WebUI</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/WebUI.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/bootstrap-select/dist/css/bootstrap-select.css" />
-    <link href="~/lib/jquery-datatables/css/jquery.dataTables.css" rel="stylesheet" />
+    @Html.Partial("~/Views/Shared/_head_css.cshtml")
+    
 
 </head>
 <body>
     @Html.Partial("~/Views/Shared/_Modals.cshtml")
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WebUI</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
-                        </li>
-                    </ul>
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <div class="d-flex">
-
-                            <div class="dropdown d-inline-block language-switch">
-                                <button type="button" class="btn header-item waves-effect"
-                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    @{
-
-                                        var user = User;
-
-                                        // Получите все Claim-ы пользователя
-                                        var claims = user.Claims;
-
-                                        // Получите конкретный Claim по типу
-                                        var selectedLangClaim = user.FindFirst("UiLanguage");
-                                        var fullNameClaim = user.FindFirst("FullName");
-                                    }
-                                    @*  <p>@selectedLangClaim.Value.ToLower()</p> *@
-                                    @switch (selectedLangClaim.Value.ToLower())
-                                    {
-                                        case "en":
-                                            <img src="~/assets/images/flags/us.jpg" alt="Header Language" height="16">
-                                            break;
-                                        case "ru":
-                                            <img src="~/assets/images/flags/russia.jpg" alt="Header Language" height="16">
-                                            break;
-                                        case "ro":
-                                            <img src="~/assets/images/flags/ro.png" alt="Header Language" height="16">
-                                            break;
-                                        default: break;
-                                    }
-
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end">
-
-                                    <!-- item-->
-                                    <a asp-controller="Base" asp-action="ChangeCulture" asp-route-shortLang="ro" asp-route-returnUrl="@Context.Request.Path" class="dropdown-item notify-item">
-                                        <img src="~/assets/images/flags/ro.png" alt="user-image" class="me-1" height="12"> <span class="align-middle">Ro</span>
-                                    </a>
-
-                                    <!-- item-->
-                                    <a asp-controller="Base" asp-action="ChangeCulture" asp-route-shortLang="ru" asp-route-returnUrl="@Context.Request.Path" class="dropdown-item notify-item">
-                                        <img src="~/assets/images/flags/russia.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">Ru</span>
-                                    </a>
-
-                                    <!-- item-->
-                                    <a asp-controller="Base" asp-action="ChangeCulture" asp-route-shortLang="en" asp-route-returnUrl="@Context.Request.Path" class="dropdown-item notify-item">
-                                        <img src="~/assets/images/flags/us.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">En</span>
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="dropdown d-inline-block">
-                                <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
-                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
-                                    <i class="uil-user-circle font-size-22"></i>
-                                    <span class="d-none d-xl-inline-block ms-1 fw-medium font-size-15">@fullNameClaim.Value</span>
-                                    <i class="uil-angle-down d-none d-xl-inline-block font-size-15"></i>
-
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <!-- item-->
-                                    @* <a class="dropdown-item d-block" href="@Url.Action("Settings", "User")"><i class="uil uil-cog font-size-18 align-middle me-1 text-muted"></i> <span class="align-middle">Settings</span></a> *@
-                                    <a class="dropdown-item" href="@Url.Action("Logout", "Account")"><i class="uil uil-sign-out-alt font-size-18 align-middle me-1 text-muted"></i> <span class="align-middle">SignOut</span></a>
-                                </div>
-                            </div>
-
-                        </div>
-                    }
-                    else
-                    {
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link text-outline-black" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                            </li>
-                        </ul>
-
-                    }
-                </div>
-            </div>
-        </nav>
-    </header>
+    @Html.Partial("~/Views/Shared/_topbar.cshtml")
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -132,12 +29,8 @@
             &copy; 2024 - WebUI - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/lib/bootstrap-select/dist/js/bootstrap-select.js"></script>
-    @* <script src="~/lib/DataTables/datatables.min.js"></script> *@
-    <script src="~/lib/jquery-datatables/js/jquery.dataTables.js"></script>
+
+    @Html.Partial("~/Views/Shared/_vendor_scripts.cshtml")
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
