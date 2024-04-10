@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="~/WebUI.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/bootstrap-select/dist/css/bootstrap-select.css" />
     <link href="~/lib/jquery-datatables/css/jquery.dataTables.css" rel="stylesheet" />
+
 </head>
 <body>
     @Html.Partial("~/Views/Shared/_Modals.cshtml")
@@ -117,6 +118,13 @@
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
+    </div>
+
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            </div>
+        </div>
     </div>
 
     <footer class="border-top footer text-muted">

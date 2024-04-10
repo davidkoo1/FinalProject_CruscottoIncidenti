@@ -5,96 +5,10 @@ using Application.UserCQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Runtime.Serialization;
 
 namespace WebUI.Controllers
 {
-    [Serializable]
-    [DataContract]
-    public class DataTablesParameters
-    {
-        [DataMember(Name = "totalCount")]
-        public int TotalCount { get; set; }
 
-        [DataMember(Name = "draw")]
-        public int Draw { get; set; }
-
-        [DataMember(Name = "start")]
-        public int Start { get; set; }
-
-        [DataMember(Name = "length")]
-        public int Length { get; set; }
-
-        [DataMember(Name = "columns")]
-        public List<DataTablesColumn> Columns { get; set; }
-
-        [DataMember(Name = "search")]
-        public DataTablesSearch Search { get; set; }
-
-        [DataMember(Name = "order")]
-        public List<DataTablesOrder> Order { get; set; }
-
-        /// <summary>
-        /// Used for sorting
-        /// </summary>
-        public void SetColumnName()
-        {
-            foreach (var item in Order)
-            {
-                item.Name = Columns[item.Column].Data;
-            }
-        }
-
-    }
-    [Serializable]
-    [DataContract]
-    public class DataTablesOrder
-    {
-        [DataMember(Name = "column")]
-        public int Column { get; set; }
-
-        [DataMember(Name = "dir")]
-        public string Dir { get; set; }
-
-        [DataMember(Name = "name")]
-        public string Name { get; set; }
-    }
-    [Serializable]
-    [DataContract]
-    public class DataTablesColumn
-    {
-        [DataMember(Name = "data")]
-        public string Data { get; set; }
-
-        [DataMember(Name = "name")]
-        public string Name { get; set; }
-
-        [DataMember(Name = "searchable")]
-        public bool Searchable { get; set; }
-
-        [DataMember(Name = "orderable")]
-        public bool Orderable { get; set; }
-
-        [DataMember(Name = "search")]
-        public DataTablesSearch Search { get; set; }
-    }
-    [Serializable]
-    [DataContract]
-    public class DataTablesSearch
-    {
-        public DataTablesSearch()
-        {
-            Values = new List<string>();
-        }
-
-        [DataMember(Name = "value")]
-        public string Value { get; set; }
-
-        public ICollection<string> Values { get; set; }
-
-        [DataMember(Name = "regex")]
-        public string Regex { get; set; }
-    }
     [Authorize(Roles = "Admin")]
     public class UserController : BaseController
     {
@@ -107,11 +21,11 @@ namespace WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> LoadData(DataTablesParameters parameters)
+        public async Task<ActionResult> LoadData()
         {
             try
             {
-              
+
                 var draw = Request.Form["draw"].FirstOrDefault();
                 var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
                 var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
@@ -119,7 +33,7 @@ namespace WebUI.Controllers
                 int pageSize = Convert.ToInt32(Request.Form["length"].FirstOrDefault() ?? "0");
                 int skip = Convert.ToInt32(Request.Form["start"].FirstOrDefault() ?? "0");
                 // Paging Size (10,20,50,100)
-                
+
                 int recordsTotal = 0;
 
                 // Getting all Customer data
@@ -197,8 +111,8 @@ namespace WebUI.Controllers
             });
 
             ViewBag.Roles = selectListItemRoleVm;
-            return View("~/Views/User/Upsert.cshtml", updateUserVm);
-            //return PartialView("~/Views/User/Upsert.cshtml", updateUserVm);
+            //return View("~/Views/User/Upsert.cshtml", updateUserVm);
+            return PartialView("~/Views/User/Upsert.cshtml", updateUserVm);
 
         }
 
@@ -229,20 +143,26 @@ namespace WebUI.Controllers
                 return NotFound();
             }
 
-            return View(user);
+            return PartialView("~/Views/User/Delete.cshtml", user);
         }
 
         // POST: User/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (await Mediator.Send(new DeleteUser { Id = id }))
+            var success = await Mediator.Send(new DeleteUser { Id = id });
+            if (success)
             {
-                return RedirectToAction(nameof(Index));
+                return Json(new { success = true });
             }
-            return RedirectToAction(nameof(Index));
+            else
+            {
+                return Json(new { success = false, message = "Не удалось удалить пользователя." });
+            }
+            return Json(new { success = true });
         }
+
 
     }
 }

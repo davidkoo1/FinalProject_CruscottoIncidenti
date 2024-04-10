@@ -2,7 +2,7 @@
 @model UpsertUserDto
 
 @{
-   
+
     ViewData["Title"] = (Model.Id == 0 ? "Create" : "Edit");
 }
 
@@ -13,76 +13,92 @@
         <strong>Sorry!</strong> - @TempData["Error"]
     </div>
 }
-
-<h1>@(Model.Id == 0 ? "Create" : "Edit")</h1>
-
-<h4>User</h4>
-<hr />
 <form asp-action="Upsert" asp-controller="User" method="post">
-    <div class="row">
-        <div class="col-md-4">
+    <div class="modal-body">
+        <div class="col-sm-12">
+            @if (Model.Id == 0)
+            {
+                <div class="alert alert-success alert-dismissible fade show mt-1 px-1 mb-0 text-center" role="alert">
+                    <i class="uil uil-exclamation-triangle d-block display-4 mt-2 mb-3 text-success"></i>
+                    <h1 class="text-success">Create User</h1>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-primary alert-dismissible fade show mt-1 px-1 mb-0 text-center" role="alert">
+                    <i class="uil uil-exclamation-octagon d-block display-4 mt-2 mb-3 text-primary"></i>
+                    <h1 class="text-primary">Edit User</h1>
+                </div>
+            }
+            <hr />
 
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="CreatedBy" />
-            <input type="hidden" asp-for="Created" />
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
+            <div class="row">
+                <div class="col-md-4">
 
-            <div class="form-group">
-                <label asp-for="FullName" class="control-label"></label>
-                <input asp-for="FullName" class="form-control" />
-                <span asp-validation-for="FullName" class="text-danger"></span>
-            </div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="CreatedBy" />
+                    <input type="hidden" asp-for="Created" />
+                    <div class="form-group">
+                        <label asp-for="UserName" class="control-label"></label>
+                        <input asp-for="UserName" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
 
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
+                    <div class="form-group">
+                        <label asp-for="FullName" class="control-label"></label>
+                        <input asp-for="FullName" class="form-control" />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
 
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsEnabled" />
-                    @Html.DisplayNameFor(model => model.IsEnabled)
-                </label>
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="IsEnabled" />
+                            @Html.DisplayNameFor(model => model.IsEnabled)
+                        </label>
+                    </div>
+
+                </div>
+                <div class="col-md-2">
+                    <!-- Этот div создает пространство между левой и правой колонками -->
+                    <!-- Пустой div для отступа -->
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="RolesId">Roles</label>
+                        @Html.ListBoxFor(model => model.RolesId, new MultiSelectList(ViewBag.Roles, "Value", "Text"), new { @class = "form-control selectpicker", @title = "Choose..." })
+                        @Html.ValidationMessageFor(model => model.RolesId, "", new { @class = "text-danger" })
+                    </div>
+
+                </div>
+
             </div>
 
         </div>
-        <div class="col-md-2">
-            <!-- Этот div создает пространство между левой и правой колонками -->
-            <!-- Пустой div для отступа -->
-        </div>
-        <div class="col-md-4">
-            <div class="form-group">
-                <label for="RolesId">Roles</label>
-                @Html.ListBoxFor(model => model.RolesId, new MultiSelectList(ViewBag.Roles, "Value", "Text"), new { @class = "form-control selectpicker", @multiple = "multiple", @title = "Choose..." })
-                @Html.ValidationMessageFor(model => model.RolesId, "", new { @class = "text-danger" })
-            </div>
-            <div class="form-group">
-                <input type="submit" value="@(Model.Id == 0 ? "Create" : "Edit")" class="@(Model.Id == 0 ? " btn btn-success" : "btn btn-primary" )" style="width: 80px;" />
-            </div>
-        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-success" style="width: 80px;" data-bs-dismiss="modal">Save</button>
+        <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Cancel</button>
 
     </div>
 </form>
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 <script type="text/javascript">
 
-    // $(document).ready(function () {
-        //$('.selectpicker').selectpicker();
+    $(document).ready(function () {
+        $('.selectpicker').selectpicker();
         //$('select').selectpicker();
-    // });
+    });
 </script>
 
-
 @section Scripts {
+@*      *@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
