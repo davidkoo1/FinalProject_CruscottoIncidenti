@@ -119,16 +119,28 @@ namespace WebUI.Controllers
 
         // POST: User/Create
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Upsert(UpsertUserDto createUser)
         {
             if (ModelState.IsValid)
             {
-                if (await Mediator.Send(new UpsertUser { UpsertUserDto = createUser }))
+                var result = await Mediator.Send(new UpsertUser { UpsertUserDto = createUser });
+                if (result)
                 {
-                    return RedirectToAction(nameof(Index));
+                    // return Json(new { success = true/*, redirectUrl = Url.Action(nameof(Index))*/ });
+                    return Json(new { success = true });
                 }
+                
             }
+            var rolesVm = await Mediator.Send(new GetAllRoles());
+            var selectListItemRoleVm = rolesVm.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name,
+                Selected = createUser.Id != 0 ? createUser.RolesId.Contains(x.Id) : false
+            });
+
+            ViewBag.Roles = selectListItemRoleVm;
+            // Если ModelState не валиден, возвращаем частичное представление с ошибками
             return PartialView("~/Views/User/Upsert.cshtml", createUser);
         }
 

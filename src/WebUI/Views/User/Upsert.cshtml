@@ -7,7 +7,13 @@
 }
 
 
-<form asp-action="Upsert" asp-controller="User" method="post">
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        <strong>Sorry!</strong> - @TempData["Error"]
+    </div>
+}
+<form asp-action="Upsert" asp-controller="User" method="post" id="SaveUserForm">
     <div class="modal-body">
         <div class="col-sm-12">
             @if (Model.Id == 0)
@@ -63,14 +69,14 @@
                     <!-- Этот div создает пространство между левой и правой колонками -->
                     <!-- Пустой div для отступа -->
                 </div>
-                @* <div class="col-md-4">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label for="RolesId">Roles</label>
                         @Html.ListBoxFor(model => model.RolesId, new MultiSelectList(ViewBag.Roles, "Value", "Text"), new { @class = "form-control selectpicker", @title = "Choose..." })
-                        <span asp-validation-for="RolesId" class="text-danger"></span>
+                        @Html.ValidationMessageFor(model => model.RolesId, "", new { @class = "text-danger" })
                     </div>
 
-                </div> *@
+                </div>
 
             </div>
 
@@ -78,20 +84,21 @@
     </div>
 
     <div class="modal-footer">
-        <button type="submit" class="btn btn-success" style="width: 80px;" data-bs-dismiss="modal">Save</button>
+        <button type="submit" class="btn btn-success" style="width: 80px;" >Save</button>
         <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Cancel</button>
+
     </div>
 </form>
 <script type="text/javascript">
 
     $(document).ready(function () {
         $('.selectpicker').selectpicker();
-        //$('select').selectpicker();
+
     });
+
 </script>
 
 @section Scripts {
-@*      *@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

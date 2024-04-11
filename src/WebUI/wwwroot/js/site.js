@@ -96,7 +96,7 @@ function deleteCurrentItem(userId) {
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
     };
-    debugger;
+    //debugger;
     $.ajax({
         url: '../User/DeleteConfirmed/' + userId,//"@Url.Action("Delete", "User", new {id = 0})",
         cache: false,
@@ -119,3 +119,61 @@ function deleteCurrentItem(userId) {
     });
 }
 
+
+
+function createUser() {
+    // This function appears correct; it dynamically sets the view for deleting a user
+    drawPatrialView('/User/GetUpsert/' + 0, 'xlModalBody');
+    
+
+
+
+}
+
+$(document).on('submit', '#SaveUserForm', function (e) {
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+    e.preventDefault();
+
+    var $form = $(this);
+
+    $.ajax({
+        type: $form.attr('method'),
+        url: $form.attr('action'),
+        data: $form.serialize(),
+        success: function (response) {
+            if (response.success) {
+
+                //window.location.href = '../User/Index';
+
+                $('#xlModal').modal('hide');
+                $('#demoGrid').DataTable().ajax.reload(null, false);
+                toastr.success("Success", "Created");
+                //location.reload();
+            } else {
+
+                $('.modal-body').html(response);
+                $('.selectpicker').selectpicker();
+            }
+        },
+        error: function (xhr, status, error) {
+            // Обработка ошибок AJAX запроса
+            alert("Произошла ошибка: " + error);
+        }
+    });
+});
