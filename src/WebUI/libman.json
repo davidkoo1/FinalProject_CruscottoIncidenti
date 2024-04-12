@@ -19,11 +19,6 @@
     {
       "library": "toastr.js@2.1.4",
       "destination": "wwwroot/lib/toastr.js/"
-    },
-    {
-      "provider": "jsdelivr",
-      "library": "@iconscout/unicons@4.0.8",
-      "destination": "wwwroot/iconscout/unicons/"
     }
   ]
 }
