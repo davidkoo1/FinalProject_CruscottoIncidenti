@@ -36,7 +36,7 @@
                 <div class="col-md-4">
 
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="Id" id="UserId"/>
                     <input type="hidden" asp-for="CreatedBy" />
                     <input type="hidden" asp-for="Created" />
                     <div class="form-group">
@@ -84,11 +84,12 @@
     </div>
 
     <div class="modal-footer">
-        <button type="submit" class="btn btn-success" style="width: 80px;" >Save</button>
+        <button type="submit" class="btn btn-success" style="width: 80px;">Save</button>
         <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Cancel</button>
 
     </div>
 </form>
+
 <script type="text/javascript">
 
     $(document).ready(function () {

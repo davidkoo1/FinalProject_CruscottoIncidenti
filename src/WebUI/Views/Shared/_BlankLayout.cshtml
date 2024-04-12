@@ -1,0 +1,18 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+
+    @await Html.PartialAsync("~/Views/Shared/_head_css.cshtml")
+
+</head>
+
+<body class="authentication-bg">
+    @RenderBody()
+
+    @RenderSection("scripts", required: false)
+    <!-- App js -->
+    @await Html.PartialAsync("~/Views/Shared/_vendor_scripts.cshtml")
+
+</body>
+</html>

@@ -1,12 +1,12 @@
 ﻿@using Application.DTO
 @model LoginDto
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_BlankLayout.cshtml";
     ViewData["Title"] = "Login";
 }
-
+@* 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
+ *@
 
 <style>
     body {
@@ -142,6 +142,7 @@
                     <!-- Login button -->
                     <button class="btn btn-success btn-login" type="submit">Log in</button>
                 </div>
+            
             </form>
         </div>
     </div>

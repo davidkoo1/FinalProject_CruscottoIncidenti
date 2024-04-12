@@ -49,9 +49,54 @@ function openModal(parameters) {
         });
 };
 
+//UserDataTableButton
+function initializeUserDataTable() {
+    var table = $('#UserDatatable').DataTable({
+        "processing": true,
+        "serverSide": true,
+        ajax: {
+            "url": "/User/LoadDatatable",
+            "type": "POST",
+            "dataType": "json"
+        },
+        "columns": [
+            { "data": "id", "title": "Id", "name": "id", "visible": false },
+            { "data": "userName", "title": "userName", "name": "userName" },
+            { "data": "email", "title": "email", "name": "email" },
+            { "data": "isEnabled", "title": "isEnabled", "name": "isEnabled" }
+        ]
+    });
+
+    return table;
+}
+
+function setupRowClickEvents(table) {
+    $('#UserDatatable tbody').on('click', 'tr', function () {
+        var rowData = table.row(this).data();
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+            $('#actions').hide();
+        } else {
+            table.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+            $('#actions').show();
+            updateButtonLinks(rowData.id);
+        }
+    });
+}
+
+
+function updateButtonLinks(id) {
+    // Fix: Properly concatenate the id into the URL for the 'drawPatrialView' function calls
+    $('#editLink').attr('onclick', `drawPatrialView('/User/GetUpsert/'+${id}, 'xlModalBody')`);
+    // Removed the commented-out code for clarity and cleanliness
+    $('#detailsLink').attr('onclick', `drawPatrialView('/User/Details/'+${id}, 'xlModalBody')`);
+    // Fix: Correctly close the deleteUser function call with the right parenthesis
+    $('#deleteLink').attr('onclick', `deleteUser(${id})`);
+    // Removed the commented-out code as it seems you've moved away from using href for deletion
+}
 
 function deleteUser(id) {
-    // This function appears correct; it dynamically sets the view for deleting a user
     drawPatrialView('/User/Delete/' + id, 'lgModalBody');
     //$('#deleteCurrent').on('submit', function (e) {
     //    e.preventDefault();
@@ -62,7 +107,7 @@ function deleteUser(id) {
     //        success: function (response) {
     //            if (response.success) {
     //                // Перезагрузка данных таблицы и закрытие модального окна
-    //                $('#demoGrid').DataTable().ajax.reload();
+    //                $('#UserDatatable').DataTable().ajax.reload();
     //                //$('.modal').modal('hide'); // Предполагается, что вы используете Bootstrap для модальных окон
     //            } else {
     //                alert("Ошибка: " + response.message);
@@ -105,10 +150,10 @@ function deleteCurrentItem(userId) {
         //data: JSON.stringify(userId),
         success: function (response) {
             if (response.success) {
-                //$('#demoGrid').DataTable().ajax.reload();
+                //$('#UserDatatable').DataTable().ajax.reload();
                 toastr.success("Success", "Delete");
                 $('#actions').hide();
-                $('#demoGrid').DataTable().ajax.reload(null, false); // Перезагрузите таблицу без сброса пагинации
+                $('#UserDatatable').DataTable().ajax.reload(null, false); // Перезагрузите таблицу без сброса пагинации
             } else {
                 toastr.alert("SuccessError", "Delete" + response.message);
             }
@@ -119,16 +164,6 @@ function deleteCurrentItem(userId) {
     });
 }
 
-
-
-function createUser() {
-    // This function appears correct; it dynamically sets the view for deleting a user
-    drawPatrialView('/User/GetUpsert/' + 0, 'xlModalBody');
-    
-
-
-
-}
 
 $(document).on('submit', '#SaveUserForm', function (e) {
     toastr.options = {
@@ -150,6 +185,8 @@ $(document).on('submit', '#SaveUserForm', function (e) {
     };
     e.preventDefault();
 
+    //ForToastrEditOrCreate
+    var CurrentIdUser = $('#UserId').val();
     var $form = $(this);
 
     $.ajax({
@@ -162,8 +199,14 @@ $(document).on('submit', '#SaveUserForm', function (e) {
                 //window.location.href = '../User/Index';
 
                 $('#xlModal').modal('hide');
-                $('#demoGrid').DataTable().ajax.reload(null, false);
-                toastr.success("Success", "Created");
+                $('#UserDatatable').DataTable().ajax.reload(null, false);
+                if (CurrentIdUser === '0') {
+                    toastr.success("Success", "Created");
+                }
+                else {
+                    toastr.info("Success", "Edited");
+                }
+
                 //location.reload();
             } else {
 
@@ -172,7 +215,6 @@ $(document).on('submit', '#SaveUserForm', function (e) {
             }
         },
         error: function (xhr, status, error) {
-            // Обработка ошибок AJAX запроса
             alert("Произошла ошибка: " + error);
         }
     });

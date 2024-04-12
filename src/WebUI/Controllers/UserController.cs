@@ -21,7 +21,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> LoadData()
+        public async Task<ActionResult> LoadDatatable()
         {
             try
             {
@@ -100,23 +100,27 @@ namespace WebUI.Controllers
         //// GET: User/Create
         public async Task<IActionResult> GetUpsert(int id)
         {
-            var rolesVm = await Mediator.Send(new GetAllRoles());
+            //var rolesVm = await Mediator.Send(new GetAllRoles());
             var updateUserVm = await Mediator.Send(new GetUserForUpsert { Id = id });
 
-            var selectListItemRoleVm = rolesVm.Select(x => new SelectListItem
-            {
-                Value = x.Id.ToString(),
-                Text = x.Name,
-                Selected = updateUserVm.Id != 0 ? updateUserVm.RolesId.Contains(x.Id) : false
-            });
-
-            ViewBag.Roles = selectListItemRoleVm;
+            await SetUserRoleList(updateUserVm);
             //return View("~/Views/User/Upsert.cshtml", updateUserVm);
             return PartialView("~/Views/User/Upsert.cshtml", updateUserVm);
 
         }
 
+        private async Task SetUserRoleList(UpsertUserDto createUser)
+        {
+            var rolesVm = await Mediator.Send(new GetAllRoles());
+            var selectListItemRoleVm = rolesVm.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name,
+                Selected = createUser.Id != 0 && createUser.RolesId != null ? createUser.RolesId.Contains(x.Id) : false
+            });
 
+            ViewBag.Roles = selectListItemRoleVm;
+        }
         // POST: User/Create
         [HttpPost]
         public async Task<IActionResult> Upsert(UpsertUserDto createUser)
@@ -129,17 +133,17 @@ namespace WebUI.Controllers
                     // return Json(new { success = true/*, redirectUrl = Url.Action(nameof(Index))*/ });
                     return Json(new { success = true });
                 }
+                else
+                {
+                    TempData["Error"] = "Please try again";
+                    await SetUserRoleList(createUser);
+                    // Если ModelState не валиден, возвращаем частичное представление с ошибками
+                    return PartialView("~/Views/User/Upsert.cshtml", createUser);
+                }
                 
             }
-            var rolesVm = await Mediator.Send(new GetAllRoles());
-            var selectListItemRoleVm = rolesVm.Select(x => new SelectListItem
-            {
-                Value = x.Id.ToString(),
-                Text = x.Name,
-                Selected = createUser.Id != 0 ? createUser.RolesId.Contains(x.Id) : false
-            });
-
-            ViewBag.Roles = selectListItemRoleVm;
+            TempData["Error"] = "Please give correct input";
+            await SetUserRoleList(createUser);
             // Если ModelState не валиден, возвращаем частичное представление с ошибками
             return PartialView("~/Views/User/Upsert.cshtml", createUser);
         }
