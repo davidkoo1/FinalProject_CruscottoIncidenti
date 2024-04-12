@@ -1,11 +1,6 @@
 ﻿@using Application.DTO
 @model UpsertUserDto
 
-@{
-
-    ViewData["Title"] = (Model.Id == 0 ? "Create" : "Edit");
-}
-
 
 @if (TempData["Error"] != null)
 {

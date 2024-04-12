@@ -13,15 +13,17 @@
       "destination": "wwwroot/lib/jquery-datatables/"
     },
     {
-      "provider": "cdnjs",
       "library": "datatables@1.10.21",
       "destination": "wwwroot/lib/datatables/"
+    },
+    {
+      "library": "toastr.js@2.1.4",
+      "destination": "wwwroot/lib/toastr.js/"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "@iconscout/unicons@4.0.8",
+      "destination": "wwwroot/iconscout/unicons/"
     }
-  ,
-{
-  "provider": "cdnjs",
-  "library": "toastr.js@2.1.4",
-  "destination": "wwwroot/lib/toastr.js/"
-}
-]
+  ]
 }

@@ -90,7 +90,7 @@ function updateButtonLinks(id) {
     // Fix: Properly concatenate the id into the URL for the 'drawPatrialView' function calls
     $('#editLink').attr('onclick', `drawPatrialView('/User/GetUpsert/'+${id}, 'xlModalBody')`);
     // Removed the commented-out code for clarity and cleanliness
-    $('#detailsLink').attr('onclick', `drawPatrialView('/User/Details/'+${id}, 'xlModalBody')`);
+    $('#detailsLink').attr('onclick', `drawPatrialView('/User/Details/'+${id}, 'lgModalBody')`);
     // Fix: Correctly close the deleteUser function call with the right parenthesis
     $('#deleteLink').attr('onclick', `deleteUser(${id})`);
     // Removed the commented-out code as it seems you've moved away from using href for deletion
