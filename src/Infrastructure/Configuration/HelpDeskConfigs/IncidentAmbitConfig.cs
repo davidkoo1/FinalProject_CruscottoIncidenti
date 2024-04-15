@@ -2,24 +2,22 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Configuration
+namespace Infrastructure.Configuration.HelpDeskConfigs
 {
-    public class IncidentTypeConfiguration : IEntityTypeConfiguration<IncidentType>
+    public class IncidentAmbitConfig : IEntityTypeConfiguration<IncidentAmbit>
     {
-        public void Configure(EntityTypeBuilder<IncidentType> builder)
+        public void Configure(EntityTypeBuilder<IncidentAmbit> builder)
         {
             builder.HasKey(x => x.Id)
-                 .IsClustered(false);
+                .IsClustered(false);
 
             builder.HasIndex(x => x.Name)
                 .IsClustered(true);
 
             builder.Property(x => x.Name)
-                .HasMaxLength(50)
+                .HasMaxLength(35)
                 .IsRequired();
 
-            builder.HasOne(t => t.Ambit).WithMany().HasForeignKey(t => t.AmbitId);
         }
     }
 }
-

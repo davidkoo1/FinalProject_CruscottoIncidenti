@@ -2,7 +2,6 @@
 using Domain.Entities.HelpDesk;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-using System.Threading;
 
 namespace Infrastructure.Persistance
 {
@@ -17,6 +16,10 @@ namespace Infrastructure.Persistance
         public DbSet<IncidentType> IncidentTypes { get; set; }
         public DbSet<IncidentAmbit> Ambits { get; set; }
         public DbSet<IncidentOrigin> Origins { get; set; }
+        public DbSet<AmbitsToTypes> AmbitsToTypes { get; set; }
+        public DbSet<OriginsToAmbit> OriginsToAmbit { get; set; }
+        public DbSet<Scenary> Scenaries { get; set; }
+        public DbSet<Threat> Threats { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
