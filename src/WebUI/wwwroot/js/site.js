@@ -175,7 +175,7 @@ function deleteCurrentItem(userId) {
         success: function (response) {
             if (response.success) {
                 //$('#UserDatatable').DataTable().ajax.reload();
-                toastr.success("Success", "Delete");
+                toastr.error("Success", "Delete");
                 $('#actions').hide();
                 $('#UserDatatable').DataTable().ajax.reload(null, false); // Перезагрузите таблицу без сброса пагинации
             } else {
@@ -230,7 +230,7 @@ $(document).on('submit', '#SaveUserForm', function (e) {
                 else {
                     toastr.info("Success", "Edited");
                 }
-
+                $('#actions').hide();
                 //location.reload();
             } else {
 
