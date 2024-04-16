@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using WebUI.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebUI.Controllers
 {
+    [Authorize]
     public class BaseController : Controller
     {
         private IMediator _mediator = null!;

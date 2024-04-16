@@ -49,6 +49,30 @@ function openModal(parameters) {
         });
 };
 
+
+function initializeIncidentDataTable() {
+    var table = $('#IncidentDatatable').DataTable({
+        "processing": true,
+        "serverSide": true,
+        ajax: {
+            "url": "/Incident/LoadDatatable",
+            "type": "POST",
+            "dataType": "json"
+        },
+        "columns": [
+            { "data": "id", "title": "Id", "name": "id", "visible": false },
+            { "data": "RequestNr", "title": "RequestNr", "name": "RequestNr" },
+            { "data": "Subsystem", "title": "Subsystem", "name": "Subsystem" },
+            { "data": "OpenDate", "title": "OpenDate", "name": "OpenDate" },
+            { "data": "CloseDate", "title": "CloseDate", "name": "CloseDate" },
+            { "data": "Type", "title": "Type", "name": "Type" },
+            { "data": "Urgency", "title": "Urgency", "name": "Urgency" }
+        ]
+    });
+
+    return table;
+}
+
 //UserDataTableButton
 function initializeUserDataTable() {
     var table = $('#UserDatatable').DataTable({

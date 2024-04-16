@@ -18,6 +18,7 @@ namespace Infrastructure
 
             //services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IIncidentRepository, IncidentRepository>();
 
 
 
