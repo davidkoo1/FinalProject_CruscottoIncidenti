@@ -7,8 +7,8 @@ namespace WebUI.Controllers
     {
         public async Task<IActionResult> Index()
         {
-            //var incidentList = await Mediator.Send(new GetAllInicdents());
-            return View(/*incidentList*/);
+            
+            return View();
         }
 
         [HttpPost]

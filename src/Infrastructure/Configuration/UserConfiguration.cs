@@ -32,8 +32,6 @@ namespace Infrastructure.Configuration
             builder.Property(user => user.IsEnabled)
                 .HasDefaultValue(true);
 
-            builder.HasData(DbContextSeed.Admin);
-
         }
     }
 }
