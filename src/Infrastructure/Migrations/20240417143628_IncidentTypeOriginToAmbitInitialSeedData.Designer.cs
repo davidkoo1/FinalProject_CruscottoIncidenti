@@ -4,6 +4,7 @@ using Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240417143628_IncidentTypeOriginToAmbitInitialSeedData")]
+    partial class IncidentTypeOriginToAmbitInitialSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,238 +38,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("TypeId");
 
                     b.ToTable("AmbitsToTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            AmbitId = 3,
-                            TypeId = 1
-                        },
-                        new
-                        {
-                            AmbitId = 3,
-                            TypeId = 2
-                        },
-                        new
-                        {
-                            AmbitId = 2,
-                            TypeId = 2
-                        },
-                        new
-                        {
-                            AmbitId = 2,
-                            TypeId = 3
-                        },
-                        new
-                        {
-                            AmbitId = 4,
-                            TypeId = 4
-                        },
-                        new
-                        {
-                            AmbitId = 1,
-                            TypeId = 4
-                        },
-                        new
-                        {
-                            AmbitId = 1,
-                            TypeId = 5
-                        },
-                        new
-                        {
-                            AmbitId = 1,
-                            TypeId = 1
-                        },
-                        new
-                        {
-                            AmbitId = 1,
-                            TypeId = 6
-                        },
-                        new
-                        {
-                            AmbitId = 1,
-                            TypeId = 3
-                        },
-                        new
-                        {
-                            AmbitId = 1,
-                            TypeId = 7
-                        },
-                        new
-                        {
-                            AmbitId = 5,
-                            TypeId = 3
-                        },
-                        new
-                        {
-                            AmbitId = 6,
-                            TypeId = 2
-                        },
-                        new
-                        {
-                            AmbitId = 6,
-                            TypeId = 7
-                        },
-                        new
-                        {
-                            AmbitId = 6,
-                            TypeId = 1
-                        },
-                        new
-                        {
-                            AmbitId = 7,
-                            TypeId = 8
-                        },
-                        new
-                        {
-                            AmbitId = 7,
-                            TypeId = 1
-                        },
-                        new
-                        {
-                            AmbitId = 8,
-                            TypeId = 9
-                        },
-                        new
-                        {
-                            AmbitId = 8,
-                            TypeId = 8
-                        },
-                        new
-                        {
-                            AmbitId = 8,
-                            TypeId = 2
-                        },
-                        new
-                        {
-                            AmbitId = 8,
-                            TypeId = 7
-                        },
-                        new
-                        {
-                            AmbitId = 9,
-                            TypeId = 7
-                        },
-                        new
-                        {
-                            AmbitId = 9,
-                            TypeId = 6
-                        },
-                        new
-                        {
-                            AmbitId = 10,
-                            TypeId = 4
-                        },
-                        new
-                        {
-                            AmbitId = 10,
-                            TypeId = 10
-                        },
-                        new
-                        {
-                            AmbitId = 10,
-                            TypeId = 9
-                        },
-                        new
-                        {
-                            AmbitId = 10,
-                            TypeId = 7
-                        },
-                        new
-                        {
-                            AmbitId = 11,
-                            TypeId = 4
-                        },
-                        new
-                        {
-                            AmbitId = 11,
-                            TypeId = 2
-                        },
-                        new
-                        {
-                            AmbitId = 11,
-                            TypeId = 7
-                        },
-                        new
-                        {
-                            AmbitId = 11,
-                            TypeId = 6
-                        },
-                        new
-                        {
-                            AmbitId = 12,
-                            TypeId = 4
-                        },
-                        new
-                        {
-                            AmbitId = 13,
-                            TypeId = 11
-                        },
-                        new
-                        {
-                            AmbitId = 13,
-                            TypeId = 12
-                        },
-                        new
-                        {
-                            AmbitId = 13,
-                            TypeId = 13
-                        },
-                        new
-                        {
-                            AmbitId = 13,
-                            TypeId = 1
-                        },
-                        new
-                        {
-                            AmbitId = 13,
-                            TypeId = 14
-                        },
-                        new
-                        {
-                            AmbitId = 13,
-                            TypeId = 15
-                        },
-                        new
-                        {
-                            AmbitId = 13,
-                            TypeId = 16
-                        },
-                        new
-                        {
-                            AmbitId = 14,
-                            TypeId = 7
-                        },
-                        new
-                        {
-                            AmbitId = 15,
-                            TypeId = 7
-                        },
-                        new
-                        {
-                            AmbitId = 15,
-                            TypeId = 6
-                        },
-                        new
-                        {
-                            AmbitId = 16,
-                            TypeId = 10
-                        },
-                        new
-                        {
-                            AmbitId = 16,
-                            TypeId = 9
-                        },
-                        new
-                        {
-                            AmbitId = 16,
-                            TypeId = 6
-                        },
-                        new
-                        {
-                            AmbitId = 17,
-                            TypeId = 6
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.HelpDesk.Incident", b =>
@@ -771,23 +542,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Scenaries");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "A1"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "A2"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "A3"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.HelpDesk.Threat", b =>
@@ -806,23 +560,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Threats");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "AA1"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "AA2"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "AA3"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Role", b =>

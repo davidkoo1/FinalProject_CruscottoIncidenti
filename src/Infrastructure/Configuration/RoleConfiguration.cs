@@ -20,6 +20,7 @@ namespace Infrastructure.Configuration
                 .IsClustered(true)
                 .IsUnique();
 
+            builder.HasData(DbSeed.AdminRole, DbSeed.UserRole, DbSeed.OperatorRole);
         }
     }
 }

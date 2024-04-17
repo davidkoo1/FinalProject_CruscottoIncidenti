@@ -1,6 +1,7 @@
 ﻿using Domain.Entities.HelpDesk;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Infrastructure.Persistance;
 
 namespace Infrastructure.Configuration.HelpDeskConfigs
 {
@@ -14,6 +15,7 @@ namespace Infrastructure.Configuration.HelpDeskConfigs
                 .HasMaxLength(35)
                 .IsRequired();
 
+            builder.HasData(DbSeed.Aplication, DbSeed.External, DbSeed.Infrastructure);
         }
     }
 }

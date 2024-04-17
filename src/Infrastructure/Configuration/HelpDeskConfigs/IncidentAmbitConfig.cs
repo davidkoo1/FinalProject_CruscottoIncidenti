@@ -1,6 +1,7 @@
 ﻿using Domain.Entities.HelpDesk;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Infrastructure.Persistance;
 
 namespace Infrastructure.Configuration.HelpDeskConfigs
 {
@@ -18,6 +19,9 @@ namespace Infrastructure.Configuration.HelpDeskConfigs
                 .HasMaxLength(35)
                 .IsRequired();
 
+            builder.HasData(DbSeed.Software, DbSeed.Functionality, DbSeed.Phase, DbSeed.Release, DbSeed.Service, DbSeed.TransmissionChannels,
+                DbSeed.CICS, DbSeed.Database, DbSeed.HardwareHost, DbSeed.HardwareOpen, DbSeed.Middleware, DbSeed.Networks, DbSeed.Security, DbSeed.BasicHostSoftware,
+                DbSeed.OpenBasicSoftware, DbSeed.ServiceSoftware, DbSeed.Storage);
         }
     }
 }

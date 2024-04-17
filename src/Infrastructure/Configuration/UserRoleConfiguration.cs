@@ -20,6 +20,8 @@ namespace Infrastructure.Configuration
                 .WithMany(x => x.UserRoles)
                 .HasForeignKey(x => x.RoleId);
 
+            builder.HasData(DbSeed.RoleAdmin);
+            builder.HasData(DbSeed.RoleMainAdmin);
         }
     }
 }

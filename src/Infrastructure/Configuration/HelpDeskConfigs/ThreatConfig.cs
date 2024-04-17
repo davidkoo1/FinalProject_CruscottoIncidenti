@@ -1,6 +1,7 @@
 ﻿using Domain.Entities.HelpDesk;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Infrastructure.Persistance;
 
 namespace Infrastructure.Configuration.HelpDeskConfigs
 {
@@ -13,6 +14,8 @@ namespace Infrastructure.Configuration.HelpDeskConfigs
             builder.Property(x => x.Name)
                 .HasMaxLength(35)
                 .IsRequired();
+
+            builder.HasData(DbSeed.ThreatAA1, DbSeed.ThreatAA2, DbSeed.ThreatAA3);
 
         }
     }

@@ -19,7 +19,7 @@
         public string ProblemDescription { get; set; }
         public string Solution { get; set; }
 
-        //public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; }
 
         public int? IncidentTypeId { get; set; }
         public int? AmbitId { get; set; }
