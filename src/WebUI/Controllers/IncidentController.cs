@@ -8,7 +8,7 @@ namespace WebUI.Controllers
         public async Task<IActionResult> Index()
         {
             
-            return View();
+            return View("~/Views/Incident/Index.cshtml");
         }
 
         [HttpPost]

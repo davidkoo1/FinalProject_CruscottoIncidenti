@@ -18,6 +18,7 @@ namespace WebUI.Controllers
         {
             //var userList = await Mediator.Send(new GetAllUsers());
             return View(/*userList*/);
+            //return PartialView("~/Views/User/Index.cshtml");
         }
 
         [HttpPost]

@@ -17,6 +17,7 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         //Console.WriteLine(User.Identity.IsAuthenticated); 
+        // return View("~/Views/User/Index.cshtml");
         return View();
     }
 
