@@ -6,6 +6,9 @@ namespace Application.Common.Interfaces
     {
         Task<IEnumerable<IncidentDto>> GetAllIncidents();
 
-        Task<IncidentDto> GetIncidentById(int Id);
+        Task<IncidentDetailDto> GetIncidentById(int Id);
+
+        Task<bool> DeleteIncident(int incidentId);
+        Task<bool> Save();
     }
 }

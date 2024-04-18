@@ -1,0 +1,109 @@
+﻿@using Application.DTO
+@model IncidentDetailDto
+
+<div class="modal-body">
+    <div class="col-sm-12">
+        <h2>Details</h2>
+        <div class="row">
+            <div class="col-lg-12">
+                <br />
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">RequestNr</label>
+                        <input type="text" asp-for="RequestNr" class="form-control" value="@Model.RequestNr" readonly disabled />
+
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Subsystem</label>
+                        @*  <label class="form-label">@Model.Subsystem</label> *@
+                        <input type="text" asp-for="Subsystem" class="form-control" value="@Model.Subsystem" readonly disabled />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">OpenDate</label>
+                        <input type="text" asp-for="OpenDate" class="form-control" value="@Model.OpenDate" readonly disabled />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">CloseDate</label>
+                        <input type="text" asp-for="CloseDate" class="form-control" value="@Model.CloseDate" readonly disabled />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Type</label>
+                        <input type="text" asp-for="Type" class="form-control" value="@Model.Type" readonly disabled />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">ApplicationType</label>
+                        <input type="text" asp-for="ApplicationType" class="form-control" value="@Model.ApplicationType" readonly disabled />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Urgency</label>
+                        <input type="text" asp-for="Urgency" class="form-control" value="@Model.Urgency" readonly disabled />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">SubCause</label>
+                        <input type="text" asp-for="SubCause" class="form-control" value="@Model.SubCause" readonly disabled />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Problem Summary</label>
+                        <textarea id="ProblemSummary" rows="5" class="form-control" disabled>@Model.ProblemSummary</textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Solution</label>
+                        <textarea id="ProblemSummary" rows="5" class="form-control" disabled>@Model.Solution</textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="ProblemSummary" class="col-md-4 col-form-label">ProblemDescription</label>
+                        <textarea id="ProblemSummary" rows="3" class="form-control" disabled>@Model.ProblemDescription</textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Origin</label>
+                        <input type="text" asp-for="Origin" class="form-control" value="@Model.Origin" readonly disabled />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Ambit</label>
+                        <input type="text" asp-for="Ambit" class="form-control" value="@Model.Ambit" readonly disabled />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">IncidentType</label>
+                        <input type="text" asp-for="IncidentType" class="form-control" value="@Model.IncidentType" readonly disabled />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">ThirdParty</label>
+                        <input type="text" asp-for="ThirdParty" class="form-control" value="@Model.ThirdParty" readonly disabled />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Scenary</label>
+                        <input type="text" asp-for="Scenary" class="form-control" value="@Model.Scenary" readonly disabled />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Threat</label>
+                        <input type="text" asp-for="Threat" class="form-control" value="@Model.Threat" readonly disabled />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Cancel</button>
+</div>

@@ -2,18 +2,51 @@
     //Layout = null;
     ViewData["Title"] = "Home Page";
 }
-
 <div id="UserData"></div>
 <div id="IncidentData"></div>
 
 @section scripts {
     <script>
         $(document).ready(function () {
-            drawPatrialView("/Incident/Index", "IncidentData");
             drawPatrialView("/User/Index", "UserData");
+            drawPatrialView("/Incident/Index", "IncidentData");
+        });
+    </script>
+}
+@* <div id="UserData" style="display:none;"></div>
+<div id="IncidentData" style="display:none;"></div>
 
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            function loadAndView(url, divIdToShow, divIdToHide) {
+                drawPatrialView(url, divIdToShow);
+                $('#' + divIdToHide).hide();
+                $('#' + divIdToShow).show();
+
+                localStorage.setItem('activeDiv', divIdToShow);  // Сохранение активного div
+            }
+
+            // Проверка сохраненного состояния и инициализация соответствующего div
+            var activeDiv = localStorage.getItem('activeDiv');
+            if (activeDiv === 'IncidentData') {
+                loadAndView("/Incident/Index", "IncidentData", "UserData");
+            } else {
+                // По умолчанию или если выбран UserData
+                loadAndView("/User/Index", "UserData", "IncidentData");
+            }
+
+            // Обработчики кликов для навигации
+            $('#linkUsers').click(function () {
+                loadAndView("/User/Index", "UserData", "IncidentData");
+            });
+
+            $('#linkIncidents').click(function () {
+                loadAndView("/Incident/Index", "IncidentData", "UserData");
+            });
         });
 
     </script>
 }
 
+ *@

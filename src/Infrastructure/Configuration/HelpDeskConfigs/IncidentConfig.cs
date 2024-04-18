@@ -1,6 +1,7 @@
 ﻿using Domain.Entities.HelpDesk;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Infrastructure.Persistance;
 
 namespace Infrastructure.Configuration.HelpDeskConfigs
 {
@@ -83,7 +84,7 @@ namespace Infrastructure.Configuration.HelpDeskConfigs
                 .HasForeignKey(x => x.IncidentTypeId);
 
 
-
+            builder.HasData(DbSeed.Incident1);
         }
     }
 }

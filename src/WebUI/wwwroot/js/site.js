@@ -2,7 +2,7 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-function drawPatrialView(url, divId) {
+function drawPatrialView(url, divId, callback) {
     $.ajax({
         url: url,
         cache: false,
@@ -15,6 +15,7 @@ function drawPatrialView(url, divId) {
         },
         success: function (result, e) {
             $('#' + divId).html(result);
+            if (callback) callback();
 
         },
     });
@@ -60,13 +61,13 @@ function initializeIncidentDataTable() {
             "dataType": "json"
         },
         "columns": [
-            { "data": "id", "title": "Id", "name": "id", "visible": false },
-            { "data": "RequestNr", "title": "RequestNr", "name": "RequestNr" },
-            { "data": "Subsystem", "title": "Subsystem", "name": "Subsystem" },
-            { "data": "OpenDate", "title": "OpenDate", "name": "OpenDate" },
-            { "data": "CloseDate", "title": "CloseDate", "name": "CloseDate" },
-            { "data": "Type", "title": "Type", "name": "Type" },
-            { "data": "Urgency", "title": "Urgency", "name": "Urgency" }
+            { "data": "id", "title": "id", "name": "id", "visible": false },
+            { "data": "requestNr", "title": "requestNr", "name": "requestNr" },
+            { "data": "subsystem", "title": "subsystem", "name": "subsystem" },
+            { "data": "openDate", "title": "openDate", "name": "openDate" },
+            { "data": "closeDate", "title": "closeDate", "name": "closeDate" },
+            { "data": "type", "title": "type", "name": "type" },
+            { "data": "urgency", "title": "urgency", "name": "urgency" }
         ]
     });
 
@@ -104,19 +105,40 @@ function setupRowClickEvents(table) {
             table.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
             $('#actions').show();
-            updateButtonLinks(rowData.id);
+            updateButtonUserLinks(rowData.id);
+        }
+    });
+    $('#IncidentDatatable tbody').on('click', 'tr', function () {
+        var rowData = table.row(this).data();
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+            $('#actions').hide();
+        } else {
+            table.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+            $('#actions').show();
+            updateButtonIncidentLinks(rowData.id);
         }
     });
 }
 
 
-function updateButtonLinks(id) {
+function updateButtonUserLinks(id) {
     // Fix: Properly concatenate the id into the URL for the 'drawPatrialView' function calls
     $('#editLink').attr('onclick', `drawPatrialView('/User/GetUpsert/'+${id}, 'xlModalBody')`);
     // Removed the commented-out code for clarity and cleanliness
     $('#detailsLink').attr('onclick', `drawPatrialView('/User/Details/'+${id}, 'lgModalBody')`);
     // Fix: Correctly close the deleteUser function call with the right parenthesis
     $('#deleteLink').attr('onclick', `deleteUser(${id})`);
+    // Removed the commented-out code as it seems you've moved away from using href for deletion
+}
+function updateButtonIncidentLinks(id) {
+    // Fix: Properly concatenate the id into the URL for the 'drawPatrialView' function calls
+    $('#editLink').attr('onclick', `drawPatrialView('/Incident/GetUpsert/'+${id}, 'xlModalBody')`);
+    // Removed the commented-out code for clarity and cleanliness
+    $('#detailsLink').attr('onclick', `drawPatrialView('/Incident/Details/'+${id}, 'xlModalBody')`);
+    // Fix: Correctly close the deleteUser function call with the right parenthesis
+    $('#deleteLink').attr('onclick', `drawPatrialView('/Incident/Delete/'+${id}, 'lgModalBody')`);
     // Removed the commented-out code as it seems you've moved away from using href for deletion
 }
 
@@ -165,7 +187,6 @@ function deleteCurrentItem(userId) {
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
     };
-    //debugger;
     $.ajax({
         url: '../User/DeleteConfirmed/' + userId,//"@Url.Action("Delete", "User", new {id = 0})",
         cache: false,
@@ -187,7 +208,45 @@ function deleteCurrentItem(userId) {
         }
     });
 }
-
+function deleteCurrentIncident(IncidentId) {
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+    $.ajax({
+        url: '../Incident/DeleteConfirmed/' + IncidentId,//"@Url.Action("Delete", "User", new {id = 0})",
+        cache: false,
+        type: 'POST',
+        contentType: "application/json; charset=utf-8",
+        //data: JSON.stringify(userId),
+        success: function (response) {
+            if (response.success) {
+                //$('#UserDatatable').DataTable().ajax.reload();
+                toastr.success("Success", "Delete");
+                $('#actions').hide();
+                $('#IncidentDatatable').DataTable().ajax.reload(null, false); // Перезагрузите таблицу без сброса пагинации
+            } else {
+                toastr.alert("SuccessError", "Delete" + response.message);
+            }
+        },
+        error: function () {
+            toastr.alert("Global error");
+        }
+    });
+}
 
 $(document).on('submit', '#SaveUserForm', function (e) {
     toastr.options = {

@@ -185,5 +185,31 @@ namespace Infrastructure.Persistance
         public static readonly Threat ThreatAA2 = new Threat { Id = 2, Name = "AA2" };
         public static readonly Threat ThreatAA3 = new Threat { Id = 3, Name = "AA3" };
         #endregion
+
+        #region Incident
+        public static readonly Incident Incident1 = new Incident
+        {
+            Id = 1,
+            CreatedBy = 1,
+            Created = DateTime.UtcNow,
+            RequestNr = "1",
+            Subsystem = "Te",
+            OpenDate = DateTime.UtcNow,
+            Type = "Configuration",
+            ApplicationType = "str",
+            Urgency = "No",
+            SubCause = "tmp",
+            ProblemDescription = "Descr",
+            ProblemSummary = "Summ",
+            Solution = "str",
+            IsDeleted = false,
+            IncidentTypeId = 1,
+            AmbitId = 1,
+            OriginId = 1,
+            ThirdParty = "tmps",
+            ScenaryId = 1,
+            ThreatId = 1
+        };
+        #endregion
     }
 }

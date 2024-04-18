@@ -16,8 +16,28 @@ namespace Infrastructure.Repositories
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<IncidentDto>> GetAllIncidents() => _mapper.Map<IEnumerable<IncidentDto>>(await _dbContext.Incidents.ToListAsync());
+        public async Task<bool> DeleteIncident(int incidentId)
+        {
+            var incident = _dbContext.Incidents
+             .FirstOrDefault(p => p.Id == incidentId);
 
-        public async Task<IncidentDto> GetIncidentById(int Id) => _mapper.Map<IncidentDto>(await _dbContext.Incidents.FirstOrDefaultAsync(x => x.Id == Id));
+            if (incident is null) return false;
+
+            incident.IsDeleted = true;
+            _dbContext.Incidents.Update(incident);
+            return await Save();
+        }
+
+        public async Task<IEnumerable<IncidentDto>> GetAllIncidents() => _mapper.Map<IEnumerable<IncidentDto>>(await _dbContext.Incidents.Where(x => !x.IsDeleted).ToListAsync());
+
+        public async Task<IncidentDetailDto> GetIncidentById(int Id) => _mapper.Map<IncidentDetailDto>(await _dbContext.Incidents
+            .Include(x => x.Ambit)
+            .Include(x => x.Origin)
+            .Include(x => x.IncidentType)
+            .Include(x => x.Scenary)
+            .Include(x => x.Threat)
+            .FirstOrDefaultAsync(x => x.Id == Id));
+
+        public async Task<bool> Save() => await _dbContext.SaveChangesAsync() > 0 ? true : false;
     }
 }

@@ -1,4 +1,5 @@
-﻿using Application.IncidentCQRS.Queries;
+﻿using Application.IncidentCQRS.Commands;
+using Application.IncidentCQRS.Queries;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers
@@ -7,7 +8,7 @@ namespace WebUI.Controllers
     {
         public async Task<IActionResult> Index()
         {
-            
+
             return View("~/Views/Incident/Index.cshtml");
         }
 
@@ -30,31 +31,6 @@ namespace WebUI.Controllers
                 // Getting all Customer data
                 var customerData = await Mediator.Send(new GetAllInicdents());
 
-                // Sorting
-                if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
-                {
-                    // Example sorting for one column (modify as needed)
-                    switch (sortColumn)
-                    {
-                        case "CreatedBy":
-                            customerData = sortColumnDirection == "asc" ? customerData.OrderBy(m => m.OpenDate) : customerData.OrderByDescending(m => m.OpenDate);
-                            break;
-                        case "Created":
-                            customerData = sortColumnDirection == "asc" ? customerData.OrderBy(m => m.CloseDate) : customerData.OrderByDescending(m => m.CloseDate);
-                            break;
-                        // Add cases for other sortable columns
-                        default:
-                            break;
-                    }
-                }
-
-                // Search
-                //if (!string.IsNullOrEmpty(searchValue))
-                //{
-                //    customerData = customerData.Where(m => m.CompanyName.Contains(searchValue)); // Modify CompanyName with your actual property to search
-                //}
-
-                // Total number of rows count
                 recordsTotal = customerData.Count();
 
                 // Paging
@@ -66,6 +42,45 @@ namespace WebUI.Controllers
             catch (Exception)
             {
                 throw;
+            }
+        }
+
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var IncidentDetail = await Mediator.Send(new GetIncidentById { Id = id });
+
+            if (IncidentDetail == null)
+            {
+                return NotFound();
+            }
+            return PartialView("~/Views/Incident/Details.cshtml", IncidentDetail);
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+
+            var incident = await Mediator.Send(new GetIncidentById { Id = id });
+            if (incident == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("~/Views/Incident/Delete.cshtml", id);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var success = await Mediator.Send(new DeleteIncident { Id = id });
+            if (success)
+            {
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false, message = "Не удалось удалить пользователя." });
             }
         }
     }

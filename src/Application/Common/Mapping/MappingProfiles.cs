@@ -23,6 +23,12 @@ namespace Application.Common.Mapping
             //CreateMap<UpdateUserDto, User>(); //Here also map
 
             CreateMap<Incident, IncidentDto>();
+            CreateMap<Incident, IncidentDetailDto>()
+            .ForMember(dto => dto.IncidentType, conf => conf.MapFrom(inc => inc.IncidentType.Name))
+            .ForMember(dto => dto.Ambit, conf => conf.MapFrom(inc => inc.Ambit.Name))
+            .ForMember(dto => dto.Origin, conf => conf.MapFrom(inc => inc.Origin.Name))
+            .ForMember(dto => dto.Scenary, conf => conf.MapFrom(inc => inc.Scenary.Name))
+            .ForMember(dto => dto.Threat, conf => conf.MapFrom(inc => inc.Threat.Name));
         }
     }
 }
