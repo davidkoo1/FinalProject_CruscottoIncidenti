@@ -21,8 +21,18 @@ namespace Application.Common.Mapping
 
             //CreateMap<User, UpdateUserDto>().ForMember(dest => dest.RolesId, opt => opt.MapFrom(src => src.UserRoles.Select(ur => ur.Role.Id)));
             //CreateMap<UpdateUserDto, User>(); //Here also map
+            
+            //This forUpsert
+            CreateMap<UpsertIncidentDto, Incident>();
 
             CreateMap<Incident, IncidentDto>();
+
+            CreateMap<IncidentOrigin, SimpleDto>();
+            CreateMap<IncidentAmbit, SimpleDto>();
+            CreateMap<IncidentType, SimpleDto>();
+            CreateMap<Scenary, SimpleDto>();
+            CreateMap<Threat, SimpleDto>();
+
             CreateMap<Incident, IncidentDetailDto>()
             .ForMember(dto => dto.IncidentType, conf => conf.MapFrom(inc => inc.IncidentType.Name))
             .ForMember(dto => dto.Ambit, conf => conf.MapFrom(inc => inc.Ambit.Name))

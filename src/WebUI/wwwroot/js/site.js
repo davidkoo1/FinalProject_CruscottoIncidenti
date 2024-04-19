@@ -302,3 +302,60 @@ $(document).on('submit', '#SaveUserForm', function (e) {
         }
     });
 });
+
+
+$(document).on('submit', '#SaveIncidentForm', function (e) {
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+    e.preventDefault();
+
+    //ForToastrEditOrCreate
+    //var CurrentIdUser = $('#UserId').val();
+    var $form = $(this);
+
+    $.ajax({
+        type: $form.attr('method'),
+        url: $form.attr('action'),
+        data: $form.serialize(),
+        success: function (response) {
+            if (response.success) {
+
+                //window.location.href = '../User/Index';
+
+                $('#xlModal').modal('hide');
+                $('#IncidentDatatable').DataTable().ajax.reload(null, false);
+                toastr.success("Success", "Created");
+                //if (CurrentIdUser === '0') {
+                //    toastr.success("Success", "Created");
+                //}
+                //else {
+                //    toastr.info("Success", "Edited");
+                //}
+                $('#actions').hide();
+                //location.reload();
+            } else {
+
+                $('.modal-body').html(response);
+                $('.selectpicker').selectpicker();
+            }
+        },
+        error: function (xhr, status, error) {
+            alert("Произошла ошибка: " + error);
+        }
+    });
+});

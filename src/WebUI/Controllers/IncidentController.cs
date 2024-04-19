@@ -1,6 +1,11 @@
-﻿using Application.IncidentCQRS.Commands;
+﻿using Application.DTO;
+using Application.IncidentCQRS.Commands;
 using Application.IncidentCQRS.Queries;
+using Application.RoleCQRS.Queries;
+using Application.UserCQRS.Commands;
+using Application.UserCQRS.Queries;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebUI.Controllers
 {
@@ -56,6 +61,85 @@ namespace WebUI.Controllers
             }
             return PartialView("~/Views/Incident/Details.cshtml", IncidentDetail);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> GetAmbits(int originId)
+        {
+
+            var ambits = await Mediator.Send(new GetAllAmbits { OriginId = originId });
+            var selectListAmbitsVm = ambits.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name,
+                Selected = false
+            });
+            return Json(selectListAmbitsVm);
+            
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetIncidentTypes(int ambitId)
+        {
+            var types = await Mediator.Send(new GetAllIncidentTypes { AmbitId = ambitId });
+            var selectListTypesVm = types.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name,
+                Selected = false
+            });
+            return Json(selectListTypesVm);
+        }
+
+
+        public async Task<IActionResult> Upsert()
+        {
+            var origins = await Mediator.Send(new GetAllOrigins { });
+            var selectListOriginsVm = origins.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name,
+                Selected = false
+            });
+            ViewBag.Origins = selectListOriginsVm;
+
+            var scenaries = await Mediator.Send(new GetAllScenaries { });
+            var selectListScenariesVm = scenaries.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name,
+                Selected = false
+            });
+            ViewBag.Scenaries = selectListScenariesVm;
+
+            var threats = await Mediator.Send(new GetAllThreats { });
+            var selectListThreatsVm = threats.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name,
+                Selected = false
+            });
+            ViewBag.Threats = selectListThreatsVm;
+
+            return PartialView("~/Views/Incident/Upsert.cshtml", new UpsertIncidentDto());
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Upsert(UpsertIncidentDto incidentUpsert)
+        {
+            //if (ModelState.IsValid)
+            //{
+                var result = await Mediator.Send(new UpsertIncident { UpsertIncidentDto = incidentUpsert });
+                if (result)
+                {
+                    // return Json(new { success = true/*, redirectUrl = Url.Action(nameof(Index))*/ });
+                    return Json(new { success = true });
+                }
+
+            //}
+            return PartialView("~/Views/Incident/Upsert.cshtml", incidentUpsert);
+        }
+
 
         public async Task<IActionResult> Delete(int id)
         {

@@ -1,0 +1,178 @@
+﻿@using Application.DTO
+@model UpsertIncidentDto
+
+<form asp-action="Upsert" asp-controller="Incident" method="post" id="SaveIncidentForm">
+    <div class="modal-body">
+        <div class="col-sm-12">
+            <h2>Details</h2>
+            <div class="row">
+                <div class="col-lg-12">
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">RequestNr</label>
+                            <input type="text" asp-for="RequestNr" class="form-control" />
+
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Subsystem</label>
+                            @*  <label class="form-label">@Model.Subsystem</label> *@
+                            <input type="text" asp-for="Subsystem" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Type</label>
+                            <input type="text" asp-for="Type" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">ApplicationType</label>
+                            <input type="text" asp-for="ApplicationType" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Urgency</label>
+                            <input type="text" asp-for="Urgency" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">SubCause</label>
+                            <input type="text" asp-for="SubCause" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Problem Summary</label>
+                            <textarea id="ProblemSummary" rows="5" class="form-control" asp-for="@Model.ProblemSummary"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Solution</label>
+                            <textarea id="ProblemSummary" rows="5" class="form-control" asp-for="@Model.Solution"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="ProblemSummary" class="col-md-4 col-form-label">ProblemDescription</label>
+                            <textarea id="ProblemSummary" rows="3" class="form-control" asp-for="@Model.ProblemDescription"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Origin</label>
+                            @Html.DropDownListFor(model => model.OriginId, new SelectList(ViewBag.Origins, "Value", "Text")/* , "Choose...", */, new { @class = "form-control selectpicker", @title = "Choose..." })
+                            @Html.ValidationMessageFor(model => model.OriginId, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Ambit</label>
+                            @Html.DropDownListFor(model => model.AmbitId, Enumerable.Empty<SelectListItem>(), "Select Ambit", new { @class = "form-control selectpicker", @id = "AmbitId", @title = "Choose..." })
+                            @Html.ValidationMessageFor(model => model.AmbitId, "", new { @class = "text-danger" })
+                        </div>
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Incident Type</label>
+                            @Html.DropDownListFor(model => model.IncidentTypeId, Enumerable.Empty<SelectListItem>(), "Select Type", new { @class = "form-control selectpicker", @id = "IncidentTypeId", @title = "Choose..." })
+                            @Html.ValidationMessageFor(model => model.IncidentTypeId, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">ThirdParty</label>
+                            <input type="text" asp-for="ThirdParty" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Scenary</label>
+                            @Html.DropDownListFor(model => model.ScenaryId, new SelectList(ViewBag.Scenaries, "Value", "Text")/* , "Choose...", */, new { @class = "form-control selectpicker", @title = "Choose..." })
+                            @Html.ValidationMessageFor(model => model.ScenaryId, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Threat</label>
+                            @Html.DropDownListFor(model => model.ThreatId, new SelectList(ViewBag.Threats, "Value", "Text")/* , "Choose...", */, new { @class = "form-control selectpicker", @title = "Choose..." })
+                            @Html.ValidationMessageFor(model => model.ThreatId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-success" style="width: 80px;">Save</button>
+        <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Cancel</button>
+
+    </div>
+</form>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('.selectpicker').selectpicker();
+        // Функция для установки значений для Ambit
+        function SetAmbit() {
+            var selectedOriginId = $('#OriginId').val();
+
+            $.ajax({
+                url: '/Incident/GetAmbits', // Подставьте URL вашего метода
+                type: 'POST',
+                data: { originId: selectedOriginId },
+                success: function (response) {
+                    // Очистите текущие опции в Ambit select
+                    $('#AmbitId').empty();
+                    $('#IncidentTypeId').empty();
+
+                    // Добавляем новые опции, полученные от сервера
+                    $.each(response, function (index, item) {
+                        $('#AmbitId').append($('<option>', {
+                            value: item.value,
+                            text: item.text
+                        }));
+                    });
+
+                    // Обновите selectpicker, если вы используете Bootstrap Select
+                    $('.selectpicker').selectpicker('refresh');
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+        
+        function SetIncidentType() {
+            var selectedAmbitId = $('#AmbitId').val();
+
+            $.ajax({
+                url: '/Incident/GetIncidentTypes', // Подставьте URL вашего метода
+                type: 'POST',
+                data: { ambitId: selectedAmbitId },
+                success: function (response) {
+                    // Очистите текущие опции в Ambit select
+                    $('#IncidentTypeId').empty();
+
+                    // Добавляем новые опции, полученные от сервера
+                    $.each(response, function (index, item) {
+                        $('#IncidentTypeId').append($('<option>', {
+                            value: item.value,
+                            text: item.text
+                        }));
+                    });
+
+                    // Обновите selectpicker, если вы используете Bootstrap Select
+                    $('.selectpicker').selectpicker('refresh');
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+        // Вызывайте SetAmbit при изменении значения в OriginId
+        $('#OriginId').change(SetAmbit);
+        $('#AmbitId').change(SetIncidentType);
+
+
+        SetAmbit();
+        SetIncidentType();
+    });
+
+</script>
