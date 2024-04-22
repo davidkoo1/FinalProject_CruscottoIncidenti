@@ -23,11 +23,11 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label class="form-label">OpenDate</label>
-                        <input type="text" asp-for="OpenDate" class="form-control" value="@Model.OpenDate" readonly disabled />
+                        <input type="text" asp-for="OpenDate" class="form-control" value="@Model.OpenDate.ToString("yyyy-MM-dd")" readonly disabled />
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">CloseDate</label>
-                        <input type="text" asp-for="CloseDate" class="form-control" value="@Model.CloseDate" readonly disabled />
+                        <input type="text" asp-for="CloseDate" class="form-control" value="@Model.CloseDate?.ToString("yyyy-MM-dd")" readonly disabled />
                     </div>
                 </div>
                 <div class="row">

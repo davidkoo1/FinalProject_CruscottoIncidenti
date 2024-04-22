@@ -40,7 +40,21 @@ namespace WebUI.Controllers
                 recordsTotal = customerData.Count();
 
                 // Paging
-                var data = customerData.Skip(skip).Take(pageSize).ToList();
+                var data = customerData
+                    .Skip(skip)
+                    .Take(pageSize)
+                    .Select(d => new
+                    {
+                        id = d.Id,
+                        requestNr = d.RequestNr,
+                        subsystem = d.Subsystem,
+                        openDate = d.OpenDate.ToString("yyyy-MM-dd"), // Форматируем дату без времени
+                        closeDate = d.CloseDate.HasValue ? d.CloseDate.Value.ToString("yyyy-MM-dd") : "", // Форматируем дату без времени, если она есть
+                        type = d.Type,
+                        urgency = d.Urgency
+                    })
+                    .ToList();
+
 
                 // Returning Json Data
                 return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
@@ -75,7 +89,7 @@ namespace WebUI.Controllers
                 Selected = false
             });
             return Json(selectListAmbitsVm);
-            
+
         }
 
         [HttpPost]
@@ -141,59 +155,29 @@ namespace WebUI.Controllers
 
         }
 
-        public async Task<IActionResult> Create(int id)
-        {
-            var updateUserVm = await Mediator.Send(new GetIncidentForUpsert { Id = id });
-            await InitialViewBags(updateUserVm);
 
-            return View("~/Views/Incident/Create.cshtml", updateUserVm);
-
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(UpsertIncidentDto incidentUpsert)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await Mediator.Send(new UpsertIncident { UpsertIncidentDto = incidentUpsert });
-                if (result)
-                {
-                    return Json(new { StatusCode = 200, success = true });
-                }
-                //else
-                //{
-                //    return Json(new { StatusCode = 500, success = false });
-                //}
-
-            }
-            await InitialViewBags(incidentUpsert);
-
-            return View("~/Views/Incident/Create.cshtml", incidentUpsert);
-        }
-
-
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Upsert(int id)
         {
             var updateIncidentVm = await Mediator.Send(new GetIncidentForUpsert { Id = id });
             await InitialViewBags(updateIncidentVm);
 
-            return View("~/Views/Incident/Edit.cshtml", updateIncidentVm);
+            return View("~/Views/Incident/Upsert.cshtml", updateIncidentVm);
 
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(UpsertIncidentDto incidentUpsert)
+        public async Task<IActionResult> Upsert(UpsertIncidentDto incidentUpsert)
         {
             if (ModelState.IsValid)
             {
                 var result = await Mediator.Send(new UpsertIncident { UpsertIncidentDto = incidentUpsert });
                 if (result)
                 {
-                    
+
                     //return Json(new { success = true });
                     return RedirectToAction("Index", "Incident");
                 }
-                
+
             }
             await InitialViewBags(incidentUpsert);
             return View(incidentUpsert);
@@ -222,7 +206,7 @@ namespace WebUI.Controllers
             }
             else
             {
-                return Json(new { success = false});
+                return Json(new { success = false });
             }
         }
     }

@@ -1,14 +1,11 @@
-﻿@{
-    //Layout = "~/Views/Shared/_BlankLayout.cshtml";
-}
-
+﻿
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Incidents</h3>
-                    <a type="button" style="width: 80px;" class="btn btn-success" href="@Url.Action("Create", "Incident", new { id = 0})">Add</a>
+                    <a type="button" style="width: 80px;" class="btn btn-success" href="@Url.Action("Upsert", "Incident", new { id = 0})">Add</a>
 
                 </div>
                 <div class="card-body">

@@ -1,14 +1,20 @@
 ﻿@using Application.DTO
 @model UpsertIncidentDto
 
-<form asp-action="Edit" asp-controller="Incident" method="post" id="SaveIncidentForm">
+<form asp-action="Upsert" asp-controller="Incident" method="post" id="SaveIncidentForm">
     <input hidden asp-for="Id" />
-    <input hidden asp-for="RequestNr" />
-    <input hidden asp-for="OpenDate" />
+    @if (Model.Id != 0)
+    {
+        <input hidden asp-for="RequestNr" />
+        <input hidden asp-for="OpenDate" />
+    }
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h2 class="text-center mb-4">Edit Incident</h2>
+                @{
+                    string title = Model.Id == 0 ? "Create" : "Edit";
+                }
+                <h2 class="text-center mb-4">@title Incident</h2>
             </div>
         </div>
         <div class="row">
@@ -16,7 +22,14 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label class="form-label">RequestNr</label>
-                        <input type="text" asp-for="RequestNr" class="form-control" readonly disabled />
+                        @if (Model.Id != 0)
+                        {
+                            <input type="text" asp-for="RequestNr" class="form-control" readonly disabled />
+                        }
+                        else
+                        {
+                            <input type="text" asp-for="RequestNr" class="form-control" />
+                        }
                         <span asp-validation-for="RequestNr" class="text-danger"></span>
                     </div>
                     <div class="col-md-6">
@@ -25,18 +38,21 @@
                         <span asp-validation-for="Subsystem" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label class="form-label">OpenDate</label>
-                        <input type="date" asp-for="OpenDate" class="form-control" readonly disabled />
-                        <span asp-validation-for="OpenDate" class="text-danger"></span>
+                @if (Model.Id != 0)
+                {
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">OpenDate</label>
+                            <input type="date" asp-for="OpenDate" class="form-control" readonly disabled />
+                            <span asp-validation-for="OpenDate" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">CloseDate</label>
+                            <input type="date" asp-for="CloseDate" class="form-control" />
+                            <span asp-validation-for="CloseDate" class="text-danger"></span>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <label class="form-label">CloseDate</label>
-                        <input type="date" asp-for="CloseDate" class="form-control" />
-                        <span asp-validation-for="CloseDate" class="text-danger"></span>
-                    </div>
-                </div>
+                }
                 <div class="row">
                     <div class="col-md-6">
                         <label class="form-label">Type</label>
@@ -89,7 +105,14 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Ambit</label>
-                        @Html.DropDownListFor(model => model.AmbitId, new SelectList(ViewBag.Ambits, "Value", "Text"), new { @class = "form-control selectpicker", @id = "AmbitId", @title = "Choose..." })
+                        @if (Model.Id != 0)
+                        {
+                            @Html.DropDownListFor(model => model.AmbitId, new SelectList(ViewBag.Ambits, "Value", "Text"), new { @class = "form-control selectpicker", @id = "AmbitId", @title = "Choose..." })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.AmbitId, Enumerable.Empty<SelectListItem>(), new { @class = "form-control selectpicker", @id = "AmbitId", @title = "Choose..." })
+                        }
                         <span asp-validation-for="AmbitId" class="text-danger"></span>
                     </div>
 
@@ -97,7 +120,14 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label class="form-label">Incident Type</label>
-                        @Html.DropDownListFor(model => model.IncidentTypeId, new SelectList(ViewBag.IncidentTypes, "Value", "Text"), new { @class = "form-control selectpicker", @id = "IncidentTypeId", @title = "Choose..." })
+                        @if (Model.Id != 0)
+                        {
+                            @Html.DropDownListFor(model => model.IncidentTypeId, new SelectList(ViewBag.IncidentTypes, "Value", "Text"), new { @class = "form-control selectpicker", @id = "IncidentTypeId", @title = "Choose..." })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.IncidentTypeId, Enumerable.Empty<SelectListItem>(), new { @class = "form-control selectpicker", @id = "IncidentTypeId", @title = "Choose..." })
+                        }
                         <span asp-validation-for="IncidentTypeId" class="text-danger"></span>
                     </div>
                     <div class="col-md-6">
@@ -196,9 +226,11 @@
             $('#OriginId').change(SetAmbit);
             $('#AmbitId').change(SetIncidentType);
 
+            if (@Model.Id === 0) {
 
-            // SetAmbit();
-            // SetIncidentType();
+                SetAmbit();
+                SetIncidentType();
+            }
         });
 
     </script>
