@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace Application.Validator
 {
-    public class CreateIncidentDtoValidator : AbstractValidator<UpsertIncidentDto>
+    public class UpsertIncidentDtoValidator : AbstractValidator<UpsertIncidentDto>
     {
-        public CreateIncidentDtoValidator()
+        public UpsertIncidentDtoValidator()
         {
             RuleFor(x => x.RequestNr)
                 .NotEmpty()
@@ -14,9 +14,6 @@ namespace Application.Validator
             RuleFor(x => x.Subsystem)
                 .NotEmpty()
                 .Length(2);
-
-            RuleFor(x => x.OpenDate)
-                .NotEmpty();
 
             RuleFor(x => x.Type)
                 .NotEmpty()

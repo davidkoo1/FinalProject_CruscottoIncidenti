@@ -8,7 +8,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Incidents</h3>
-                    <a type="button" style="width: 80px;" class="btn btn-success" asp-action="Create" asp-controller="Incident">Add</a>
+                    <a type="button" style="width: 80px;" class="btn btn-success" href="@Url.Action("Create", "Incident", new { id = 0})">Add</a>
 
                 </div>
                 <div class="card-body">

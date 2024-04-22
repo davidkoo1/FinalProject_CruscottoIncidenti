@@ -4,16 +4,16 @@ using MediatR;
 
 namespace Application.IncidentCQRS.CommandHandlers
 {
-    public class CreateIncidentHandler : IRequestHandler<CreateIncident, bool>
+    public class UpsertIncidentHandler : IRequestHandler<UpsertIncident, bool>
     {
         private readonly IIncidentRepository _incidentRepository;
 
-        public CreateIncidentHandler(IIncidentRepository incidentRepository)
+        public UpsertIncidentHandler(IIncidentRepository incidentRepository)
         {
             _incidentRepository = incidentRepository;
         }
 
-        public async Task<bool> Handle(CreateIncident request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpsertIncident request, CancellationToken cancellationToken)
         {
             return await _incidentRepository.UpsertIncident(request.UpsertIncidentDto);
         }

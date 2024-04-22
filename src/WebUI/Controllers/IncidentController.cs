@@ -91,23 +91,42 @@ namespace WebUI.Controllers
             return Json(selectListTypesVm);
         }
 
-        private async Task InitialViewBags()
+        private async Task InitialViewBags(UpsertIncidentDto incidentDto)
         {
             var origins = await Mediator.Send(new GetAllOrigins { });
             var selectListOriginsVm = origins.Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.Name,
-                Selected = false
+                Selected = incidentDto.Id != 0 ? x.Id == incidentDto.OriginId : false
             });
             ViewBag.Origins = selectListOriginsVm;
+            if (incidentDto.Id != 0)
+            {
+                var ambits = await Mediator.Send(new GetAllAmbits { OriginId = incidentDto.OriginId });
+                var selectListAmbitsVm = ambits.Select(x => new SelectListItem
+                {
+                    Value = x.Id.ToString(),
+                    Text = x.Name,
+                    Selected = incidentDto.Id != 0 ? x.Id == incidentDto.AmbitId : false
+                });
+                ViewBag.Ambits = selectListAmbitsVm;
 
+                var types = await Mediator.Send(new GetAllIncidentTypes { AmbitId = incidentDto.AmbitId });
+                var selectListTypesVm = types.Select(x => new SelectListItem
+                {
+                    Value = x.Id.ToString(),
+                    Text = x.Name,
+                    Selected = incidentDto.Id != 0 ? x.Id == incidentDto.IncidentTypeId : false
+                });
+                ViewBag.IncidentTypes = selectListTypesVm;
+            }
             var scenaries = await Mediator.Send(new GetAllScenaries { });
             var selectListScenariesVm = scenaries.Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.Name,
-                Selected = false
+                Selected = incidentDto.Id != 0 ? x.Id == incidentDto.ScenaryId : false
             });
             ViewBag.Scenaries = selectListScenariesVm;
 
@@ -116,17 +135,18 @@ namespace WebUI.Controllers
             {
                 Value = x.Id.ToString(),
                 Text = x.Name,
-                Selected = false
+                Selected = incidentDto.Id != 0 ? x.Id == incidentDto.ThreatId : false
             });
             ViewBag.Threats = selectListThreatsVm;
+
         }
 
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(int id)
         {
+            var updateUserVm = await Mediator.Send(new GetIncidentForUpsert { Id = id });
+            await InitialViewBags(updateUserVm);
 
-            await InitialViewBags();
-
-            return View("~/Views/Incident/Create.cshtml", new UpsertIncidentDto());
+            return View("~/Views/Incident/Create.cshtml", updateUserVm);
 
         }
 
@@ -135,7 +155,7 @@ namespace WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await Mediator.Send(new CreateIncident { UpsertIncidentDto = incidentUpsert });
+                var result = await Mediator.Send(new UpsertIncident { UpsertIncidentDto = incidentUpsert });
                 if (result)
                 {
                     return Json(new { StatusCode = 200, success = true });
@@ -146,7 +166,7 @@ namespace WebUI.Controllers
                 //}
 
             }
-            await InitialViewBags();
+            await InitialViewBags(incidentUpsert);
 
             return View("~/Views/Incident/Create.cshtml", incidentUpsert);
         }
@@ -155,34 +175,9 @@ namespace WebUI.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var updateIncidentVm = await Mediator.Send(new GetIncidentForUpsert { Id = id });
-            var origins = await Mediator.Send(new GetAllOrigins { });
-            var selectListOriginsVm = origins.Select(x => new SelectListItem
-            {
-                Value = x.Id.ToString(),
-                Text = x.Name,
-                Selected = false
-            });
-            ViewBag.Origins = selectListOriginsVm;
+            await InitialViewBags(updateIncidentVm);
 
-            var scenaries = await Mediator.Send(new GetAllScenaries { });
-            var selectListScenariesVm = scenaries.Select(x => new SelectListItem
-            {
-                Value = x.Id.ToString(),
-                Text = x.Name,
-                Selected = false
-            });
-            ViewBag.Scenaries = selectListScenariesVm;
-
-            var threats = await Mediator.Send(new GetAllThreats { });
-            var selectListThreatsVm = threats.Select(x => new SelectListItem
-            {
-                Value = x.Id.ToString(),
-                Text = x.Name,
-                Selected = false
-            });
-            ViewBag.Threats = selectListThreatsVm;
-
-            return View("~/Views/Incident/Create.cshtml", new UpsertIncidentDto());
+            return View("~/Views/Incident/Edit.cshtml", updateIncidentVm);
 
         }
 
@@ -191,20 +186,17 @@ namespace WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await Mediator.Send(new CreateIncident { UpsertIncidentDto = incidentUpsert });
+                var result = await Mediator.Send(new UpsertIncident { UpsertIncidentDto = incidentUpsert });
                 if (result)
                 {
-                    return Json(new { StatusCode = 200, success = true });
+                    
+                    //return Json(new { success = true });
+                    return RedirectToAction("Index", "Incident");
                 }
-                //else
-                //{
-                //    return Json(new { StatusCode = 500, success = false });
-                //}
-
+                
             }
-            await InitialViewBags();
-
-            return View("~/Views/Incident/Create.cshtml", incidentUpsert);
+            await InitialViewBags(incidentUpsert);
+            return View(incidentUpsert);
         }
 
         public async Task<IActionResult> Delete(int id)

@@ -133,8 +133,6 @@ function updateButtonUserLinks(id) {
     // Removed the commented-out code as it seems you've moved away from using href for deletion
 }
 function updateButtonIncidentLinks(id) {
-    debugger;
-    // Получаем URL с помощью Url.Action
     var url = `../Incident/Edit/${id}`;
 
     // Устанавливаем ссылку в атрибуте onclick

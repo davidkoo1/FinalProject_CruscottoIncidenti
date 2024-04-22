@@ -27,6 +27,6 @@
 - [ ] UpsertIncidents
 - [ ] Если таблица пуста то удаление, детали и обновление не доступны
 - [ ] JS Fix||Optimization
-- [ ] SpliQueryInRepos
-- [ ] Generics
-- [ ] ValidationIncidentVm
+- [ ] **SpliQueryInRepos
+- [ ] **Generics
+- [ ] 

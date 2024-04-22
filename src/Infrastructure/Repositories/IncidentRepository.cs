@@ -58,25 +58,30 @@ namespace Infrastructure.Repositories
 
         public async Task<bool> UpsertIncident(UpsertIncidentDto incidentToUpsert)
         {
-            if (incidentToUpsert == null)
+            var existing = await _dbContext.Incidents.AnyAsync(x => x.RequestNr == incidentToUpsert.RequestNr && x.Id != incidentToUpsert.Id);
+            if (incidentToUpsert == null || existing)
             {
                 return false;
             }
-
-            var existing = await _dbContext.Incidents.AnyAsync(x => x.RequestNr == incidentToUpsert.RequestNr);
-
-            if (existing == true)
-            {
-                return false;
-            }
-
+            var currentUser = _httpContextAccessor.HttpContext?.User.GetUserId();
             var incident = _mapper.Map<Incident>(incidentToUpsert);
+            if (incidentToUpsert.Id == 0)
+            {
+                
 
-            incident.OpenDate = DateTime.UtcNow;
-            incident.CreatedBy = _httpContextAccessor.HttpContext?.User.GetUserId();
+                incident.OpenDate = DateTime.UtcNow;
+                incident.CreatedBy = currentUser;
 
-            await _dbContext.Incidents.AddAsync(incident);
-            return await Save();
+                await _dbContext.Incidents.AddAsync(incident);
+                return await Save();
+            }
+            else
+            {
+                incident.LastModified = DateTime.UtcNow;
+                incident.LastModifiedBy = currentUser;
+                _dbContext.Update(incident);
+                return await Save();
+            }
         }
 
         public async Task<UpsertIncidentDto> GetIncidentForUpsertById(int incidentId)
