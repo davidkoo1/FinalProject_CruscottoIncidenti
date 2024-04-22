@@ -20,7 +20,7 @@ namespace WebUI.Controllers
             if(!User.Identity.IsAuthenticated)
                 return View();
             else
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction(nameof(IncidentController.Index), "Incident");
         }
 
         [HttpPost]
@@ -72,7 +72,7 @@ namespace WebUI.Controllers
 
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Incident");
                 }
             }
             catch (Exception ex)

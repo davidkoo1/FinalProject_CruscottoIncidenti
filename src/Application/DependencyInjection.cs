@@ -27,6 +27,7 @@ namespace Application
 
             services.AddTransient<IValidator<LoginDto>, LoginDtoValidator>();
             services.AddTransient<IValidator<UpsertUserDto>, UpsertUserDtoValidator>();
+            services.AddTransient<IValidator<UpsertIncidentDto>, CreateIncidentDtoValidator>();
 
             //AutoMapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

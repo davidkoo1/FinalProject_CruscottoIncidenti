@@ -78,5 +78,21 @@ namespace Infrastructure.Repositories
             await _dbContext.Incidents.AddAsync(incident);
             return await Save();
         }
+
+        public async Task<UpsertIncidentDto> GetIncidentForUpsertById(int incidentId)
+        {
+            var existing = await _dbContext.Incidents.AnyAsync(x => x.Id == incidentId);
+            if (existing)
+            {
+                return _mapper.Map<UpsertIncidentDto>(await _dbContext.Incidents
+                    .Include(x => x.Ambit)
+                    .Include(x => x.Origin)
+                    .Include(x => x.IncidentType)
+                    .Include(x => x.Scenary)
+                    .Include(x => x.Threat)
+                    .FirstOrDefaultAsync(x => x.Id == incidentId));
+            }
+            return new UpsertIncidentDto();
+        }
     }
 }

@@ -17,11 +17,17 @@ namespace Application.Common.Mapping
 
             CreateMap<UpsertUserDto, User>();
             CreateMap<User, UpsertUserDto>().ForMember(dest => dest.RolesId, opt => opt.MapFrom(src => src.UserRoles.Select(ur => ur.Role.Id)));
+            CreateMap<Incident, UpsertIncidentDto>()
+            .ForMember(dto => dto.IncidentTypeId, conf => conf.MapFrom(inc => inc.IncidentType.Id))
+            .ForMember(dto => dto.AmbitId, conf => conf.MapFrom(inc => inc.Ambit.Id))
+            .ForMember(dto => dto.OriginId, conf => conf.MapFrom(inc => inc.Origin.Id))
+            .ForMember(dto => dto.ScenaryId, conf => conf.MapFrom(inc => inc.Scenary.Id))
+            .ForMember(dto => dto.ThreatId, conf => conf.MapFrom(inc => inc.Threat.Id));
 
 
             //CreateMap<User, UpdateUserDto>().ForMember(dest => dest.RolesId, opt => opt.MapFrom(src => src.UserRoles.Select(ur => ur.Role.Id)));
             //CreateMap<UpdateUserDto, User>(); //Here also map
-            
+
             //This forUpsert
             CreateMap<UpsertIncidentDto, Incident>();
 

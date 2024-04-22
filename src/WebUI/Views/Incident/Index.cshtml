@@ -8,20 +8,17 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Incidents</h3>
-                    <a type="button" style="width: 80px;" class="btn btn-success" data-bs-toggle="modal" data-bs-target=".bs-example-modal-xl" onclick="drawPatrialView('/Incident/Upsert/'+'0', 'xlModalBody')">Add</a>
+                    <a type="button" style="width: 80px;" class="btn btn-success" asp-action="Create" asp-controller="Incident">Add</a>
 
                 </div>
                 <div class="card-body">
                     <table id="IncidentDatatable" class="table table-bordered table-hover w-100 mb-1">
                     </table>
                 </div>
-                <div id="actions" style="display:none; padding: 5px;">
-                    @* <a style="width: 80px;" class="btn btn-primary" id="editLink">Edit</a> | *@
-                    @* <a id="editLink" onclick="openModal({url: '/User/GetUpsert', data: 'userId'})" data-toggle="ajax-modal" data-trigger="Modal">Edit</a> *@
-                    <a type="button" style="width: 80px;" class="btn btn-primary" id="editLink" data-bs-toggle="modal" data-bs-target=".bs-example-modal-xl" onclick="drawPatrialView('/Incident/GetUpsert/', 'xlModalBody')">Edit</a>
+                <div id="actions" style="display:none; padding: 5px;">           
+                    <a type="button" style="width: 80px;" class="btn btn-primary" id="editLink" >Edit</a>
                     <a type="button" style="width: 80px;" id="detailsLink" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target=".bs-example-modal-xl" onclick="drawPatrialView('/Incident/Details/', 'xlModalBody')">Detail</a>
                     <a type="button" style="width: 80px;" id="deleteLink" class="btn btn-danger" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" onclick="drawPatrialView('/Incident/Delete/', 'lgModalBody')">Delete</a>
-                    @*     <a style="width: 80px;" class="btn btn-danger" id="deleteLink">Delete</a> *@
                 </div>
             </div>
         </div>

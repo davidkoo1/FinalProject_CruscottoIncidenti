@@ -133,8 +133,13 @@ function updateButtonUserLinks(id) {
     // Removed the commented-out code as it seems you've moved away from using href for deletion
 }
 function updateButtonIncidentLinks(id) {
-    // Fix: Properly concatenate the id into the URL for the 'drawPatrialView' function calls
-    $('#editLink').attr('onclick', `drawPatrialView('/Incident/GetUpsert/'+${id}, 'xlModalBody')`);
+    debugger;
+    // Получаем URL с помощью Url.Action
+    var url = `../Incident/Edit/${id}`;
+
+    // Устанавливаем ссылку в атрибуте onclick
+    $('#editLink').attr('onclick', `window.location.href = '${url}'`);
+
     // Removed the commented-out code for clarity and cleanliness
     $('#detailsLink').attr('onclick', `drawPatrialView('/Incident/Details/'+${id}, 'xlModalBody')`);
     // Fix: Correctly close the deleteUser function call with the right parenthesis
@@ -303,59 +308,98 @@ $(document).on('submit', '#SaveUserForm', function (e) {
     });
 });
 
+//$('#SaveIncidentForm').on('submit', function (e) {
+//    e.preventDefault();
+//    var $form = $(this);
+//        toastr.options = {
+//            "closeButton": true,
+//            "debug": false,
+//            "newestOnTop": true,
+//            "progressBar": true,
+//            "positionClass": "toast-top-right",
+//            "preventDuplicates": false,
+//            "onclick": null,
+//            "showDuration": "300",
+//            "hideDuration": "1000",
+//            "timeOut": "5000",
+//            "extendedTimeOut": "1000",
+//            "showEasing": "swing",
+//            "hideEasing": "linear",
+//            "showMethod": "fadeIn",
+//            "hideMethod": "fadeOut"
+//        };
+//    $.ajax({
+//        url: $form.attr('action'),
+//        cache: false,
+//        type: $form.attr('method'),
+//        data: $form.serialize(),
+//        contentType: "application/json; charset=utf-8",
+//        success: function (data) {
+//            if (data.statusCode === 200) {
+//                window.location.href = '../Incident/Index';
+//                $('#IncidentDatatable').DataTable().ajax.reload(null, false);
+//                toastr.success("Success", "Created");
+//            } else {
+//                //location.reload();
+//                toastr.error("Success", "Created");
+//            }
+//        },
 
-$(document).on('submit', '#SaveIncidentForm', function (e) {
-    toastr.options = {
-        "closeButton": true,
-        "debug": false,
-        "newestOnTop": true,
-        "progressBar": true,
-        "positionClass": "toast-top-right",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "1000",
-        "timeOut": "5000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-    };
-    e.preventDefault();
+//    });
+//});
 
-    //ForToastrEditOrCreate
-    //var CurrentIdUser = $('#UserId').val();
-    var $form = $(this);
+//$(document).on('submit', '#SaveIncidentForm', function (e) {
+//    toastr.options = {
+//        "closeButton": true,
+//        "debug": false,
+//        "newestOnTop": true,
+//        "progressBar": true,
+//        "positionClass": "toast-top-right",
+//        "preventDuplicates": false,
+//        "onclick": null,
+//        "showDuration": "300",
+//        "hideDuration": "1000",
+//        "timeOut": "5000",
+//        "extendedTimeOut": "1000",
+//        "showEasing": "swing",
+//        "hideEasing": "linear",
+//        "showMethod": "fadeIn",
+//        "hideMethod": "fadeOut"
+//    };
+//    e.preventDefault();
 
-    $.ajax({
-        type: $form.attr('method'),
-        url: $form.attr('action'),
-        data: $form.serialize(),
-        success: function (response) {
-            if (response.success) {
+//    //ForToastrEditOrCreate
+//    //var CurrentIdUser = $('#UserId').val();
+//    var $form = $(this);
 
-                //window.location.href = '../User/Index';
+//    $.ajax({
+//        type: $form.attr('method'),
+//        url: $form.attr('action'),
+//        data: $form.serialize(),
+//        success: function (response) {
+//            if (response.success) {
 
-                $('#xlModal').modal('hide');
-                $('#IncidentDatatable').DataTable().ajax.reload(null, false);
-                toastr.success("Success", "Created");
-                //if (CurrentIdUser === '0') {
-                //    toastr.success("Success", "Created");
-                //}
-                //else {
-                //    toastr.info("Success", "Edited");
-                //}
-                $('#actions').hide();
-                //location.reload();
-            } else {
+//                //window.location.href = '../User/Index';
 
-                $('.modal-body').html(response);
-                $('.selectpicker').selectpicker();
-            }
-        },
-        error: function (xhr, status, error) {
-            alert("Произошла ошибка: " + error);
-        }
-    });
-});
+//                $('#xlModal').modal('hide');
+//                $('#IncidentDatatable').DataTable().ajax.reload(null, false);
+//                toastr.success("Success", "Created");
+//                //if (CurrentIdUser === '0') {
+//                //    toastr.success("Success", "Created");
+//                //}
+//                //else {
+//                //    toastr.info("Success", "Edited");
+//                //}
+//                $('#actions').hide();
+//                //location.reload();
+//            } else {
+
+//                $('.modal-body').html(response);
+//                $('.selectpicker').selectpicker();
+//            }
+//        },
+//        error: function (xhr, status, error) {
+//            alert("Произошла ошибка: " + error);
+//        }
+//    });
+//});

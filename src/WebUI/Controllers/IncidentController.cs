@@ -4,6 +4,7 @@ using Application.IncidentCQRS.Queries;
 using Application.RoleCQRS.Queries;
 using Application.UserCQRS.Commands;
 using Application.UserCQRS.Queries;
+using Domain.Entities.HelpDesk;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -90,8 +91,7 @@ namespace WebUI.Controllers
             return Json(selectListTypesVm);
         }
 
-
-        public async Task<IActionResult> Upsert()
+        private async Task InitialViewBags()
         {
             var origins = await Mediator.Send(new GetAllOrigins { });
             var selectListOriginsVm = origins.Select(x => new SelectListItem
@@ -119,27 +119,93 @@ namespace WebUI.Controllers
                 Selected = false
             });
             ViewBag.Threats = selectListThreatsVm;
+        }
 
-            return PartialView("~/Views/Incident/Upsert.cshtml", new UpsertIncidentDto());
+        public async Task<IActionResult> Create()
+        {
+
+            await InitialViewBags();
+
+            return View("~/Views/Incident/Create.cshtml", new UpsertIncidentDto());
 
         }
 
         [HttpPost]
-        public async Task<IActionResult> Upsert(UpsertIncidentDto incidentUpsert)
+        public async Task<IActionResult> Create(UpsertIncidentDto incidentUpsert)
         {
-            //if (ModelState.IsValid)
-            //{
-                var result = await Mediator.Send(new UpsertIncident { UpsertIncidentDto = incidentUpsert });
+            if (ModelState.IsValid)
+            {
+                var result = await Mediator.Send(new CreateIncident { UpsertIncidentDto = incidentUpsert });
                 if (result)
                 {
-                    // return Json(new { success = true/*, redirectUrl = Url.Action(nameof(Index))*/ });
-                    return Json(new { success = true });
+                    return Json(new { StatusCode = 200, success = true });
                 }
+                //else
+                //{
+                //    return Json(new { StatusCode = 500, success = false });
+                //}
 
-            //}
-            return PartialView("~/Views/Incident/Upsert.cshtml", incidentUpsert);
+            }
+            await InitialViewBags();
+
+            return View("~/Views/Incident/Create.cshtml", incidentUpsert);
         }
 
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var updateIncidentVm = await Mediator.Send(new GetIncidentForUpsert { Id = id });
+            var origins = await Mediator.Send(new GetAllOrigins { });
+            var selectListOriginsVm = origins.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name,
+                Selected = false
+            });
+            ViewBag.Origins = selectListOriginsVm;
+
+            var scenaries = await Mediator.Send(new GetAllScenaries { });
+            var selectListScenariesVm = scenaries.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name,
+                Selected = false
+            });
+            ViewBag.Scenaries = selectListScenariesVm;
+
+            var threats = await Mediator.Send(new GetAllThreats { });
+            var selectListThreatsVm = threats.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name,
+                Selected = false
+            });
+            ViewBag.Threats = selectListThreatsVm;
+
+            return View("~/Views/Incident/Create.cshtml", new UpsertIncidentDto());
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(UpsertIncidentDto incidentUpsert)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await Mediator.Send(new CreateIncident { UpsertIncidentDto = incidentUpsert });
+                if (result)
+                {
+                    return Json(new { StatusCode = 200, success = true });
+                }
+                //else
+                //{
+                //    return Json(new { StatusCode = 500, success = false });
+                //}
+
+            }
+            await InitialViewBags();
+
+            return View("~/Views/Incident/Create.cshtml", incidentUpsert);
+        }
 
         public async Task<IActionResult> Delete(int id)
         {
@@ -164,7 +230,7 @@ namespace WebUI.Controllers
             }
             else
             {
-                return Json(new { success = false, message = "Не удалось удалить пользователя." });
+                return Json(new { success = false});
             }
         }
     }

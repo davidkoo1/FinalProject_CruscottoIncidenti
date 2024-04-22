@@ -12,6 +12,7 @@ namespace Application.Common.Interfaces
         Task<IEnumerable<SimpleDto>> GetAllScenaries();
         Task<IEnumerable<SimpleDto>> GetAllThreats();
         Task<IncidentDetailDto> GetIncidentById(int Id);
+        Task<UpsertIncidentDto> GetIncidentForUpsertById(int incidentId);
         Task<bool> UpsertIncident(UpsertIncidentDto incidentToUpsert);
         Task<bool> DeleteIncident(int incidentId);
         Task<bool> Save();

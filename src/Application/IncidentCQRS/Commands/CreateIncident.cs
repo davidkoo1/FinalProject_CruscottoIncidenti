@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Application.IncidentCQRS.Commands
 {
-    public class UpsertIncident : IRequest<bool>
+    public class CreateIncident : IRequest<bool>
     {
         public UpsertIncidentDto UpsertIncidentDto { get; set; }
     }
