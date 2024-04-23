@@ -24,7 +24,6 @@ function drawPatrialView(url, divId, callback) {
 
 function initializeIncidentDataTable() {
     var table = $('#IncidentDatatable').DataTable({
-        //"dom": 't',
         "processing": true,
         "serverSide": true,
         "ajax": {
@@ -36,20 +35,35 @@ function initializeIncidentDataTable() {
             { "data": "id", "title": "id", "name": "id", "visible": false },
             { "data": "requestNr", "title": "Request Number", "name": "requestNr" },
             { "data": "subsystem", "title": "Subsystem", "name": "subsystem" },
-            { "data": "openDate", "title": "Open Date", "name": "openDate" },
-            { "data": "closeDate", "title": "Close Date", "name": "closeDate" },
+            {
+                "data": "openDate",
+                "title": "Open Date",
+                "name": "openDate",
+                "render": function (data, type, row) {
+                    return data ? new Date(data).toLocaleDateString() : ''; // Форматирование даты
+                }
+            },
+            {
+                "data": "closeDate",
+                "title": "Close Date",
+                "name": "closeDate",
+                "render": function (data, type, row) {
+                    return data ? new Date(data).toLocaleDateString() : ''; // Форматирование даты
+                }
+            },
             { "data": "type", "title": "Type", "name": "type" },
             { "data": "urgency", "title": "Urgency", "name": "urgency" }
         ],
         "columnDefs": [
-            { "width": "10%", "targets": [0, 1, 2, 5, 6] }, // Установка ширины столбцов в процентах
-            { "width": "15%", "targets": [3, 4] } // Установка ширины для столбцов с датами
+            { "width": "10%", "targets": [0, 1, 2, 5, 6] },
+            { "width": "15%", "targets": [3, 4] }
         ],
-        "scrollX": true // Включение горизонтальной прокрутки
+        "scrollX": true
     });
 
     return table;
 }
+
 
 
 //UserDataTableButton

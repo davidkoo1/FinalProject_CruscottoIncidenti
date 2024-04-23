@@ -31,7 +31,10 @@ namespace Application.Common.Mapping
             //This forUpsert
             CreateMap<UpsertIncidentDto, Incident>();
 
-            CreateMap<Incident, IncidentDto>();
+            CreateMap<Incident, IncidentDto>()
+            .ForMember(dto => dto.OpenDate, opt => opt.MapFrom(src => src.OpenDate.ToString("yyyy-MM-dd")))
+            .ForMember(dto => dto.CloseDate, opt => opt.MapFrom(src => src.CloseDate.HasValue ? src.CloseDate.Value.ToString("yyyy-MM-dd") : null));
+
 
             CreateMap<IncidentOrigin, SimpleDto>();
             CreateMap<IncidentAmbit, SimpleDto>();
