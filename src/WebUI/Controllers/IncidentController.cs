@@ -7,6 +7,7 @@ using Application.UserCQRS.Queries;
 using Domain.Entities.HelpDesk;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text;
 
 namespace WebUI.Controllers
 {
@@ -208,6 +209,48 @@ namespace WebUI.Controllers
             {
                 return Json(new { success = false });
             }
+        }
+
+        [HttpGet] 
+        public async Task<FileResult> Export()
+        {
+            string[] columnNames = new string[] { "RequestNr", "Subsystem", "OpenDate", "CloseDate", "Type", "ApplicationType", "Urgency", "SubCause",
+            "ProblemSummary", "ProblemDescription", "Solution", "IncidentType", "Ambit", "Origin", "ThirdParty", "Scenary", "Threat"};
+
+            var incidents = await Mediator.Send(new GetAllInicdents());
+            string csv = string.Empty;
+
+            foreach (string columnName in columnNames)
+            {
+                csv += columnName + ',';
+            }
+
+            csv += "\r\n";
+
+            foreach (var incident in incidents)
+            {
+                csv += incident.RequestNr.ToString().Replace(",", ";") + ",";
+                csv += incident.Subsystem.ToString().Replace(",", ";") + ",";
+                csv += incident.OpenDate.ToString().Replace(",", ";") + ",";
+                csv += incident.CloseDate.ToString().Replace(",", ";") + ",";
+                csv += incident.Type.ToString().Replace(",", ";") + ",";
+                //csv += incident.ApplicationType.ToString().Replace(",", ";") + ",";
+                csv += incident.Urgency.ToString().Replace(",", ";") + ",";
+                //csv += incident.SubCause.ToString().Replace(",", ";") + ",";
+                // csv += incident.ProblemSummary.Replace(",", ";") + ",";
+                //csv += incident.ProblemDescription.ToString().Replace(",", ";") + ",";
+                // csv += incident.Solution.ToString().Replace(",", ";") + ",";
+                //csv += incident.IncidentType.ToString().Replace(",", ";") + ",";
+                //csv += incident.Ambit.ToString().Replace(",", ";") + ",";
+                //csv += incident.Origin.ToString().Replace(",", ";") + ",";
+                //csv += incident.ThirdParty.ToString().Replace(",", ";") + ",";
+                //csv += incident.Scenary.ToString().Replace(",", ";") + ",";
+                //csv += incident.Threat.ToString().Replace(",", ";") + ",";
+                csv += "\r\n";
+            }
+
+            byte[] bytes = Encoding.ASCII.GetBytes(csv);
+            return File(bytes, "text/csv", "Inci.csv");
         }
     }
 }

@@ -13,6 +13,8 @@
 
 - [ ] **DataTablesLoad**
 
+- [ ] **SPA**
+
 
 - [ ] **Логирование и обработка ошибок**
   - Интегрировать систему логирования и использовать блоки try-catch для улучшения отладки и обработки ошибок.
@@ -22,7 +24,11 @@
 
 
 
+- [ ] RoleSigInPages
 - [ ] JS Fix||Optimization
-- [ ] **SpliQueryInRepos
-- [ ] **Generics
-- [ ] ToasterCRUDIncident
+- [ ] *SpliQueryInRepos
+- [ ] *Generics
+- [ ] *ToasterCRUDIncident
+- [ ] Info If notSuccesRetIncident(добавить проверку если удаленн элемент то круд ок)
+- [ ] Cvs
+- [ ] CancelButtonDetailModal

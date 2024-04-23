@@ -5,7 +5,11 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Incidents</h3>
-                    <a type="button" style="width: 80px;" class="btn btn-success" href="@Url.Action("Upsert", "Incident", new { id = 0})">Add</a>
+                    <div class="d-flex justify-content-between">
+                        <a type="button" style="width: 80px;" class="btn btn-success" href="@Url.Action("Upsert", "Incident", new { id = 0})">Add</a>
+                        <a type="button" class="btn btn-dark" href="@Url.Action("Export", "Incident")">Export</a>
+                    </div>
+
 
                 </div>
                 <div class="card-body">

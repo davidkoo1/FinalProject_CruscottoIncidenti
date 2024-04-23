@@ -9,7 +9,8 @@ namespace Application.Validator
         {
             RuleFor(x => x.RequestNr)
                 .NotEmpty()
-                .Length(17);
+                .Length(17)
+                .Must(a => a != null && a.StartsWith("HOST") == true).WithMessage("Start with HOST");
 
             RuleFor(x => x.Subsystem)
                 .NotEmpty()
@@ -32,19 +33,15 @@ namespace Application.Validator
                 .MaximumLength(35);
 
             RuleFor(x => x.ProblemSummary)
-                .NotEmpty()
                 .MaximumLength(255);
 
             RuleFor(x => x.ProblemDescription)
-                .NotEmpty()
                 .MaximumLength(500);
 
             RuleFor(x => x.Solution)
-                .NotEmpty()
                 .MaximumLength(250);
 
             RuleFor(x => x.ThirdParty)
-                .NotEmpty()
                 .MaximumLength(35);
 
             RuleFor(x => x.OriginId)

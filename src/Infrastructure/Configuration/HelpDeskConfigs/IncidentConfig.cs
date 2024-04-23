@@ -38,16 +38,13 @@ namespace Infrastructure.Configuration.HelpDeskConfigs
                 .IsRequired();
 
             builder.Property(x => x.ProblemSummary)
-                .HasMaxLength(255)
-                .IsRequired();
+                .HasMaxLength(255);
 
             builder.Property(x => x.ProblemDescription)
-                .HasMaxLength(500)
-                .IsRequired();
+                .HasMaxLength(500);
 
             builder.Property(x => x.Solution)
-                .HasMaxLength(250)
-                .IsRequired();
+                .HasMaxLength(250);
 
             builder.Property(x => x.ThirdParty)
                 .HasMaxLength(35);
