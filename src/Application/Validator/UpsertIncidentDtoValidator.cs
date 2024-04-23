@@ -17,33 +17,35 @@ namespace Application.Validator
 
             RuleFor(x => x.Type)
                 .NotEmpty()
-                .MaximumLength(50);
+                .MaximumLength(35);
 
             RuleFor(x => x.ApplicationType)
                 .NotEmpty()
-                .MaximumLength(50);
+                .MaximumLength(35);
 
             RuleFor(x => x.Urgency)
+                .MaximumLength(35)
                 .NotEmpty();
 
             RuleFor(x => x.SubCause)
                 .NotEmpty()
-                .MaximumLength(50);
+                .MaximumLength(35);
 
             RuleFor(x => x.ProblemSummary)
                 .NotEmpty()
-                .MaximumLength(250);
+                .MaximumLength(255);
 
             RuleFor(x => x.ProblemDescription)
                 .NotEmpty()
-                .MaximumLength(350);
+                .MaximumLength(500);
 
             RuleFor(x => x.Solution)
                 .NotEmpty()
-                .MaximumLength(350);
+                .MaximumLength(250);
 
             RuleFor(x => x.ThirdParty)
-                .MaximumLength(50);
+                .NotEmpty()
+                .MaximumLength(35);
 
             RuleFor(x => x.OriginId)
                 .NotEmpty();
