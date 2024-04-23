@@ -1,11 +1,11 @@
 ﻿using Application.DTO;
-using Application.IncidentCQRS.Commands;
+using Application.TableParameters;
 
 namespace Application.Common.Interfaces
 {
     public interface IIncidentRepository
     {
-        Task<IEnumerable<IncidentDto>> GetAllIncidents();
+        Task<IEnumerable<IncidentDto>> GetAllIncidents(DataTablesParameters parameters);
         Task<IEnumerable<SimpleDto>> GetAllOrigins();
         Task<IEnumerable<SimpleDto>> GetAllAmbitsByOrigin(int originId);
         Task<IEnumerable<SimpleDto>> GetAllTypesByAmbit(int ambitId);

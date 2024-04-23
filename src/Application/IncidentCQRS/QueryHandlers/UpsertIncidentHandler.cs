@@ -1,7 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Application.DTO;
 using Application.IncidentCQRS.Queries;
-using Application.UserCQRS.Queries;
 using MediatR;
 
 namespace Application.IncidentCQRS.QueryHandlers

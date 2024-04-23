@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interfaces;
 using Application.IncidentCQRS.Commands;
-using Application.UserCQRS.Commands;
 using MediatR;
 
 namespace Application.IncidentCQRS.CommandHandlers

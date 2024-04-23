@@ -17,7 +17,7 @@ namespace Application.IncidentCQRS.QueryHandlers
         public async Task<IEnumerable<IncidentDto>> Handle(GetAllInicdents request, CancellationToken cancellationToken)
         {
             //var users = request;
-            return await _incidentRepository.GetAllIncidents();
+            return await _incidentRepository.GetAllIncidents(request.Parameters);
         }
     }
 }

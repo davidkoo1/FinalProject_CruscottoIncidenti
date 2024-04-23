@@ -11,10 +11,9 @@
 
 ## Запланировано:
 
-- [ ] **DataTablesLoad**
-
+- [ ] **CVS**
+- [ ] 
 - [ ] **SPA**
-
 
 - [ ] **Логирование и обработка ошибок**
   - Интегрировать систему логирования и использовать блоки try-catch для улучшения отладки и обработки ошибок.
@@ -25,10 +24,8 @@
 
 
 - [ ] RoleSigInPages
+- [ ] UserIsDelete(добавить проверку если удален элемент то круд ок)
 - [ ] JS Fix||Optimization
-- [ ] *SpliQueryInRepos
+- [ ] *SplitQueryInRepos
 - [ ] *Generics
 - [ ] *ToasterCRUDIncident
-- [ ] Info If notSuccesRetIncident(добавить проверку если удаленн элемент то круд ок)
-- [ ] Cvs
-- [ ] CancelButtonDetailModal

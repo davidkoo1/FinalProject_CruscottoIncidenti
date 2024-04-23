@@ -1,13 +1,9 @@
 ﻿using Application.DTO;
 using Application.IncidentCQRS.Commands;
 using Application.IncidentCQRS.Queries;
-using Application.RoleCQRS.Queries;
-using Application.UserCQRS.Commands;
-using Application.UserCQRS.Queries;
-using Domain.Entities.HelpDesk;
+using Application.TableParameters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Text;
 
 namespace WebUI.Controllers
 {
@@ -20,45 +16,20 @@ namespace WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> LoadDatatable()
+        public async Task<ActionResult> LoadDatatable(DataTablesParameters parameters = null!)
         {
             try
             {
 
-                var draw = Request.Form["draw"].FirstOrDefault();
-                var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
-                var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
-                var searchValue = Request.Form["search[value]"].FirstOrDefault();
-                int pageSize = Convert.ToInt32(Request.Form["length"].FirstOrDefault() ?? "0");
-                int skip = Convert.ToInt32(Request.Form["start"].FirstOrDefault() ?? "0");
-                // Paging Size (10,20,50,100)
-
-                int recordsTotal = 0;
-
-                // Getting all Customer data
-                var customerData = await Mediator.Send(new GetAllInicdents());
-
-                recordsTotal = customerData.Count();
-
-                // Paging
-                var data = customerData
-                    .Skip(skip)
-                    .Take(pageSize)
-                    .Select(d => new
-                    {
-                        id = d.Id,
-                        requestNr = d.RequestNr,
-                        subsystem = d.Subsystem,
-                        openDate = d.OpenDate.ToString("yyyy-MM-dd"), // Форматируем дату без времени
-                        closeDate = d.CloseDate.HasValue ? d.CloseDate.Value.ToString("yyyy-MM-dd") : "", // Форматируем дату без времени, если она есть
-                        type = d.Type,
-                        urgency = d.Urgency
-                    })
-                    .ToList();
-
-
-                // Returning Json Data
-                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
+                var result = await Mediator.Send(new GetAllInicdents(parameters));
+                //return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
+                return Ok(new
+                {
+                    draw = parameters.Draw,
+                    recordsFiltered = parameters.TotalCount,
+                    recordsTotal = parameters.TotalCount,
+                    data = result
+                });
             }
             catch (Exception)
             {
@@ -178,8 +149,15 @@ namespace WebUI.Controllers
                     //return Json(new { success = true });
                     return RedirectToAction("Index", "Incident");
                 }
+                else
+                {
+                    TempData["Error"] = "But current incident exist";
+                    await InitialViewBags(incidentUpsert);
+                    return View(incidentUpsert);
+                }
 
             }
+            TempData["Error"] = "Give correct data!";
             await InitialViewBags(incidentUpsert);
             return View(incidentUpsert);
         }
@@ -211,46 +189,46 @@ namespace WebUI.Controllers
             }
         }
 
-        [HttpGet] 
-        public async Task<FileResult> Export()
-        {
-            string[] columnNames = new string[] { "RequestNr", "Subsystem", "OpenDate", "CloseDate", "Type", "ApplicationType", "Urgency", "SubCause",
-            "ProblemSummary", "ProblemDescription", "Solution", "IncidentType", "Ambit", "Origin", "ThirdParty", "Scenary", "Threat"};
+        //[HttpGet]
+        //public async Task<FileResult> Export()
+        //{
+        //    string[] columnNames = new string[] { "RequestNr", "Subsystem", "OpenDate", "CloseDate", "Type", "ApplicationType", "Urgency", "SubCause",
+        //    "ProblemSummary", "ProblemDescription", "Solution", "IncidentType", "Ambit", "Origin", "ThirdParty", "Scenary", "Threat"};
 
-            var incidents = await Mediator.Send(new GetAllInicdents());
-            string csv = string.Empty;
+        //    var incidents = await Mediator.Send(new GetAllInicdents());
+        //    string csv = string.Empty;
 
-            foreach (string columnName in columnNames)
-            {
-                csv += columnName + ',';
-            }
+        //    foreach (string columnName in columnNames)
+        //    {
+        //        csv += columnName + ',';
+        //    }
 
-            csv += "\r\n";
+        //    csv += "\r\n";
 
-            foreach (var incident in incidents)
-            {
-                csv += incident.RequestNr.ToString().Replace(",", ";") + ",";
-                csv += incident.Subsystem.ToString().Replace(",", ";") + ",";
-                csv += incident.OpenDate.ToString().Replace(",", ";") + ",";
-                csv += incident.CloseDate.ToString().Replace(",", ";") + ",";
-                csv += incident.Type.ToString().Replace(",", ";") + ",";
-                //csv += incident.ApplicationType.ToString().Replace(",", ";") + ",";
-                csv += incident.Urgency.ToString().Replace(",", ";") + ",";
-                //csv += incident.SubCause.ToString().Replace(",", ";") + ",";
-                // csv += incident.ProblemSummary.Replace(",", ";") + ",";
-                //csv += incident.ProblemDescription.ToString().Replace(",", ";") + ",";
-                // csv += incident.Solution.ToString().Replace(",", ";") + ",";
-                //csv += incident.IncidentType.ToString().Replace(",", ";") + ",";
-                //csv += incident.Ambit.ToString().Replace(",", ";") + ",";
-                //csv += incident.Origin.ToString().Replace(",", ";") + ",";
-                //csv += incident.ThirdParty.ToString().Replace(",", ";") + ",";
-                //csv += incident.Scenary.ToString().Replace(",", ";") + ",";
-                //csv += incident.Threat.ToString().Replace(",", ";") + ",";
-                csv += "\r\n";
-            }
+        //    foreach (var incident in incidents)
+        //    {
+        //        csv += incident.RequestNr.ToString().Replace(",", ";") + ",";
+        //        csv += incident.Subsystem.ToString().Replace(",", ";") + ",";
+        //        csv += incident.OpenDate.ToString().Replace(",", ";") + ",";
+        //        csv += incident.CloseDate.ToString().Replace(",", ";") + ",";
+        //        csv += incident.Type.ToString().Replace(",", ";") + ",";
+        //        //csv += incident.ApplicationType.ToString().Replace(",", ";") + ",";
+        //        csv += incident.Urgency.ToString().Replace(",", ";") + ",";
+        //        //csv += incident.SubCause.ToString().Replace(",", ";") + ",";
+        //        // csv += incident.ProblemSummary.Replace(",", ";") + ",";
+        //        //csv += incident.ProblemDescription.ToString().Replace(",", ";") + ",";
+        //        // csv += incident.Solution.ToString().Replace(",", ";") + ",";
+        //        //csv += incident.IncidentType.ToString().Replace(",", ";") + ",";
+        //        //csv += incident.Ambit.ToString().Replace(",", ";") + ",";
+        //        //csv += incident.Origin.ToString().Replace(",", ";") + ",";
+        //        //csv += incident.ThirdParty.ToString().Replace(",", ";") + ",";
+        //        //csv += incident.Scenary.ToString().Replace(",", ";") + ",";
+        //        //csv += incident.Threat.ToString().Replace(",", ";") + ",";
+        //        csv += "\r\n";
+        //    }
 
-            byte[] bytes = Encoding.ASCII.GetBytes(csv);
-            return File(bytes, "text/csv", "Inci.csv");
-        }
+        //    byte[] bytes = Encoding.ASCII.GetBytes(csv);
+        //    return File(bytes, "text/csv", "Inci.csv");
+        //}
     }
 }

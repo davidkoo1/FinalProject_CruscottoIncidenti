@@ -24,7 +24,7 @@ function drawPatrialView(url, divId, callback) {
 
 function initializeIncidentDataTable() {
     var table = $('#IncidentDatatable').DataTable({
-        "dom": 't',
+        //"dom": 't',
         "processing": true,
         "serverSide": true,
         "ajax": {

@@ -17,7 +17,7 @@ namespace WebUI.Controllers
         public IActionResult Login()
         {
             //var response = new LoginDto();
-            if(!User.Identity.IsAuthenticated)
+            if (!User.Identity.IsAuthenticated)
                 return View();
             else
                 return RedirectToAction(nameof(IncidentController.Index), "Incident");

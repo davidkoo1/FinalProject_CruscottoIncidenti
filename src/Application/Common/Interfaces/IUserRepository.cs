@@ -1,11 +1,12 @@
 ﻿using Application.DTO;
+using Application.TableParameters;
 using Domain.Entities;
 
 namespace Application.Common.Interfaces
 {
     public interface IUserRepository
     {
-        Task<IEnumerable<UserDto>> GetAll();
+        Task<IEnumerable<UserDto>> GetAll(DataTablesParameters parameters);
 
         Task<UserDto> GetUserById(int userId);
         Task<UpsertUserDto> GetUserForUpsertById(int userId);

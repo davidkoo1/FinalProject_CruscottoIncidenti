@@ -1,11 +1,10 @@
 ﻿using Application.Common.Interfaces;
 using Application.DTO;
+using Application.Extensions;
+using Application.TableParameters;
 using AutoMapper;
-using Azure.Core;
-using Domain.Entities;
 using Domain.Entities.HelpDesk;
 using Infrastructure.Persistance;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,7 +34,12 @@ namespace Infrastructure.Repositories
             return await Save();
         }
 
-        public async Task<IEnumerable<IncidentDto>> GetAllIncidents() => _mapper.Map<IEnumerable<IncidentDto>>(await _dbContext.Incidents.Where(x => !x.IsDeleted).ToListAsync());
+        public async Task<IEnumerable<IncidentDto>> GetAllIncidents(DataTablesParameters parameters) => _mapper.Map<IEnumerable<IncidentDto>>(
+            await _dbContext.Incidents.Where(x => !x.IsDeleted)
+            .Search(parameters)
+            .OrderBy(parameters)
+            .Page(parameters)
+            .ToListAsync());
 
         public async Task<IEnumerable<SimpleDto>> GetAllScenaries() => _mapper.Map<IEnumerable<SimpleDto>>(await _dbContext.Scenaries.ToListAsync());
         public async Task<IEnumerable<SimpleDto>> GetAllThreats() => _mapper.Map<IEnumerable<SimpleDto>>(await _dbContext.Threats.ToListAsync());
@@ -67,7 +71,7 @@ namespace Infrastructure.Repositories
             var incident = _mapper.Map<Incident>(incidentToUpsert);
             if (incidentToUpsert.Id == 0)
             {
-                
+
 
                 incident.OpenDate = DateTime.UtcNow;
                 incident.CreatedBy = currentUser;

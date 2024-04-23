@@ -16,8 +16,7 @@ namespace Application.UserCQRS.QueryHandlers
 
         public async Task<IEnumerable<UserDto>> Handle(GetAllUsers request, CancellationToken cancellationToken)
         {
-            //var users = request;
-            return await _userRepository.GetAll();
+            return await _userRepository.GetAll(request.Parameters);
         }
     }
 }

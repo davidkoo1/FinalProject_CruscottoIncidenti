@@ -1,7 +1,7 @@
 ﻿using Domain.Entities.HelpDesk;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
 using Infrastructure.Persistance;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Configuration.HelpDeskConfigs
 {

@@ -1,165 +1,176 @@
 ﻿@using Application.DTO
 @model UpsertIncidentDto
 
-<form asp-action="Upsert" asp-controller="Incident" method="post" id="SaveIncidentForm">
-    <input hidden asp-for="Id" />
-    @if (Model.Id != 0)
-    {
-        <input hidden asp-for="RequestNr" />
-        <input hidden asp-for="OpenDate" />
-    }
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                @{
-                    string title = Model.Id == 0 ? "Create" : "Edit";
-                }
-                <h2 class="text-center mb-4">@title Incident</h2>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="row">
-                    <div class="col-md-6">
-                        <label class="form-label">RequestNr</label>
-                        @if (Model.Id != 0)
-                        {
-                            <input type="text" asp-for="RequestNr" class="form-control" readonly disabled />
-                        }
-                        else
-                        {
-                            <input type="text" asp-for="RequestNr" class="form-control" maxlength="17" />
-                        }
-                        <span asp-validation-for="RequestNr" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Subsystem</label>
-                        <input type="text" asp-for="Subsystem" class="form-control" maxlength="2"/>
-                        <span asp-validation-for="Subsystem" class="text-danger"></span>
-                    </div>
-                </div>
-                @if (Model.Id != 0)
-                {
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label class="form-label">OpenDate</label>
-                            <input type="date" asp-for="OpenDate" class="form-control" readonly disabled />
-                            <span asp-validation-for="OpenDate" class="text-danger"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">CloseDate</label>
-                            <input type="date" asp-for="CloseDate" class="form-control" />
-                            <span asp-validation-for="CloseDate" class="text-danger"></span>
-                        </div>
-                    </div>
-                }
-                <div class="row">
-                    <div class="col-md-6">
-                        <label class="form-label">Type</label>
-                        <input type="text" asp-for="Type" class="form-control" maxlength="35" />
-                        <span asp-validation-for="Type" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">ApplicationType</label>
-                        <input type="text" asp-for="ApplicationType" class="form-control" maxlength="35" />
-                        <span asp-validation-for="ApplicationType" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label class="form-label">Urgency</label>
-                        <input type="text" asp-for="Urgency" class="form-control" maxlength="35" />
-                        <span asp-validation-for="Urgency" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">SubCause</label>
-                        <input type="text" asp-for="SubCause" class="form-control" maxlength="35" />
-                        <span asp-validation-for="SubCause" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label class="form-label">Problem Summary</label>
-                        <textarea id="ProblemSummary" rows="5" class="form-control" maxlength="255" style="resize: none;" asp-for="@Model.ProblemSummary"></textarea>
-                        <span asp-validation-for="ProblemSummary" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Solution</label>
-                        <textarea id="ProblemSummary" rows="5" class="form-control" maxlength="250" style="resize: none;" asp-for="@Model.Solution"></textarea>
-                        <span asp-validation-for="Solution" class="text-danger"></span>
-                    </div>
-                </div>
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        <strong>Sorry!</strong> - @TempData["Error"]
+    </div>
+}
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Upsert" asp-controller="Incident" method="post" id="SaveIncidentForm">
+            <input hidden asp-for="Id" />
+            @if (Model.Id != 0)
+            {
+                <input hidden asp-for="RequestNr" />
+                <input hidden asp-for="OpenDate" />
+            }
+            <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <label for="ProblemSummary" class="col-md-4 col-form-label">ProblemDescription</label>
-                        <textarea id="ProblemSummary" rows="3" class="form-control" maxlength="500" style="resize: none;" asp-for="@Model.ProblemDescription"></textarea>
-                        <span asp-validation-for="ProblemDescription" class="text-danger"></span>
+                        @{
+                            string title = Model.Id == 0 ? "Create" : "Edit";
+                        }
+                        <h2 class="text-center mb-4">@title Incident</h2>
                     </div>
                 </div>
-
                 <div class="row">
-                    <div class="col-md-6">
-                        <label class="form-label">Origin</label>
-                        @Html.DropDownListFor(model => model.OriginId, new SelectList(ViewBag.Origins, "Value", "Text")/* , "Choose...", */, new { @class = "form-control selectpicker", @title = "Choose..." })
-                        <span asp-validation-for="OriginId" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Ambit</label>
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">RequestNr</label>
+                                @if (Model.Id != 0)
+                                {
+                                    <input type="text" asp-for="RequestNr" class="form-control" readonly disabled />
+                                }
+                                else
+                                {
+                                    <input type="text" asp-for="RequestNr" class="form-control" maxlength="17" />
+                                }
+                                <span asp-validation-for="RequestNr" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Subsystem</label>
+                                <input type="text" asp-for="Subsystem" class="form-control" maxlength="2" />
+                                <span asp-validation-for="Subsystem" class="text-danger"></span>
+                            </div>
+                        </div>
                         @if (Model.Id != 0)
                         {
-                            @Html.DropDownListFor(model => model.AmbitId, new SelectList(ViewBag.Ambits, "Value", "Text"), new { @class = "form-control selectpicker", @id = "AmbitId", @title = "Choose..." })
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="form-label">OpenDate</label>
+                                    <input type="date" asp-for="OpenDate" class="form-control" readonly disabled />
+                                    <span asp-validation-for="OpenDate" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">CloseDate</label>
+                                    <input type="date" asp-for="CloseDate" class="form-control" />
+                                    <span asp-validation-for="CloseDate" class="text-danger"></span>
+                                </div>
+                            </div>
                         }
-                        else
-                        {
-                            @Html.DropDownListFor(model => model.AmbitId, Enumerable.Empty<SelectListItem>(), new { @class = "form-control selectpicker", @id = "AmbitId", @title = "Choose..." })
-                        }
-                        <span asp-validation-for="AmbitId" class="text-danger"></span>
-                    </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Type</label>
+                                <input type="text" asp-for="Type" class="form-control" maxlength="35" />
+                                <span asp-validation-for="Type" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">ApplicationType</label>
+                                <input type="text" asp-for="ApplicationType" class="form-control" maxlength="35" />
+                                <span asp-validation-for="ApplicationType" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Urgency</label>
+                                <input type="text" asp-for="Urgency" class="form-control" maxlength="35" />
+                                <span asp-validation-for="Urgency" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">SubCause</label>
+                                <input type="text" asp-for="SubCause" class="form-control" maxlength="35" />
+                                <span asp-validation-for="SubCause" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Problem Summary</label>
+                                <textarea id="ProblemSummary" rows="5" class="form-control" maxlength="255" style="resize: none;" asp-for="@Model.ProblemSummary"></textarea>
+                                <span asp-validation-for="ProblemSummary" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Solution</label>
+                                <textarea id="ProblemSummary" rows="5" class="form-control" maxlength="250" style="resize: none;" asp-for="@Model.Solution"></textarea>
+                                <span asp-validation-for="Solution" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="ProblemSummary" class="col-md-4 col-form-label">ProblemDescription</label>
+                                <textarea id="ProblemSummary" rows="3" class="form-control" maxlength="500" style="resize: none;" asp-for="@Model.ProblemDescription"></textarea>
+                                <span asp-validation-for="ProblemDescription" class="text-danger"></span>
+                            </div>
+                        </div>
 
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Origin</label>
+                                @Html.DropDownListFor(model => model.OriginId, new SelectList(ViewBag.Origins, "Value", "Text")/* , "Choose...", */, new { @class = "form-control selectpicker", @title = "Choose..." })
+                                <span asp-validation-for="OriginId" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Ambit</label>
+                                @if (Model.Id != 0)
+                                {
+                                    @Html.DropDownListFor(model => model.AmbitId, new SelectList(ViewBag.Ambits, "Value", "Text"), new { @class = "form-control selectpicker", @id = "AmbitId", @title = "Choose..." })
+                                }
+                                else
+                                {
+                                    @Html.DropDownListFor(model => model.AmbitId, Enumerable.Empty<SelectListItem>(), new { @class = "form-control selectpicker", @id = "AmbitId", @title = "Choose..." })
+                                }
+                                <span asp-validation-for="AmbitId" class="text-danger"></span>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Incident Type</label>
+                                @if (Model.Id != 0)
+                                {
+                                    @Html.DropDownListFor(model => model.IncidentTypeId, new SelectList(ViewBag.IncidentTypes, "Value", "Text"), new { @class = "form-control selectpicker", @id = "IncidentTypeId", @title = "Choose..." })
+                                }
+                                else
+                                {
+                                    @Html.DropDownListFor(model => model.IncidentTypeId, Enumerable.Empty<SelectListItem>(), new { @class = "form-control selectpicker", @id = "IncidentTypeId", @title = "Choose..." })
+                                }
+                                <span asp-validation-for="IncidentTypeId" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">ThirdParty</label>
+                                <input type="text" asp-for="ThirdParty" class="form-control" maxlength="35" />
+                                <span asp-validation-for="ThirdParty" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Scenary</label>
+                                @Html.DropDownListFor(model => model.ScenaryId, new SelectList(ViewBag.Scenaries, "Value", "Text"), new { @class = "form-control selectpicker", @title = "Choose..." })
+                                @Html.ValidationMessageFor(model => model.ScenaryId, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Threat</label>
+                                @Html.DropDownListFor(model => model.ThreatId, new SelectList(ViewBag.Threats, "Value", "Text"), new { @class = "form-control selectpicker", @title = "Choose..." })
+                                @Html.ValidationMessageFor(model => model.ThreatId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label class="form-label">Incident Type</label>
-                        @if (Model.Id != 0)
-                        {
-                            @Html.DropDownListFor(model => model.IncidentTypeId, new SelectList(ViewBag.IncidentTypes, "Value", "Text"), new { @class = "form-control selectpicker", @id = "IncidentTypeId", @title = "Choose..." })
-                        }
-                        else
-                        {
-                            @Html.DropDownListFor(model => model.IncidentTypeId, Enumerable.Empty<SelectListItem>(), new { @class = "form-control selectpicker", @id = "IncidentTypeId", @title = "Choose..." })
-                        }
-                        <span asp-validation-for="IncidentTypeId" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">ThirdParty</label>
-                        <input type="text" asp-for="ThirdParty" class="form-control" maxlength="35" />
-                        <span asp-validation-for="ThirdParty" class="text-danger"></span>
+
+
+                <div class="row mt-4">
+                    <div class="col-md-12 text-end">
+                        <button type="submit" style="width: 100px;" class="btn btn-success me-2">Save</button>
+                        <a type="button" style="width: 100px;" class="btn btn-secondary" asp-action="Index" asp-controller="Incident">Cancel</a>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label class="form-label">Scenary</label>
-                        @Html.DropDownListFor(model => model.ScenaryId, new SelectList(ViewBag.Scenaries, "Value", "Text"), new { @class = "form-control selectpicker", @title = "Choose..." })
-                        @Html.ValidationMessageFor(model => model.ScenaryId, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Threat</label>
-                        @Html.DropDownListFor(model => model.ThreatId, new SelectList(ViewBag.Threats, "Value", "Text"), new { @class = "form-control selectpicker", @title = "Choose..." })
-                        @Html.ValidationMessageFor(model => model.ThreatId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
+
             </div>
-        </div>
-
-
-        <div class="row mt-4">
-            <div class="col-md-12 text-right">
-                <button type="submit" class="btn btn-success mr-2">Save</button>
-                <a type="button" class="btn btn-light" asp-action="Index" asp-controller="Incident">Cancel</a>
-            </div>
-        </div>
+        </form>
     </div>
-</form>
+</div>
 @section Scripts {
     <script type="text/javascript">
 

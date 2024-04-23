@@ -1,5 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Application.DTO;
+using Application.Extensions;
+using Application.TableParameters;
 using AutoMapper;
 using Domain.Entities;
 using Infrastructure.Persistance;
@@ -34,7 +36,11 @@ namespace Infrastructure.Repositories
             return await Save();
         }
 
-        public async Task<IEnumerable<UserDto>> GetAll() => _mapper.Map<IEnumerable<UserDto>>(await _dbContext.Users.ToListAsync());
+        public async Task<IEnumerable<UserDto>> GetAll(DataTablesParameters parameters) => _mapper.Map<IEnumerable<UserDto>>(await _dbContext.Users
+            .Search(parameters)
+            .OrderBy(parameters)
+            .Page(parameters)
+            .ToListAsync());
 
         public async Task<IEnumerable<Role>> GetRolesAsync() => await _dbContext.Roles.ToListAsync();
 
