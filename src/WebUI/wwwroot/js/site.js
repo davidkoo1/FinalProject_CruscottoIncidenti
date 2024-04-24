@@ -1,7 +1,4 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
+﻿
 function drawPatrialView(url, divId, callback) {
     $.ajax({
         url: url,
@@ -21,6 +18,83 @@ function drawPatrialView(url, divId, callback) {
     });
 }
 
+
+function importFile() {
+    var form = $('#importForm')[0];
+    var formData = new FormData(form);
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+    $.ajax({
+        url: '../Incident/Import',
+        type: 'POST',
+        data: formData,
+        processData: false, 
+        contentType: false, 
+        cache: false,
+        success: function (data) {
+            if (data.statusCode === 200) {
+                toastr.success("Success", "Import");
+                $('#fileUpload').val('');
+                $('#IncidentDatatable').DataTable().ajax.reload(null, false);
+            } else {
+                toastr.error("Error", data.message);
+            }
+        }
+    });
+}
+
+
+
+//IncidentData
+function setupRowClickEvents(table) {
+    $('#UserDatatable tbody').on('click', 'tr', function () {
+        var rowData = table.row(this).data();
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+            $('#actions').hide();
+        } else {
+            table.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+            updateButtonUserLinks(rowData.id);
+            checkTableDataAndToggleActions(table);
+        }
+    });
+    $('#IncidentDatatable tbody').on('click', 'tr', function () {
+        var rowData = table.row(this).data();
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+            $('#actions').hide();
+        } else {
+            table.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+            updateButtonIncidentLinks(rowData.id);
+            checkTableDataAndToggleActions(table);
+        }
+    });
+}
+
+function checkTableDataAndToggleActions(table) {
+    if (table.rows().count() === 0) {
+        $('#actions').hide();
+    } else {
+        $('#actions').show();
+    }
+}
 
 function initializeIncidentDataTable() {
     var table = $('#IncidentDatatable').DataTable({
@@ -64,9 +138,53 @@ function initializeIncidentDataTable() {
     return table;
 }
 
+function updateButtonIncidentLinks(id) {
+    var url = `../Incident/Upsert/${id}`;
+    $('#editLink').attr('onclick', `window.location.href = '${url}'`);
+    $('#detailsLink').attr('onclick', `drawPatrialView('/Incident/Details/'+${id}, 'xlModalBody')`);
+    $('#deleteLink').attr('onclick', `drawPatrialView('/Incident/Delete/'+${id}, 'lgModalBody')`);
+}
+
+function deleteCurrentIncident(IncidentId) {
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+    $.ajax({
+        url: '../Incident/DeleteConfirmed/' + IncidentId,
+        cache: false,
+        type: 'POST',
+        contentType: "application/json; charset=utf-8",
+        success: function (response) {
+            if (response.success) {
+                toastr.success("Success", "Delete");
+                $('#actions').hide();
+                $('#IncidentDatatable').DataTable().ajax.reload(null, false);
+            } else {
+                toastr.alert("SuccessError", "Delete" + response.message);
+            }
+        },
+        error: function () {
+            toastr.alert("Global error");
+        }
+    });
+}
 
 
-//UserDataTableButton
+//UserData
 function initializeUserDataTable() {
     var table = $('#UserDatatable').DataTable({
         "processing": true,
@@ -88,90 +206,14 @@ function initializeUserDataTable() {
     return table;
 }
 
-function setupRowClickEvents(table) {
-    $('#UserDatatable tbody').on('click', 'tr', function () {
-        var rowData = table.row(this).data();
-        if ($(this).hasClass('selected')) {
-            $(this).removeClass('selected');
-            $('#actions').hide();
-        } else {
-            table.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
-            updateButtonUserLinks(rowData.id);
-            checkTableDataAndToggleActions(table);
-        }
-    });
-    $('#IncidentDatatable tbody').on('click', 'tr', function () {
-        var rowData = table.row(this).data();
-        if ($(this).hasClass('selected')) {
-            $(this).removeClass('selected');
-            $('#actions').hide();
-        } else {
-            table.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
-            updateButtonIncidentLinks(rowData.id);
-            checkTableDataAndToggleActions(table);
-        }
-    });
-}
-
-function checkTableDataAndToggleActions(table) {
-    if (table.rows().count() === 0) {
-        $('#actions').hide();
-    } else {
-        $('#actions').show();
-    }
-}
-
-
-
 function updateButtonUserLinks(id) {
-    // Fix: Properly concatenate the id into the URL for the 'drawPatrialView' function calls
     $('#editLink').attr('onclick', `drawPatrialView('/User/GetUpsert/'+${id}, 'xlModalBody')`);
-    // Removed the commented-out code for clarity and cleanliness
     $('#detailsLink').attr('onclick', `drawPatrialView('/User/Details/'+${id}, 'lgModalBody')`);
-    // Fix: Correctly close the deleteUser function call with the right parenthesis
     $('#deleteLink').attr('onclick', `deleteUser(${id})`);
-    // Removed the commented-out code as it seems you've moved away from using href for deletion
-}
-function updateButtonIncidentLinks(id) {
-    var url = `../Incident/Upsert/${id}`;
-
-    // Устанавливаем ссылку в атрибуте onclick
-    $('#editLink').attr('onclick', `window.location.href = '${url}'`);
-
-    // Removed the commented-out code for clarity and cleanliness
-    $('#detailsLink').attr('onclick', `drawPatrialView('/Incident/Details/'+${id}, 'xlModalBody')`);
-    // Fix: Correctly close the deleteUser function call with the right parenthesis
-    $('#deleteLink').attr('onclick', `drawPatrialView('/Incident/Delete/'+${id}, 'lgModalBody')`);
-    // Removed the commented-out code as it seems you've moved away from using href for deletion
 }
 
 function deleteUser(id) {
     drawPatrialView('/User/Delete/' + id, 'lgModalBody');
-    //$('#deleteCurrent').on('submit', function (e) {
-    //    e.preventDefault();
-    //    e.stopPropagation();
-    //    $.ajax({
-    //        url: '/User/Delete/' + userId,
-    //        type: 'POST',
-    //        success: function (response) {
-    //            if (response.success) {
-    //                // Перезагрузка данных таблицы и закрытие модального окна
-    //                $('#UserDatatable').DataTable().ajax.reload();
-    //                //$('.modal').modal('hide'); // Предполагается, что вы используете Bootstrap для модальных окон
-    //            } else {
-    //                alert("Ошибка: " + response.message);
-    //            }
-    //        },
-    //        error: function () {
-    //            alert("Произошла ошибка при удалении.");
-    //        }
-    //    });
-    //});
-
-
-
 }
 
 function deleteCurrentItem(userId) {
@@ -193,56 +235,15 @@ function deleteCurrentItem(userId) {
         "hideMethod": "fadeOut"
     };
     $.ajax({
-        url: '../User/DeleteConfirmed/' + userId,//"@Url.Action("Delete", "User", new {id = 0})",
+        url: '../User/DeleteConfirmed/' + userId,
         cache: false,
         type: 'POST',
         contentType: "application/json; charset=utf-8",
-        //data: JSON.stringify(userId),
         success: function (response) {
             if (response.success) {
-                //$('#UserDatatable').DataTable().ajax.reload();
                 toastr.error("Success", "Delete");
                 $('#actions').hide();
-                $('#UserDatatable').DataTable().ajax.reload(null, false); // Перезагрузите таблицу без сброса пагинации
-            } else {
-                toastr.alert("SuccessError", "Delete" + response.message);
-            }
-        },
-        error: function () {
-            toastr.alert("Global error");
-        }
-    });
-}
-function deleteCurrentIncident(IncidentId) {
-    toastr.options = {
-        "closeButton": true,
-        "debug": false,
-        "newestOnTop": true,
-        "progressBar": true,
-        "positionClass": "toast-top-right",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "1000",
-        "timeOut": "5000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-    };
-    $.ajax({
-        url: '../Incident/DeleteConfirmed/' + IncidentId,//"@Url.Action("Delete", "User", new {id = 0})",
-        cache: false,
-        type: 'POST',
-        contentType: "application/json; charset=utf-8",
-        //data: JSON.stringify(userId),
-        success: function (response) {
-            if (response.success) {
-                //$('#UserDatatable').DataTable().ajax.reload();
-                toastr.success("Success", "Delete");
-                $('#actions').hide();
-                $('#IncidentDatatable').DataTable().ajax.reload(null, false); // Перезагрузите таблицу без сброса пагинации
+                $('#UserDatatable').DataTable().ajax.reload(null, false); 
             } else {
                 toastr.alert("SuccessError", "Delete" + response.message);
             }
@@ -273,7 +274,6 @@ $(document).on('submit', '#SaveUserForm', function (e) {
     };
     e.preventDefault();
 
-    //ForToastrEditOrCreate
     var CurrentIdUser = $('#UserId').val();
     var $form = $(this);
 

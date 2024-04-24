@@ -203,17 +203,31 @@ namespace WebUI.Controllers
             return File(csvFile, "text/csv", $"Incidents_{DateTime.UtcNow:yyyyMMdd}.csv");
         }
 
-        [HttpPost("import")]
-        public async Task<IActionResult> Import([FromForm] IFormFile file)
+        [HttpPost]
+        public async Task<IActionResult> Import(IFormFile file)
         {
-            if (file == null || file.Length == 0)
+            try
             {
-                return BadRequest("No file uploaded.");
+                if (file == null || file.Length == 0)
+                {
+                    return Json(new { StatusCode = 500, Message = "No file uploaded." });
+                }
+
+                var command = new ImportIncidentsFromCSV { File = file };
+                var result = await Mediator.Send(command);
+                if (result)
+                {
+                    return Json(new { StatusCode = 200 });
+                }
+                return Json(new { StatusCode = 500, Message = "Something Errors!" });
+            }
+            catch (Exception ex )
+            {
+                return Json(new { StatusCode = 500, Message = ex.Message });
             }
 
-            var command = new ImportIncidentsFromCSV { File = file };
-            var result = await Mediator.Send(command);
-            return Ok($"{result} incidents have been imported.");
+
+            
         }
     }
 }

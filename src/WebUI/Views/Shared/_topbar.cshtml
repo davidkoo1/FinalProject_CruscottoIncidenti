@@ -6,19 +6,19 @@
             <span class="logo-sm">
                 <img src="~/assets/images/LOGO.jpg" alt="" height="44">
             </span>
-@*             <span class="logo logo-dark">
-                <span class="logo-sm">
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <a href="@Url.Action("Index", "Incident")">
-                            <img src="~/assets/images/LOGO.jpg" alt="" height="44">
-                        </a>
-                    }
-                    else
-                    {
-                        <img src="~/assets/images/LOGO.jpg" alt="" height="44">
-                    }
-                </span>
+            @*             <span class="logo logo-dark">
+            <span class="logo-sm">
+            @if (User.IsInRole("Admin"))
+            {
+            <a href="@Url.Action("Index", "Incident")">
+            <img src="~/assets/images/LOGO.jpg" alt="" height="44">
+            </a>
+            }
+            else
+            {
+            <img src="~/assets/images/LOGO.jpg" alt="" height="44">
+            }
+            </span>
             </span> *@
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -27,12 +27,12 @@
             </button>
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-                    @*                     @if (User.IsInRole("Admin"))
-                    { *@
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Incident" asp-action="Index">Incidents</a>
-                    </li>
-                    @*                    } *@
+                    @if (User.IsInRole("Operator"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Incident" asp-action="Index">Incidents</a>
+                        </li>
+                    }
                     @if (User.IsInRole("Admin"))
                     {
                         <li class="nav-item">
