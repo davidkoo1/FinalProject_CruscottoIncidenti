@@ -1,7 +1,7 @@
 ﻿using Application.TableParameters;
 using System.Linq.Expressions;
 
-namespace Application.Extensions
+namespace Application.Common.Extensions
 {
     public static class DataTableExtensions
     {

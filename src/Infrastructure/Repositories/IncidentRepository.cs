@@ -1,6 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Application.DTO;
-using Application.Extensions;
+using Application.Common.Extensions;
 using Application.TableParameters;
 using AutoMapper;
 using Domain.Entities.HelpDesk;
@@ -103,5 +103,14 @@ namespace Infrastructure.Repositories
             }
             return new UpsertIncidentDto();
         }
+
+        public async Task<IEnumerable<IncidentDetailDto>> GetAllIncidentsForCVS() => _mapper.Map<IEnumerable<IncidentDetailDto>>(
+            await _dbContext.Incidents
+            .Where(x => !x.IsDeleted)
+            .Include(x => x.Ambit)
+            .Include(x => x.Origin)
+            .Include(x => x.IncidentType)
+            .Include(x => x.Scenary)
+            .Include(x => x.Threat).ToListAsync());
     }
 }

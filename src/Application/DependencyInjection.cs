@@ -1,4 +1,6 @@
-﻿using Application.DTO;
+﻿using Application.Common.Interfaces;
+using Application.Common.Services;
+using Application.DTO;
 using Application.Validator;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -28,6 +30,8 @@ namespace Application
             services.AddTransient<IValidator<LoginDto>, LoginDtoValidator>();
             services.AddTransient<IValidator<UpsertUserDto>, UpsertUserDtoValidator>();
             services.AddTransient<IValidator<UpsertIncidentDto>, UpsertIncidentDtoValidator>();
+
+            services.AddTransient<IFileService, FileService>();
 
             //AutoMapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
