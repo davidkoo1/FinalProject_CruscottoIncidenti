@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System.Security.Claims;
 
 namespace WebUI.Controllers
@@ -77,7 +78,7 @@ namespace WebUI.Controllers
             }
             catch (Exception ex)
             {
-                // Обработка исключения
+                Log.Error("Error in Account.LoginPost", ex.Message);
                 return View(loginVM);
             }
         }

@@ -2,6 +2,7 @@
 using Application.IncidentCQRS.Commands;
 using Application.IncidentCQRS.Queries;
 using Application.TableParameters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Serilog;
@@ -21,7 +22,6 @@ namespace WebUI.Controllers
         {
             try
             {
-                Log.Information("Info LoadDatatable");
                 var result = await Mediator.Send(new GetAllInicdents(parameters));
                 //return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
                 return Ok(new
@@ -32,174 +32,251 @@ namespace WebUI.Controllers
                     data = result
                 });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                Log.Error("Error in Incident.LoadDatatable", ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
 
         public async Task<IActionResult> Details(int id)
         {
-            var IncidentDetail = await Mediator.Send(new GetIncidentById { Id = id });
-
-            if (IncidentDetail == null)
+            try
             {
-                return NotFound();
+                var IncidentDetail = await Mediator.Send(new GetIncidentById { Id = id });
+
+                //if (IncidentDetail == null)
+                //{
+                //    return NotFound();
+                //}
+                return PartialView("~/Views/Incident/Details.cshtml", IncidentDetail);
             }
-            return PartialView("~/Views/Incident/Details.cshtml", IncidentDetail);
+            catch (Exception ex)
+            {
+                Log.Error($"Error in Incident.Details with ID {id}", ex);
+                throw;
+            }
+            
         }
 
         [HttpPost]
         public async Task<IActionResult> GetAmbits(int originId)
         {
-
-            var ambits = await Mediator.Send(new GetAllAmbits { OriginId = originId });
-            var selectListAmbitsVm = ambits.Select(x => new SelectListItem
+            try
             {
-                Value = x.Id.ToString(),
-                Text = x.Name,
-                Selected = false
-            });
-            return Json(selectListAmbitsVm);
+                var ambits = await Mediator.Send(new GetAllAmbits { OriginId = originId });
+                var selectListAmbitsVm = ambits.Select(x => new SelectListItem
+                {
+                    Value = x.Id.ToString(),
+                    Text = x.Name,
+                    Selected = false
+                });
+                return Json(selectListAmbitsVm);
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Error in Incident.GetAmbits with Origin ID {originId}", ex);
+                throw;
+            }
+
 
         }
 
         [HttpPost]
         public async Task<IActionResult> GetIncidentTypes(int ambitId)
         {
-            var types = await Mediator.Send(new GetAllIncidentTypes { AmbitId = ambitId });
-            var selectListTypesVm = types.Select(x => new SelectListItem
+            try
             {
-                Value = x.Id.ToString(),
-                Text = x.Name,
-                Selected = false
-            });
-            return Json(selectListTypesVm);
-        }
-
-        private async Task InitialViewBags(UpsertIncidentDto incidentDto)
-        {
-            var origins = await Mediator.Send(new GetAllOrigins { });
-            var selectListOriginsVm = origins.Select(x => new SelectListItem
-            {
-                Value = x.Id.ToString(),
-                Text = x.Name,
-                Selected = incidentDto.Id != 0 ? x.Id == incidentDto.OriginId : false
-            });
-            ViewBag.Origins = selectListOriginsVm;
-            if (incidentDto.Id != 0)
-            {
-                var ambits = await Mediator.Send(new GetAllAmbits { OriginId = incidentDto.OriginId });
-                var selectListAmbitsVm = ambits.Select(x => new SelectListItem
-                {
-                    Value = x.Id.ToString(),
-                    Text = x.Name,
-                    Selected = incidentDto.Id != 0 ? x.Id == incidentDto.AmbitId : false
-                });
-                ViewBag.Ambits = selectListAmbitsVm;
-
-                var types = await Mediator.Send(new GetAllIncidentTypes { AmbitId = incidentDto.AmbitId });
+                var types = await Mediator.Send(new GetAllIncidentTypes { AmbitId = ambitId });
                 var selectListTypesVm = types.Select(x => new SelectListItem
                 {
                     Value = x.Id.ToString(),
                     Text = x.Name,
-                    Selected = incidentDto.Id != 0 ? x.Id == incidentDto.IncidentTypeId : false
+                    Selected = false
                 });
-                ViewBag.IncidentTypes = selectListTypesVm;
+                return Json(selectListTypesVm);
             }
-            var scenaries = await Mediator.Send(new GetAllScenaries { });
-            var selectListScenariesVm = scenaries.Select(x => new SelectListItem
+            catch (Exception ex)
             {
-                Value = x.Id.ToString(),
-                Text = x.Name,
-                Selected = incidentDto.Id != 0 ? x.Id == incidentDto.ScenaryId : false
-            });
-            ViewBag.Scenaries = selectListScenariesVm;
+                Log.Error($"Error in Incident.GetIncidentTypes with Ambit ID {ambitId}", ex);
+                throw;
+            }
+        }
 
-            var threats = await Mediator.Send(new GetAllThreats { });
-            var selectListThreatsVm = threats.Select(x => new SelectListItem
+        private async Task InitialViewBags(UpsertIncidentDto incidentDto)
+        {
+            try
             {
-                Value = x.Id.ToString(),
-                Text = x.Name,
-                Selected = incidentDto.Id != 0 ? x.Id == incidentDto.ThreatId : false
-            });
-            ViewBag.Threats = selectListThreatsVm;
+                var origins = await Mediator.Send(new GetAllOrigins { });
+                var selectListOriginsVm = origins.Select(x => new SelectListItem
+                {
+                    Value = x.Id.ToString(),
+                    Text = x.Name,
+                    Selected = incidentDto.Id != 0 ? x.Id == incidentDto.OriginId : false
+                });
+                ViewBag.Origins = selectListOriginsVm;
+                if (incidentDto.Id != 0)
+                {
+                    var ambits = await Mediator.Send(new GetAllAmbits { OriginId = incidentDto.OriginId });
+                    var selectListAmbitsVm = ambits.Select(x => new SelectListItem
+                    {
+                        Value = x.Id.ToString(),
+                        Text = x.Name,
+                        Selected = incidentDto.Id != 0 ? x.Id == incidentDto.AmbitId : false
+                    });
+                    ViewBag.Ambits = selectListAmbitsVm;
+
+                    var types = await Mediator.Send(new GetAllIncidentTypes { AmbitId = incidentDto.AmbitId });
+                    var selectListTypesVm = types.Select(x => new SelectListItem
+                    {
+                        Value = x.Id.ToString(),
+                        Text = x.Name,
+                        Selected = incidentDto.Id != 0 ? x.Id == incidentDto.IncidentTypeId : false
+                    });
+                    ViewBag.IncidentTypes = selectListTypesVm;
+                }
+                var scenaries = await Mediator.Send(new GetAllScenaries { });
+                var selectListScenariesVm = scenaries.Select(x => new SelectListItem
+                {
+                    Value = x.Id.ToString(),
+                    Text = x.Name,
+                    Selected = incidentDto.Id != 0 ? x.Id == incidentDto.ScenaryId : false
+                });
+                ViewBag.Scenaries = selectListScenariesVm;
+
+                var threats = await Mediator.Send(new GetAllThreats { });
+                var selectListThreatsVm = threats.Select(x => new SelectListItem
+                {
+                    Value = x.Id.ToString(),
+                    Text = x.Name,
+                    Selected = incidentDto.Id != 0 ? x.Id == incidentDto.ThreatId : false
+                });
+                ViewBag.Threats = selectListThreatsVm;
+            }
+            catch (Exception ex)
+            {
+                Log.Information("UpsertIncidentDto => {@incidentDto}", incidentDto);
+                Log.Error("Incident.InitialViewBags", ex);
+                throw;
+            }
+            
 
         }
 
 
         public async Task<IActionResult> Upsert(int id)
         {
-            var updateIncidentVm = await Mediator.Send(new GetIncidentForUpsert { Id = id });
-            await InitialViewBags(updateIncidentVm);
+            try
+            {
+                var updateIncidentVm = await Mediator.Send(new GetIncidentForUpsert { Id = id });
+                await InitialViewBags(updateIncidentVm);
 
-            return View("~/Views/Incident/Upsert.cshtml", updateIncidentVm);
+                return View("~/Views/Incident/Upsert.cshtml", updateIncidentVm);
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Error in Incident.Upsert with ID {id}", ex);
+                //TempData["Error"] = "Error processing your request";
+                return RedirectToAction("Index", "Incident");
+            }
+
 
         }
 
         [HttpPost]
         public async Task<IActionResult> Upsert(UpsertIncidentDto incidentUpsert)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var result = await Mediator.Send(new UpsertIncident { UpsertIncidentDto = incidentUpsert });
-                if (result)
+                if (ModelState.IsValid)
                 {
-
-                    //return Json(new { success = true });
-                    return RedirectToAction("Index", "Incident");
+                    var result = await Mediator.Send(new UpsertIncident { UpsertIncidentDto = incidentUpsert });
+                    if (result)
+                    {
+                        return RedirectToAction("Index", "Incident");
+                    }
+                    else
+                    {
+                        TempData["Error"] = "But current incident exist";
+                    }
                 }
                 else
                 {
-                    TempData["Error"] = "But current incident exist";
-                    await InitialViewBags(incidentUpsert);
-                    return View(incidentUpsert);
+                    TempData["Error"] = "Give correct data!";
                 }
-
+                await InitialViewBags(incidentUpsert);
+                return View(incidentUpsert);
             }
-            TempData["Error"] = "Give correct data!";
-            await InitialViewBags(incidentUpsert);
-            return View(incidentUpsert);
+            catch (Exception ex)
+            {
+                Log.Error("Error during incident upsert operation", ex);
+                TempData["Error"] = ex.Message;
+                await InitialViewBags(incidentUpsert);
+                return View(incidentUpsert);
+            }
         }
 
         public async Task<IActionResult> Delete(int id)
         {
-
-            var incident = await Mediator.Send(new GetIncidentById { Id = id });
-            if (incident == null)
+            try
             {
-                return NotFound();
+                var incident = await Mediator.Send(new GetIncidentById { Id = id });
+                //if (incident == null)
+                //{
+                //    return NotFound();
+                //}
+
+                return PartialView("~/Views/Incident/Delete.cshtml", id);
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Error in Incident.Delete with ID {id}", ex);
+                throw;
             }
 
-            return PartialView("~/Views/Incident/Delete.cshtml", id);
         }
 
 
         [HttpPost]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var success = await Mediator.Send(new DeleteIncident { Id = id });
-            if (success)
+            try
             {
-                return Json(new { success = true });
+                var success = await Mediator.Send(new DeleteIncident { Id = id });
+                if (success)
+                {
+                    return Json(new { success = true });
+                }
+                else
+                {
+                    return Json(new { success = false });
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return Json(new { success = false });
+                Log.Error($"Error in Incident.DeleteConfirmed with ID {id}", ex);
+                throw;
             }
+
         }
 
-        public IActionResult CSV()
-        {
-            return PartialView("~/Views/Incident/_CSV.cshtml");
-        }
+        public IActionResult CSV() =>  PartialView("~/Views/Incident/_CSV.cshtml");
+        
 
         [HttpGet]
         public async Task<FileResult> Export()
         {
-            var csvFile = await Mediator.Send(new ExportAllIncidentsToCSV());
-            return File(csvFile, "text/csv", $"Incidents_{DateTime.UtcNow:yyyyMMdd}.csv");
+            try
+            {
+                var csvFile = await Mediator.Send(new ExportAllIncidentsToCSV());
+                return File(csvFile, "text/csv", $"Incidents_{DateTime.UtcNow:yyyyMMdd}.csv");
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Error during CSV export", ex);
+                throw;
+            }
         }
 
         [HttpPost]
@@ -222,11 +299,18 @@ namespace WebUI.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error("ImportFile", ex.Message);
                 return Json(new { StatusCode = 500, Message = ex.Message });
             }
 
 
 
         }
+
+
+        [Route("/404")]
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> NotFound() => View("~/Views/Shared/_NotFound.cshtml");
     }
 }

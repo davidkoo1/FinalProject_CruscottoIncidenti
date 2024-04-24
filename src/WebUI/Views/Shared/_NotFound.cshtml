@@ -1,0 +1,88 @@
+﻿@{
+    // ViewBag.Title = "404";
+    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+}
+
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+        background-color: #f4f5f7;
+        overflow-x: hidden;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .error-container {
+        text-align: center;
+        max-width: 600px; /* You may adjust this value as needed */
+        margin: auto;
+        padding: 20px; /* Padding to ensure nothing touches the edges */
+        box-sizing: border-box; /* This ensures padding is included in width */
+    }
+
+        .error-container h1 {
+            font-size: 180px;
+            line-height: 180px;
+            margin: 0px;
+            color: #262626;
+        }
+
+        .error-container h2 {
+            font-size: 30px;
+            margin: 0;
+            font-weight: 700;
+            color: #262626;
+        }
+
+        .error-container p {
+            font-size: 16px;
+            color: #777;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+
+        .error-container a {
+            display: inline-block;
+            padding: 12px 30px;
+            font-weight: 700;
+            background-color: #ff5b5b;
+            color: white;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: background-color 0.2s ease;
+        }
+
+            .error-container a:hover {
+                background-color: #f33;
+            }
+
+    .error-img {
+        width: 100%; /* Make sure the container is full width */
+        height: auto; /* Height will scale automatically */
+        display: flex; /* This will help center the image */
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+    }
+
+        .error-img img {
+            max-width: 100%; /* Image can be as big as the container */
+            height: auto; /* Height will maintain the aspect ratio */
+            max-height: 100vh; /* Optional: Limit image height to the viewport height */
+        }
+</style>
+
+<div class="error-container">
+@*     <h1>404</h1>
+    <h2>Oops! Page not found.</h2>
+    <p>We can't seem to find the page you're looking for. Try going back to the homepage.</p>
+    <a href="/">Go Home</a> *@
+    <div class="error-img">
+        <img src="~/assets/images/404-error.webp" alt="404 Error" class="img-fluid mx-auto d-block">
+    </div>
+</div>
