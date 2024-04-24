@@ -5,6 +5,7 @@ using Application.Validator;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using System.Reflection;
 
 namespace Application
@@ -17,7 +18,6 @@ namespace Application
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
             //FluentValidation
-            //Added fluent validation
             services.AddControllers().AddFluentValidation(options =>
             {
                 //Automatic registration of validators in assembly
@@ -35,6 +35,18 @@ namespace Application
 
             //AutoMapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            //Logger
+            Log.Logger = new LoggerConfiguration()
+                //.MinimumLevel.Debug()
+                .WriteTo.Console()
+                .MinimumLevel.Information()
+                .WriteTo.File(@"Logs\Logging-log.log",
+                              rollingInterval: RollingInterval.Day,
+                              retainedFileCountLimit: 30,
+                              retainedFileTimeLimit: TimeSpan.FromDays(30))
+                .CreateLogger();
+
 
             return services;
         }

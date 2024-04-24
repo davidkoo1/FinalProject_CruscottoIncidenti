@@ -1,11 +1,10 @@
-﻿using Application.Common.Interfaces;
-using Application.DTO;
+﻿using Application.DTO;
 using Application.IncidentCQRS.Commands;
 using Application.IncidentCQRS.Queries;
 using Application.TableParameters;
-using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Serilog;
 
 namespace WebUI.Controllers
 {
@@ -22,7 +21,7 @@ namespace WebUI.Controllers
         {
             try
             {
-
+                Log.Information("Info LoadDatatable");
                 var result = await Mediator.Send(new GetAllInicdents(parameters));
                 //return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
                 return Ok(new
@@ -221,13 +220,13 @@ namespace WebUI.Controllers
                 }
                 return Json(new { StatusCode = 500, Message = "Something Errors!" });
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
                 return Json(new { StatusCode = 500, Message = ex.Message });
             }
 
 
-            
+
         }
     }
 }

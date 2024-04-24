@@ -1,6 +1,6 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Extensions;
+using Application.Common.Interfaces;
 using Application.DTO;
-using Application.Common.Extensions;
 using Application.TableParameters;
 using AutoMapper;
 using Domain.Entities;

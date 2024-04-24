@@ -10,7 +10,7 @@
 <div class="card">
     <div class="card-body">
         <form asp-action="Upsert" asp-controller="Incident" method="post" id="SaveIncidentForm">
-            <input hidden asp-for="Id" />
+            @* <input hidden asp-for="Id" /> *@
             @if (Model.Id != 0)
             {
                 <input hidden asp-for="RequestNr" />

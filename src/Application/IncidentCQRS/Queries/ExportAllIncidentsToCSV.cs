@@ -1,5 +1,4 @@
-﻿using Application.DTO;
-using MediatR;
+﻿using MediatR;
 
 namespace Application.IncidentCQRS.Queries
 {

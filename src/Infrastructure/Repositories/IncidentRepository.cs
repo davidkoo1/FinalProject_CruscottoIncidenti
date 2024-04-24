@@ -1,15 +1,12 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Extensions;
+using Application.Common.Interfaces;
 using Application.DTO;
-using Application.Common.Extensions;
 using Application.TableParameters;
 using AutoMapper;
 using Domain.Entities.HelpDesk;
 using Infrastructure.Persistance;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using System.Globalization;
-using System.Threading;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Infrastructure.Repositories
 {
@@ -65,7 +62,7 @@ namespace Infrastructure.Repositories
 
         public async Task<bool> UpsertIncident(UpsertIncidentDto incidentToUpsert)
         {
-            var existing = await _dbContext.Incidents.AnyAsync(x => x.RequestNr == incidentToUpsert.RequestNr && x.Id != incidentToUpsert.Id && x.IsDeleted);
+            var existing = await _dbContext.Incidents.AnyAsync(x => x.RequestNr == incidentToUpsert.RequestNr && x.Id != incidentToUpsert.Id /*&& x.IsDeleted*/);
             if (incidentToUpsert == null || existing)
             {
                 return false;

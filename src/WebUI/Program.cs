@@ -2,6 +2,8 @@ using Application;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc.Razor;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -39,7 +41,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     .AddCookie(options =>
     {
         options.LoginPath = "/Account/Login";
-        options.Cookie.Name = "AuthCookieTaskManager";
+        options.Cookie.Name = "AuthCookieIncidentProject";
     });
 
 
