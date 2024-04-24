@@ -1,0 +1,16 @@
+﻿
+<form asp-controller="Incident" asp-action="Import" method="post" enctype="multipart/form-data" class="mb-3">
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="fileUpload">Choose CSV File to Import:</label>
+            <input type="file" class="form-control-file" id="fileUpload" name="file" accept=".csv" required>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Import</button>
+        <a type="button" class="btn btn-dark" asp-controller="Incident" asp-action="Export" >Export to CSV</a>
+    </div>
+</form>
+
+
+

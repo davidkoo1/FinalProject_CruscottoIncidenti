@@ -6,6 +6,7 @@ namespace Application.Common.Interfaces
     public interface IIncidentRepository
     {
         Task<IEnumerable<IncidentDetailDto>> GetAllIncidentsForCVS();
+        Task<bool> CreateIncidentsFromCVS(IEnumerable<IncidentDetailDto> incidents);
         Task<IEnumerable<IncidentDto>> GetAllIncidents(DataTablesParameters parameters);
         Task<IEnumerable<SimpleDto>> GetAllOrigins();
         Task<IEnumerable<SimpleDto>> GetAllAmbitsByOrigin(int originId);

@@ -7,7 +7,7 @@
                     <h3 class="card-title">Incidents</h3>
                     <div class="d-flex justify-content-between">
                         <a type="button" style="width: 80px;" class="btn btn-success" href="@Url.Action("Upsert", "Incident", new { id = 0})">Add</a>
-                        <a type="button" class="btn btn-dark" href="@Url.Action("Export", "Incident")">Export</a>
+                        <a type="button" style="width: 80px;" class="btn btn-dark" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" onclick="drawPatrialView('/Incident/CSV', 'lgModalBody')">CVS</a>
                     </div>
 
 

@@ -15,8 +15,8 @@ namespace Infrastructure.Configuration.HelpDeskConfigs
                 .HasMaxLength(17)
                 .IsRequired();
 
-            builder.HasIndex(x => x.RequestNr)
-                .IsUnique();
+            //builder.HasIndex(x => x.RequestNr)
+            //    .IsUnique();
 
             builder.Property(x => x.Subsystem)
                 .HasMaxLength(2);

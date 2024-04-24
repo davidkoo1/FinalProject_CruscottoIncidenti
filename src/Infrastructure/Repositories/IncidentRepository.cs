@@ -7,6 +7,9 @@ using Domain.Entities.HelpDesk;
 using Infrastructure.Persistance;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
+using System.Threading;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Infrastructure.Repositories
 {
@@ -62,7 +65,7 @@ namespace Infrastructure.Repositories
 
         public async Task<bool> UpsertIncident(UpsertIncidentDto incidentToUpsert)
         {
-            var existing = await _dbContext.Incidents.AnyAsync(x => x.RequestNr == incidentToUpsert.RequestNr && x.Id != incidentToUpsert.Id);
+            var existing = await _dbContext.Incidents.AnyAsync(x => x.RequestNr == incidentToUpsert.RequestNr && x.Id != incidentToUpsert.Id && x.IsDeleted);
             if (incidentToUpsert == null || existing)
             {
                 return false;
@@ -90,7 +93,7 @@ namespace Infrastructure.Repositories
 
         public async Task<UpsertIncidentDto> GetIncidentForUpsertById(int incidentId)
         {
-            var existing = await _dbContext.Incidents.AnyAsync(x => x.Id == incidentId);
+            var existing = await _dbContext.Incidents.AnyAsync(x => x.Id == incidentId && !x.IsDeleted);
             if (existing)
             {
                 return _mapper.Map<UpsertIncidentDto>(await _dbContext.Incidents
@@ -112,5 +115,43 @@ namespace Infrastructure.Repositories
             .Include(x => x.IncidentType)
             .Include(x => x.Scenary)
             .Include(x => x.Threat).ToListAsync());
+
+        public Task<bool> CreateIncidentsFromCVS(IEnumerable<IncidentDetailDto> incidents)
+        {
+            incidents = incidents
+                .Where(record => _dbContext.Origins.Any(x => x.Name.Equals(record.Origin)) &&
+                    _dbContext.Ambits.Any(x => x.Name.Equals(record.Ambit)) &&
+                    _dbContext.IncidentTypes.Any(x => x.Name.Equals(record.IncidentType)) &&
+                    _dbContext.Threats.Any(x => x.Name.Equals(record.Threat)) &&
+                    _dbContext.Scenaries.Any(x => x.Name.Equals(record.Scenary))).ToList();
+
+            var incidentDtos = incidents
+                .Select(record =>
+                    new Incident
+                    {
+                        RequestNr = record.RequestNr,
+                        Subsystem = record.Subsystem,
+                        CreatedBy = _httpContextAccessor.HttpContext?.User.GetUserId(),
+                        Created = DateTime.UtcNow,
+                        OpenDate = record.OpenDate,
+                        CloseDate = record.CloseDate,
+                        Type = record.Type,
+                        ApplicationType = record.ApplicationType,
+                        Urgency = record.Urgency,
+                        SubCause = record.SubCause,
+                        ProblemSummary = record.ProblemSummary,
+                        ProblemDescription = record.ProblemDescription,
+                        Solution = record.Solution,
+                        OriginId = _dbContext.Origins.FirstOrDefault(x => x.Name.Equals(record.Origin)).Id,
+                        AmbitId = _dbContext.Ambits.FirstOrDefault(x => x.Name.Equals(record.Ambit)).Id,
+                        IncidentTypeId = _dbContext.IncidentTypes.FirstOrDefault(x => x.Name.Equals(record.IncidentType)).Id,
+                        ScenaryId = _dbContext.Scenaries.FirstOrDefault(x => x.Name.Equals(record.Scenary)).Id,
+                        ThreatId = _dbContext.Threats.FirstOrDefault(x => x.Name.Equals(record.Threat)).Id
+                    }).ToList();
+
+            _dbContext.AddRange(incidentDtos);
+
+            return Save();
+        }
     }
 }

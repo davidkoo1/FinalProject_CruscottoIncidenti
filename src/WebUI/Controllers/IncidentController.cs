@@ -191,11 +191,29 @@ namespace WebUI.Controllers
             }
         }
 
+        public IActionResult CSV()
+        {
+            return PartialView("~/Views/Incident/_CSV.cshtml");
+        }
+
         [HttpGet]
         public async Task<FileResult> Export()
         {
             var csvFile = await Mediator.Send(new ExportAllIncidentsToCSV());
             return File(csvFile, "text/csv", $"Incidents_{DateTime.UtcNow:yyyyMMdd}.csv");
+        }
+
+        [HttpPost("import")]
+        public async Task<IActionResult> Import([FromForm] IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No file uploaded.");
+            }
+
+            var command = new ImportIncidentsFromCSV { File = file };
+            var result = await Mediator.Send(command);
+            return Ok($"{result} incidents have been imported.");
         }
     }
 }
