@@ -256,6 +256,24 @@ function initializeUserDataTable() {
         "processing": true,
         "serverSide": true,
         "scrollX": true,
+        language: {
+            processing: localizations.processing,
+            search: localizations.search,
+            lengthMenu: localizations.lengthMenu,
+            info: localizations.info,
+            infoEmpty: localizations.infoEmpty,
+            /*infoFiltered: localizations.infoFiltered,*/
+            infoPostFix: "",
+            loadingRecords: "@Localization.loadingRecords",
+            zeroRecords: "@Localization.zeroRecords",
+            emptyTable: "@Localization.emptyTable",
+            paginate: {
+                first: "@Localization.first",
+                previous: "@Localization.previous",
+                next: "@Localization.next",
+                last: "@Localization.last"
+            }
+        },
         ajax: {
             "url": "/User/LoadDatatable",
             "type": "POST",
@@ -266,9 +284,9 @@ function initializeUserDataTable() {
         },
         "columns": [
             { "data": "id", "title": "Id", "name": "id", "visible": false },
-            { "data": "userName", "title": "User Name", "name": "userName" },
-            { "data": "email", "title": "Email", "name": "email" },
-            { "data": "isEnabled", "title": "Enabled", "name": "isEnabled" }
+            { "data": "userName", "title": localizations.userName, "name": "userName" },
+            { "data": "email", "title": localizations.email, "name": "email" },
+            { "data": "isEnabled", "title": localizations.isEnabled, "name": "isEnabled" }
         ]
     });
 

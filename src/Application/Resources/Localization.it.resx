@@ -198,4 +198,22 @@
   <data name="SureMessageDelete" xml:space="preserve">
     <value>Sei sicuro di voler eliminare questo?</value>
   </data>
+  <data name="Processing" xml:space="preserve">
+    <value>Elaborazione...</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Ricerca</value>
+  </data>
+  <data name="Info" xml:space="preserve">
+    <value>Mostrando _START_ a _END_ di _TOTAL_ voci</value>
+  </data>
+  <data name="LengthMenu" xml:space="preserve">
+    <value>Mostra _MENU_ voci</value>
+  </data>
+  <data name="InfoEmpty" xml:space="preserve">
+    <value>Nessun record</value>
+  </data>
+  <data name="InfoFiltered" xml:space="preserve">
+    <value>(filtrato da _MAX_ totale voci)</value>
+  </data>
 </root>

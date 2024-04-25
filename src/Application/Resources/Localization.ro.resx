@@ -198,4 +198,22 @@
   <data name="SureMessageDelete" xml:space="preserve">
     <value>Ești sigur că vrei să ștergi asta?</value>
   </data>
+  <data name="Processing" xml:space="preserve">
+    <value>Prelucrare...</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Căutare</value>
+  </data>
+  <data name="Info" xml:space="preserve">
+    <value>Sunt afișate înregistrările de la _START_ la _END_ de la _TOTAL_</value>
+  </data>
+  <data name="LengthMenu" xml:space="preserve">
+    <value>Afișați intrările _MENU_</value>
+  </data>
+  <data name="InfoEmpty" xml:space="preserve">
+    <value>Fără înregistrări</value>
+  </data>
+  <data name="InfoFiltered" xml:space="preserve">
+    <value>(filtrat din înregistrările _MAX_)</value>
+  </data>
 </root>

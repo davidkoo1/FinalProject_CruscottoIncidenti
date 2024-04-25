@@ -198,4 +198,22 @@
   <data name="SureMessageDelete" xml:space="preserve">
     <value> Вы уверены, что хотите удалить это?</value>
   </data>
+  <data name="Processing" xml:space="preserve">
+    <value>Обработка...</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
+  <data name="Info" xml:space="preserve">
+    <value>Показаны записи с _START_ по _END_ из _TOTAL_</value>
+  </data>
+  <data name="LengthMenu" xml:space="preserve">
+    <value>Показать _MENU_ записей на странице</value>
+  </data>
+  <data name="InfoEmpty" xml:space="preserve">
+    <value>Записи отсутствуют</value>
+  </data>
+  <data name="InfoFiltered" xml:space="preserve">
+    <value>(отфильтровано из _MAX_ записей)</value>
+  </data>
 </root>
