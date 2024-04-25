@@ -9,7 +9,7 @@
                 <br />
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label">RequestNr</label>
+                        <label class="form-label">Request Number</label>
                         <input type="text" asp-for="RequestNr" class="form-control" value="@Model.RequestNr" readonly disabled />
 
                     </div>
@@ -22,11 +22,11 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label">OpenDate</label>
+                        <label class="form-label">Open Date</label>
                         <input type="text" asp-for="OpenDate" class="form-control" value="@Model.OpenDate.ToString("yyyy-MM-dd")" readonly disabled />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">CloseDate</label>
+                        <label class="form-label">Close Date</label>
                         <input type="text" asp-for="CloseDate" class="form-control" value="@Model.CloseDate?.ToString("yyyy-MM-dd")" readonly disabled />
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                         <input type="text" asp-for="Type" class="form-control" value="@Model.Type" readonly disabled />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">ApplicationType</label>
+                        <label class="form-label">Application Type</label>
                         <input type="text" asp-for="ApplicationType" class="form-control" value="@Model.ApplicationType" readonly disabled />
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <label for="ProblemSummary" class="col-md-4 col-form-label">ProblemDescription</label>
+                        <label for="ProblemSummary" class="col-md-4 col-form-label">Problem Description</label>
                         <textarea id="ProblemSummary" rows="3" class="form-control" style="resize: none;" disabled>@Model.ProblemDescription</textarea>
                     </div>
                 </div>

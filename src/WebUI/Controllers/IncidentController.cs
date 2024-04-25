@@ -202,12 +202,12 @@ namespace WebUI.Controllers
                     }
                     else
                     {
-                        TempData["Error"] = "But current incident exist";
+                        TempData["ErrorIncident"] = "But current incident exist";
                     }
                 }
                 else
                 {
-                    TempData["Error"] = "Give correct data!";
+                    TempData["ErrorIncident"] = "Give correct data!";
                 }
                 await InitialViewBags(incidentUpsert);
                 return View(incidentUpsert);

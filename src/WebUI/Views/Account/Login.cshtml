@@ -2,148 +2,140 @@
 @model LoginDto
 @{
     Layout = "~/Views/Shared/_BlankLayout.cshtml";
-    ViewData["Title"] = "Login";
 }
-@* 
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
- *@
 
+
+<title>Login Page</title>
 <style>
     body {
-        background-color: #fff;
+        /* background-image: url('../assets/images/background.webp');
+        background-size: cover; */
+        background-position: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        position: relative;
     }
 
-    .login-container {
-        background-color: #343a40;
-        border-radius: 15px;
-        padding: 30px;
-        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-        margin-top: 100px;
-    }
-
-    .login-header {
-        color: #f8f8f8;
-        text-align: center;
-        font-size: 24px;
-        margin-bottom: 20px;
-    }
-
-    .form-control {
-        border-radius: 10px;
-    }
-
-
-    .control-label {
-        color: #fff;
-    }
-
-
-    .btn-white {
-        color: #fff; /* Set text color to white */
-        background-color: transparent;
-        border-color: transparent;
-    }
-
-        .btn-white:hover,
-        .btn-white:focus,
-        .btn-white:active,
-        .btn-white.active,
-        .open > .dropdown-toggle.btn-white {
-            color: #fff; /* Maintain text color white on hover/focus/active states */
-            background-color: transparent;
-            border-color: transparent;
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); 
+            z-index: -1;
         }
 
-            /* Remove the box shadow when active for a cleaner look */
-            .btn-white:active:focus,
-            .btn-white.active:focus {
-                box-shadow: none;
-            }
 
-    /* Additional adjustments for alignment */
-    .dropdown {
-        display: flex; /* Ensures that the dropdown button is vertically aligned */
-        align-items: center; /* Aligns the dropdown vertically */
+
+    .login-form {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+        width: 500px;
+    }
+
+        .login-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+    input[type="text"], input[type="password"] {
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    .form-check-label {
+        margin-left: 5px;
     }
 
 </style>
 
-
-@if (TempData["Error"] != null)
-{
-    <div class="col-md-12 alert alert-danger">
-        <span><b>Sorry!</b> - @TempData["Error"]</span>
-    </div>
-}
-
-
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-4 login-container">
-            <h1 class="login-header">Log in</h1>
-            <form id="login-form" asp-action="Login" asp-controller="Account" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                <!-- Username input -->
-                <div class="form-group">
-                    <label asp-for="Username" class="control-label">Username</label>
-                    <input type="Username" asp-for="Username" class="form-control" placeholder="Username">
-                    <span asp-validation-for="Username" class="text-danger"></span>
-                </div>
-
-                <!-- Password input -->
-                <div class="form-group">
-                    <label asp-for="Password" class="control-label">Password</label>
-                    <input type="password" asp-for="Password" class="form-control" id="inputPassword" placeholder="Password">
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-
-                <!-- Language selection and Log in button -->
-                <div class="form-group mt-4 d-flex justify-content-between">
-
-                    <!-- Flag dropdown -->
-                    <div class="dropdown">
-                        <button type="button" class="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            @switch (Localization.languageState)
-                            {
-                                case "en":
-                                    <img src="~/assets/images/flags/us.jpg" alt="Header Language" height="12">
-                                    <span class="align-middle"> English</span>
-                                    break;
-                                case "ru":
-                                    {
-                                        <img src="~/assets/images/flags/russia.jpg" alt="Header Language" height="12">
-                                        <span class="align-middle"> Русский</span>
-                                        break;
-                                    }
-                                case "ro":
-                                    <img src="~/assets/images/flags/ro.png" alt="Header Language" height="12"> <span class="align-middle"> Română</span>
-                                    break;
-                                default:
-                                    <img src="~/assets/images/flags/us.jpg" alt="Header Language" height="12">
-                                    <span class="align-middle"> English</span>
-                                    break;
-                            }
-                        </button>
-                        <div class="dropdown-menu">
-                            <!-- Flag options here -->
-                            <a class="dropdown-item" asp-controller="Account" asp-action="ChangeCultureLogin" asp-route-shortLang="ro">
-                                <img src="~/assets/images/flags/ro.png" alt="user-image" class="me-1" height="12"> <span class="align-middle"> Română</span>
-                            </a>
-                            <a class="dropdown-item" asp-controller="Account" asp-action="ChangeCultureLogin" asp-route-shortLang="ru">
-                                <img src="~/assets/images/flags/russia.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle"> Русский</span>
-                            </a>
-                            <a class="dropdown-item" asp-controller="Account" asp-action="ChangeCultureLogin" asp-route-shortLang="en">
-                                <img src="~/assets/images/flags/us.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle"> English</span>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Login button -->
-                    <button class="btn btn-success btn-login" type="submit">Log in</button>
-                </div>
-            
-            </form>
+<div class="login-form">
+    @if (TempData["ErrorAccount"] != null)
+    {
+        <div class="alert alert-danger">
+            <strong>Sorry!</strong> - @TempData["ErrorAccount"]
         </div>
-    </div>
+    }
+    <h2>Login</h2>
+    <form id="login-form" asp-action="Login" asp-controller="Account" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Username"><b>Username</b></label>
+            <input type="text" class="form-control" placeholder="Enter Username" asp-for="Username">
+            <span asp-validation-for="Username" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Password"><b>Password</b></label>
+            <input type="password" class="form-control" placeholder="Enter Password" asp-for="Password" id="password">
+            <span asp-validation-for="Password" class="text-danger"></span>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="showPassword" onclick="togglePasswordVisibility()">
+                <label class="form-check-label" for="showPassword">Show Password</label>
+            </div>
+            
+        </div>
+
+        <button type="submit">Login</button>
+        <div class="dropdown">
+            <button type="button" class="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @switch (Localization.languageState)
+                {
+                    case "en":
+                        <img src="~/assets/images/flags/us.jpg" alt="Header Language" height="12">
+                        <span class="align-middle"> English</span>
+                        break;
+                    case "ru":
+                        {
+                            <img src="~/assets/images/flags/russia.jpg" alt="Header Language" height="12">
+                            <span class="align-middle"> Русский</span>
+                            break;
+                        }
+                    case "ro":
+                        <img src="~/assets/images/flags/ro.png" alt="Header Language" height="12"> <span class="align-middle"> Română</span>
+                        break;
+                    default:
+                        <img src="~/assets/images/flags/us.jpg" alt="Header Language" height="12">
+                        <span class="align-middle"> English</span>
+                        break;
+                }
+            </button>
+            <div class="dropdown-menu" >
+                <!-- Flag options here -->
+                <a class="dropdown-item" asp-controller="Account" asp-action="ChangeCultureLogin" asp-route-shortLang="ro">
+                    <img src="~/assets/images/flags/ro.png" alt="user-image" class="me-1" height="12"> <span class="align-middle"> Română</span>
+                </a>
+                <a class="dropdown-item" asp-controller="Account" asp-action="ChangeCultureLogin" asp-route-shortLang="ru">
+                    <img src="~/assets/images/flags/russia.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle"> Русский</span>
+                </a>
+                <a class="dropdown-item" asp-controller="Account" asp-action="ChangeCultureLogin" asp-route-shortLang="en">
+                    <img src="~/assets/images/flags/us.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle"> English</span>
+                </a>
+            </div>
+        </div>
+    </form>
 </div>
+

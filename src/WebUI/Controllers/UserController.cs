@@ -129,13 +129,13 @@ namespace WebUI.Controllers
                     }
                     else
                     {
-                        TempData["Error"] = "Please try again";
+                        TempData["ErrorUser"] = "Please try again";
                         await SetUserRoleList(createUser);
                         return PartialView("~/Views/User/Upsert.cshtml", createUser);
                     }
 
                 }
-                TempData["Error"] = "Please give correct input";
+                TempData["ErrorUser"] = "Please give correct input";
                 await SetUserRoleList(createUser);
                 return PartialView("~/Views/User/Upsert.cshtml", createUser);
             }

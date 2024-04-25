@@ -1,10 +1,10 @@
 ﻿@using Application.DTO
 @model UpsertIncidentDto
 
-@if (TempData["Error"] != null)
+@if (TempData["ErrorIncident"] != null)
 {
     <div class="alert alert-danger">
-        <strong>Sorry!</strong> - @TempData["Error"]
+        <strong>Sorry!</strong> - @TempData["ErrorIncident"]
     </div>
 }
 <div class="card">
@@ -29,14 +29,14 @@
                     <div class="col-lg-12">
                         <div class="row">
                             <div class="col-md-6">
-                                <label class="form-label">RequestNr</label>
+                                <label class="form-label">Request Number</label>
                                 @if (Model.Id != 0)
                                 {
                                     <input type="text" asp-for="RequestNr" class="form-control" readonly disabled />
                                 }
                                 else
                                 {
-                                    <input type="text" asp-for="RequestNr" class="form-control" maxlength="17" />
+                                    <input type="text" asp-for="RequestNr"  class="form-control" maxlength="17" />
                                 }
                                 <span asp-validation-for="RequestNr" class="text-danger"></span>
                             </div>
@@ -50,13 +50,13 @@
                         {
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label class="form-label">OpenDate</label>
+                                    <label class="form-label">Open Date</label>
                                     <input type="date" asp-for="OpenDate" class="form-control" readonly />
                                     <input hidden asp-for="OpenDate" />
                                     <span asp-validation-for="OpenDate" class="text-danger"></span>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">CloseDate</label>
+                                    <label class="form-label">Close Date</label>
                                     <input type="date" asp-for="CloseDate" class="form-control" />
                                     <span asp-validation-for="CloseDate" class="text-danger"></span>
                                 </div>
@@ -69,7 +69,7 @@
                                 <span asp-validation-for="Type" class="text-danger"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">ApplicationType</label>
+                                <label class="form-label">Application Type</label>
                                 <input type="text" asp-for="ApplicationType" class="form-control" maxlength="35" />
                                 <span asp-validation-for="ApplicationType" class="text-danger"></span>
                             </div>
@@ -100,7 +100,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <label for="ProblemSummary" class="col-md-4 col-form-label">ProblemDescription</label>
+                                <label for="ProblemSummary" class="col-md-4 col-form-label">Problem Description</label>
                                 <textarea id="ProblemSummary" rows="3" class="form-control" maxlength="500" style="resize: none;" asp-for="@Model.ProblemDescription"></textarea>
                                 <span asp-validation-for="ProblemDescription" class="text-danger"></span>
                             </div>
@@ -178,63 +178,6 @@
 
         $(document).ready(function () {
             $('.selectpicker').selectpicker();
-
-            function SetAmbit() {
-                var selectedOriginId = $('#OriginId').val();
-
-                $.ajax({
-                    url: '/Incident/GetAmbits', // Подставьте URL вашего метода
-                    type: 'POST',
-                    data: { originId: selectedOriginId },
-                    success: function (response) {
-                        // Очистите текущие опции в Ambit select
-                        $('#AmbitId').empty();
-                        $('#IncidentTypeId').empty();
-
-                        // Добавляем новые опции, полученные от сервера
-                        $.each(response, function (index, item) {
-                            $('#AmbitId').append($('<option>', {
-                                value: item.value,
-                                text: item.text
-                            }));
-                        });
-
-                        // Обновите selectpicker, если вы используете Bootstrap Select
-                        $('.selectpicker').selectpicker('refresh');
-                    },
-                    error: function (error) {
-                        console.error('Error:', error);
-                    }
-                });
-            }
-
-            function SetIncidentType() {
-                var selectedAmbitId = $('#AmbitId').val();
-
-                $.ajax({
-                    url: '/Incident/GetIncidentTypes', // Подставьте URL вашего метода
-                    type: 'POST',
-                    data: { ambitId: selectedAmbitId },
-                    success: function (response) {
-                        // Очистите текущие опции в Ambit select
-                        $('#IncidentTypeId').empty();
-
-                        // Добавляем новые опции, полученные от сервера
-                        $.each(response, function (index, item) {
-                            $('#IncidentTypeId').append($('<option>', {
-                                value: item.value,
-                                text: item.text
-                            }));
-                        });
-
-                        // Обновите selectpicker, если вы используете Bootstrap Select
-                        $('.selectpicker').selectpicker('refresh');
-                    },
-                    error: function (error) {
-                        console.error('Error:', error);
-                    }
-                });
-            }
 
             $('#OriginId').change(SetAmbit);
             $('#AmbitId').change(SetIncidentType);

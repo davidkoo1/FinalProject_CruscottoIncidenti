@@ -1,4 +1,9 @@
-﻿
+﻿function togglePasswordVisibility() {
+    var password = document.getElementById("password");
+    var checkbox = document.getElementById("showPassword");
+    password.type = checkbox.checked ? 'text' : 'password';
+}
+
 function drawPatrialView(url, divId, callback) {
     $.ajax({
         url: url,
@@ -59,7 +64,62 @@ function importFile() {
 }
 
 
+function SetAmbit() {
+    var selectedOriginId = $('#OriginId').val();
 
+    $.ajax({
+        url: '/Incident/GetAmbits', // Подставьте URL вашего метода
+        type: 'POST',
+        data: { originId: selectedOriginId },
+        success: function (response) {
+            // Очистите текущие опции в Ambit select
+            $('#AmbitId').empty();
+            $('#IncidentTypeId').empty();
+
+            // Добавляем новые опции, полученные от сервера
+            $.each(response, function (index, item) {
+                $('#AmbitId').append($('<option>', {
+                    value: item.value,
+                    text: item.text
+                }));
+            });
+
+            // Обновите selectpicker, если вы используете Bootstrap Select
+            $('.selectpicker').selectpicker('refresh');
+        },
+        error: function (error) {
+            console.error('Error:', error);
+        }
+    });
+}
+
+function SetIncidentType() {
+    var selectedAmbitId = $('#AmbitId').val();
+
+    $.ajax({
+        url: '/Incident/GetIncidentTypes', // Подставьте URL вашего метода
+        type: 'POST',
+        data: { ambitId: selectedAmbitId },
+        success: function (response) {
+            // Очистите текущие опции в Ambit select
+            $('#IncidentTypeId').empty();
+
+            // Добавляем новые опции, полученные от сервера
+            $.each(response, function (index, item) {
+                $('#IncidentTypeId').append($('<option>', {
+                    value: item.value,
+                    text: item.text
+                }));
+            });
+
+            // Обновите selectpicker, если вы используете Bootstrap Select
+            $('.selectpicker').selectpicker('refresh');
+        },
+        error: function (error) {
+            console.error('Error:', error);
+        }
+    });
+}
 
 function setupRowClickEvents(table) {
     $('#UserDatatable tbody').on('click', 'tr', function () {
@@ -206,9 +266,9 @@ function initializeUserDataTable() {
         },
         "columns": [
             { "data": "id", "title": "Id", "name": "id", "visible": false },
-            { "data": "userName", "title": "userName", "name": "userName" },
-            { "data": "email", "title": "email", "name": "email" },
-            { "data": "isEnabled", "title": "isEnabled", "name": "isEnabled" }
+            { "data": "userName", "title": "User Name", "name": "userName" },
+            { "data": "email", "title": "Email", "name": "email" },
+            { "data": "isEnabled", "title": "Enabled", "name": "isEnabled" }
         ]
     });
 
