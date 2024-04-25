@@ -33,8 +33,6 @@ namespace WebUI.Controllers
             {
                 if (!ModelState.IsValid)
                     return View();
-                loginVM.Username = "Crme145";
-                loginVM.Password = "Cedacri1234567!";
                 var userVm = await Mediator.Send(new GetUserForLogin
                 {
                     Username = loginVM.Username,

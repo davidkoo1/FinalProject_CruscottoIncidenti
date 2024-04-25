@@ -18,7 +18,6 @@
 
 
 
-- [ ] RoleSigInPages
 - [ ] UserIsDelete(добавить проверку если удален элемент то круд ок)
 - [ ] JS Fix||Optimization(FromPagesClear)
 - [ ] *SplitQueryInRepos

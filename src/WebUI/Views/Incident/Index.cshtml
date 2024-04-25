@@ -5,10 +5,13 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Incidents</h3>
-                    <div class="d-flex justify-content-between">
-                        <a type="button" style="width: 80px;" class="btn btn-success" href="@Url.Action("Upsert", "Incident", new { id = 0})">Add</a>
-                        <a type="button" style="width: 80px;" class="btn btn-dark" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" onclick="drawPatrialView('/Incident/CSV', 'lgModalBody')">CVS</a>
-                    </div>
+                    @if (!User.IsInRole("User"))
+                    {
+                        <div class="d-flex justify-content-between">
+                            <a type="button" style="width: 80px;" class="btn btn-success" href="@Url.Action("Upsert", "Incident", new { id = 0})">Add</a>
+                            <a type="button" style="width: 80px;" class="btn btn-dark" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" onclick="drawPatrialView('/Incident/CSV', 'lgModalBody')">CVS</a>
+                        </div>
+                    }
 
 
                 </div>
@@ -16,11 +19,14 @@
                     <table id="IncidentDatatable" class="table table-bordered table-hover w-100 mb-1">
                     </table>
                 </div>
-                <div id="actions" style="display:none; padding: 5px;">           
-                    <a type="button" style="width: 80px;" class="btn btn-primary" id="editLink" >Edit</a>
-                    <a type="button" style="width: 80px;" id="detailsLink" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target=".bs-example-modal-xl" onclick="drawPatrialView('/Incident/Details/', 'xlModalBody')">Detail</a>
-                    <a type="button" style="width: 80px;" id="deleteLink" class="btn btn-danger" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" onclick="drawPatrialView('/Incident/Delete/', 'lgModalBody')">Delete</a>
-                </div>
+                @if (!User.IsInRole("User"))
+                {
+                    <div id="actions" style="display:none; padding: 5px;">           
+                        <a type="button" style="width: 80px;" class="btn btn-primary" id="editLink" >Edit</a>
+                        <a type="button" style="width: 80px;" id="detailsLink" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target=".bs-example-modal-xl" onclick="drawPatrialView('/Incident/Details/', 'xlModalBody')">Detail</a>
+                        <a type="button" style="width: 80px;" id="deleteLink" class="btn btn-danger" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" onclick="drawPatrialView('/Incident/Delete/', 'lgModalBody')">Delete</a>
+                    </div>
+                }
             </div>
         </div>
     </div>

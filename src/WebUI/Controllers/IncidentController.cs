@@ -9,6 +9,7 @@ using Serilog;
 
 namespace WebUI.Controllers
 {
+    //[Authorize(Roles = "Operator")]
     public class IncidentController : BaseController
     {
         public async Task<IActionResult> Index()
@@ -61,6 +62,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Operator,Admin")]
         public async Task<IActionResult> GetAmbits(int originId)
         {
             try
@@ -84,6 +86,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Operator,Admin")]
         public async Task<IActionResult> GetIncidentTypes(int ambitId)
         {
             try
@@ -164,7 +167,7 @@ namespace WebUI.Controllers
 
         }
 
-
+        [Authorize(Roles = "Operator,Admin")]
         public async Task<IActionResult> Upsert(int id)
         {
             try
@@ -184,6 +187,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Operator,Admin")]
         public async Task<IActionResult> Upsert(UpsertIncidentDto incidentUpsert)
         {
             try
@@ -215,6 +219,7 @@ namespace WebUI.Controllers
             }
         }
 
+        [Authorize(Roles = "Operator,Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -237,6 +242,7 @@ namespace WebUI.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Operator,Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             try
@@ -278,6 +284,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Operator,Admin")]
         public async Task<IActionResult> Import(IFormFile file)
         {
             try
