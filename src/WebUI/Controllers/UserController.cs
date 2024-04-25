@@ -6,6 +6,7 @@ using Application.UserCQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Serilog;
 
 namespace WebUI.Controllers
 {
@@ -17,9 +18,8 @@ namespace WebUI.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            //var userList = await Mediator.Send(new GetAllUsers());
-            return View(/*userList*/);
-            //return PartialView("~/Views/User/Index.cshtml");
+
+            return View();
         }
 
         [HttpPost]
@@ -38,9 +38,10 @@ namespace WebUI.Controllers
                 });
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                Log.Error($"Error in User.LoadDatatable", ex);
+                return View("~/Views/Shared/_NotFound.cshtml");
             }
         }
 
@@ -48,84 +49,125 @@ namespace WebUI.Controllers
         //// GET: User/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var user = await Mediator.Send(new GetUserById { Id = id });
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                return PartialView("~/Views/User/Details.cshtml", user);
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Error in User.Details with ID {id}", ex);
+                return View("~/Views/Shared/_NotFound.cshtml");
             }
 
-            var user = await Mediator.Send(new GetUserById { Id = id });
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return PartialView("~/Views/User/Details.cshtml", user);
-            //return View(user);
         }
 
         //// GET: User/Create
         public async Task<IActionResult> GetUpsert(int id)
         {
-            //var rolesVm = await Mediator.Send(new GetAllRoles());
-            var updateUserVm = await Mediator.Send(new GetUserForUpsert { Id = id });
+            try
+            {
+                var updateUserVm = await Mediator.Send(new GetUserForUpsert { Id = id });
 
-            await SetUserRoleList(updateUserVm);
-            //return View("~/Views/User/Upsert.cshtml", updateUserVm);
-            return PartialView("~/Views/User/Upsert.cshtml", updateUserVm);
+                await SetUserRoleList(updateUserVm);
+                return PartialView("~/Views/User/Upsert.cshtml", updateUserVm);
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Error in User.GetUpsert with ID {id}", ex);
+                return View("~/Views/Shared/_NotFound.cshtml");
+            }
+
 
         }
 
         private async Task SetUserRoleList(UpsertUserDto createUser)
         {
-            var rolesVm = await Mediator.Send(new GetAllRoles());
-            var selectListItemRoleVm = rolesVm.Select(x => new SelectListItem
+            try
             {
-                Value = x.Id.ToString(),
-                Text = x.Name,
-                Selected = createUser.Id != 0 && createUser.RolesId != null ? createUser.RolesId.Contains(x.Id) : false
-            });
+                var rolesVm = await Mediator.Send(new GetAllRoles());
+                var selectListItemRoleVm = rolesVm.Select(x => new SelectListItem
+                {
+                    Value = x.Id.ToString(),
+                    Text = x.Name,
+                    Selected = createUser.Id != 0 && createUser.RolesId != null ? createUser.RolesId.Contains(x.Id) : false
+                });
 
-            ViewBag.Roles = selectListItemRoleVm;
+                ViewBag.Roles = selectListItemRoleVm;
+            }
+            catch (Exception ex)
+            {
+                Log.Information("UpsertUserDto => {@createUser}", createUser);
+                Log.Error("User.SetUserRoleList", ex);
+                throw;
+            }
+
         }
         // POST: User/Create
         [HttpPost]
         public async Task<IActionResult> Upsert(UpsertUserDto createUser)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var result = await Mediator.Send(new UpsertUser { UpsertUserDto = createUser });
-                if (result)
+                if (ModelState.IsValid)
                 {
-                    // return Json(new { success = true/*, redirectUrl = Url.Action(nameof(Index))*/ });
-                    return Json(new { success = true });
-                }
-                else
-                {
-                    TempData["Error"] = "Please try again";
-                    await SetUserRoleList(createUser);
-                    // Если ModelState не валиден, возвращаем частичное представление с ошибками
-                    return PartialView("~/Views/User/Upsert.cshtml", createUser);
-                }
+                    var result = await Mediator.Send(new UpsertUser { UpsertUserDto = createUser });
+                    if (result)
+                    {
+                        // return Json(new { success = true/*, redirectUrl = Url.Action(nameof(Index))*/ });
+                        return Json(new { success = true });
+                    }
+                    else
+                    {
+                        TempData["Error"] = "Please try again";
+                        await SetUserRoleList(createUser);
+                        return PartialView("~/Views/User/Upsert.cshtml", createUser);
+                    }
 
+                }
+                TempData["Error"] = "Please give correct input";
+                await SetUserRoleList(createUser);
+                return PartialView("~/Views/User/Upsert.cshtml", createUser);
             }
-            TempData["Error"] = "Please give correct input";
-            await SetUserRoleList(createUser);
-            // Если ModelState не валиден, возвращаем частичное представление с ошибками
-            return PartialView("~/Views/User/Upsert.cshtml", createUser);
+            catch (Exception ex)
+            {
+                Log.Information("UpsertUserDto => {@createUser}", createUser);
+                Log.Error("User.Upsert", ex);
+                return View("~/Views/Shared/_NotFound.cshtml");
+            }
+
         }
 
 
         //GET: User/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-
-            var user = await Mediator.Send(new GetUserById { Id = id });
-            if (user == null)
+            try
             {
-                return NotFound();
+                var user = await Mediator.Send(new GetUserById { Id = id });
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                return PartialView("~/Views/User/Delete.cshtml", user);
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Error in User.Delete with ID {id}", ex);
+                return View("~/Views/Shared/_NotFound.cshtml");
             }
 
-            return PartialView("~/Views/User/Delete.cshtml", user);
         }
 
         // POST: User/Delete/5
@@ -133,15 +175,24 @@ namespace WebUI.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var success = await Mediator.Send(new DeleteUser { Id = id });
-            if (success)
+            try
             {
-                return Json(new { success = true });
+                var success = await Mediator.Send(new DeleteUser { Id = id });
+                if (success)
+                {
+                    return Json(new { success = true });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Не удалось удалить пользователя." });
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return Json(new { success = false, message = "Не удалось удалить пользователя." });
+                Log.Error($"Error in User.DeleteConfirmed with ID {id}", ex);
+                return View("~/Views/Shared/_NotFound.cshtml");
             }
+
         }
 
 

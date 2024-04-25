@@ -23,7 +23,6 @@ namespace WebUI.Controllers
             try
             {
                 var result = await Mediator.Send(new GetAllInicdents(parameters));
-                //return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
                 return Ok(new
                 {
                     draw = parameters.Draw,
@@ -35,7 +34,8 @@ namespace WebUI.Controllers
             catch (Exception ex)
             {
                 Log.Error("Error in Incident.LoadDatatable", ex.Message);
-                return BadRequest(ex.Message);
+                //return PartialView("~/Views/_Shared/Error.cshtml", ex);
+                return View("~/Views/Shared/_NotFound.cshtml");
             }
         }
 
@@ -54,8 +54,8 @@ namespace WebUI.Controllers
             }
             catch (Exception ex)
             {
-                Log.Error($"Error in Incident.Details with ID {id}", ex);
-                throw;
+                Log.Error($"Error in Incident.Details with ID {id}", ex); 
+                return View("~/Views/Shared/_NotFound.cshtml");
             }
             
         }
@@ -77,7 +77,7 @@ namespace WebUI.Controllers
             catch (Exception ex)
             {
                 Log.Error($"Error in Incident.GetAmbits with Origin ID {originId}", ex);
-                throw;
+                return View("~/Views/Shared/_NotFound.cshtml");
             }
 
 
@@ -100,7 +100,7 @@ namespace WebUI.Controllers
             catch (Exception ex)
             {
                 Log.Error($"Error in Incident.GetIncidentTypes with Ambit ID {ambitId}", ex);
-                throw;
+                return View("~/Views/Shared/_NotFound.cshtml");
             }
         }
 
@@ -177,7 +177,7 @@ namespace WebUI.Controllers
             {
                 Log.Error($"Error in Incident.Upsert with ID {id}", ex);
                 //TempData["Error"] = "Error processing your request";
-                return RedirectToAction("Index", "Incident");
+                return View("~/Views/Shared/_NotFound.cshtml");
             }
 
 
@@ -211,9 +211,7 @@ namespace WebUI.Controllers
             catch (Exception ex)
             {
                 Log.Error("Error during incident upsert operation", ex);
-                TempData["Error"] = ex.Message;
-                await InitialViewBags(incidentUpsert);
-                return View(incidentUpsert);
+                return View("~/Views/Shared/_NotFound.cshtml");
             }
         }
 
@@ -232,7 +230,7 @@ namespace WebUI.Controllers
             catch (Exception ex)
             {
                 Log.Error($"Error in Incident.Delete with ID {id}", ex);
-                throw;
+                return View("~/Views/Shared/_NotFound.cshtml");
             }
 
         }
@@ -256,7 +254,7 @@ namespace WebUI.Controllers
             catch (Exception ex)
             {
                 Log.Error($"Error in Incident.DeleteConfirmed with ID {id}", ex);
-                throw;
+                return View("~/Views/Shared/_NotFound.cshtml");
             }
 
         }
@@ -300,7 +298,8 @@ namespace WebUI.Controllers
             catch (Exception ex)
             {
                 Log.Error("ImportFile", ex.Message);
-                return Json(new { StatusCode = 500, Message = ex.Message });
+                //return Json(new { StatusCode = 500, Message = ex.Message });
+                return View("~/Views/Shared/_NotFound.cshtml");
             }
 
 
