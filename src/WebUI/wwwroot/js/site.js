@@ -60,7 +60,7 @@ function importFile() {
 
 
 
-//IncidentData
+
 function setupRowClickEvents(table) {
     $('#UserDatatable tbody').on('click', 'tr', function () {
         var rowData = table.row(this).data();
@@ -96,14 +96,20 @@ function checkTableDataAndToggleActions(table) {
     }
 }
 
+
+//IncidentData
 function initializeIncidentDataTable() {
+    $('#actions').hide();
     var table = $('#IncidentDatatable').DataTable({
         "processing": true,
         "serverSide": true,
         "ajax": {
             "url": "/Incident/LoadDatatable",
             "type": "POST",
-            "dataType": "json"
+            "dataType": "json",
+            "beforeSend": function () {
+                $('#actions').hide(); // Скрывать actions перед AJAX запросом
+            }
         },
         "columns": [
             { "data": "id", "title": "id", "name": "id", "visible": false },
@@ -114,7 +120,7 @@ function initializeIncidentDataTable() {
                 "title": "Open Date",
                 "name": "openDate",
                 "render": function (data, type, row) {
-                    return data ? new Date(data).toLocaleDateString() : ''; // Форматирование даты
+                    return data ? new Date(data).toLocaleDateString() : ''; 
                 }
             },
             {
@@ -122,7 +128,7 @@ function initializeIncidentDataTable() {
                 "title": "Close Date",
                 "name": "closeDate",
                 "render": function (data, type, row) {
-                    return data ? new Date(data).toLocaleDateString() : ''; // Форматирование даты
+                    return data ? new Date(data).toLocaleDateString() : ''; 
                 }
             },
             { "data": "type", "title": "Type", "name": "type" },
@@ -193,7 +199,10 @@ function initializeUserDataTable() {
         ajax: {
             "url": "/User/LoadDatatable",
             "type": "POST",
-            "dataType": "json"
+            "dataType": "json",
+            "beforeSend": function () {
+                $('#actions').hide(); // Скрывать actions перед AJAX запросом
+            }
         },
         "columns": [
             { "data": "id", "title": "Id", "name": "id", "visible": false },

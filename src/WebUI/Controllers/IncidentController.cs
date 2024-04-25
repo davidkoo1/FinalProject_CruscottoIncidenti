@@ -171,7 +171,6 @@ namespace WebUI.Controllers
             {
                 var updateIncidentVm = await Mediator.Send(new GetIncidentForUpsert { Id = id });
                 await InitialViewBags(updateIncidentVm);
-
                 return View("~/Views/Incident/Upsert.cshtml", updateIncidentVm);
             }
             catch (Exception ex)
@@ -191,6 +190,7 @@ namespace WebUI.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    
                     var result = await Mediator.Send(new UpsertIncident { UpsertIncidentDto = incidentUpsert });
                     if (result)
                     {

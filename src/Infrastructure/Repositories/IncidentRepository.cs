@@ -62,11 +62,16 @@ namespace Infrastructure.Repositories
 
         public async Task<bool> UpsertIncident(UpsertIncidentDto incidentToUpsert)
         {
-            var existing = await _dbContext.Incidents.AnyAsync(x => x.RequestNr == incidentToUpsert.RequestNr && x.Id != incidentToUpsert.Id /*&& x.IsDeleted*/);
+            var existing = await _dbContext.Incidents.AnyAsync(x =>
+                x.RequestNr == incidentToUpsert.RequestNr &&
+                x.Id != incidentToUpsert.Id &&
+                !x.IsDeleted);
+
             if (incidentToUpsert == null || existing)
             {
                 return false;
             }
+
             var currentUser = _httpContextAccessor.HttpContext?.User.GetUserId();
             var incident = _mapper.Map<Incident>(incidentToUpsert);
             if (incidentToUpsert.Id == 0)
@@ -113,14 +118,15 @@ namespace Infrastructure.Repositories
             .Include(x => x.Scenary)
             .Include(x => x.Threat).ToListAsync());
 
-        public Task<bool> CreateIncidentsFromCVS(IEnumerable<IncidentDetailDto> incidents)
+        public async Task<bool> CreateIncidentsFromCVS(IEnumerable<IncidentDetailDto> incidents)
         {
-            incidents = incidents
-                .Where(record => _dbContext.Origins.Any(x => x.Name.Equals(record.Origin)) &&
-                    _dbContext.Ambits.Any(x => x.Name.Equals(record.Ambit)) &&
-                    _dbContext.IncidentTypes.Any(x => x.Name.Equals(record.IncidentType)) &&
-                    _dbContext.Threats.Any(x => x.Name.Equals(record.Threat)) &&
-                    _dbContext.Scenaries.Any(x => x.Name.Equals(record.Scenary))).ToList();
+            var existingIncidents = await _dbContext.Incidents.Where(x => !x.IsDeleted).ToListAsync();
+            //incidents = incidents
+            //    .Where(record => _dbContext.Origins.Any(x => x.Name.Equals(record.Origin)) &&
+            //        _dbContext.Ambits.Any(x => x.Name.Equals(record.Ambit)) &&
+            //        _dbContext.IncidentTypes.Any(x => x.Name.Equals(record.IncidentType)) &&
+            //        _dbContext.Threats.Any(x => x.Name.Equals(record.Threat)) &&
+            //        _dbContext.Scenaries.Any(x => x.Name.Equals(record.Scenary))).ToList();
 
             var incidentDtos = incidents
                 .Select(record =>
@@ -144,11 +150,12 @@ namespace Infrastructure.Repositories
                         IncidentTypeId = _dbContext.IncidentTypes.FirstOrDefault(x => x.Name.Equals(record.IncidentType)).Id,
                         ScenaryId = _dbContext.Scenaries.FirstOrDefault(x => x.Name.Equals(record.Scenary)).Id,
                         ThreatId = _dbContext.Threats.FirstOrDefault(x => x.Name.Equals(record.Threat)).Id
-                    }).ToList();
+                    }).Where(newIncident => !existingIncidents.Any(existing => existing.RequestNr == newIncident.RequestNr))
+                .ToList();
 
             _dbContext.AddRange(incidentDtos);
 
-            return Save();
+            return await Save();
         }
     }
 }

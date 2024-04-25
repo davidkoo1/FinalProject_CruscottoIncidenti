@@ -12,6 +12,9 @@ namespace Application.Validator
                 .Length(17)
                 .Must(a => a != null && a.StartsWith("HOST") == true).WithMessage("Start with HOST");
 
+            RuleFor(x => x.CloseDate)
+                .GreaterThanOrEqualTo(x => x.OpenDate).When(x => x.CloseDate.HasValue);
+
             RuleFor(x => x.Subsystem)
                 .NotEmpty()
                 .Length(2);

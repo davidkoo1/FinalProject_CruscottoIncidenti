@@ -14,7 +14,7 @@
             @if (Model.Id != 0)
             {
                 <input hidden asp-for="RequestNr" />
-                <input hidden asp-for="OpenDate" />
+                
             }
             <div class="container">
                 <div class="row">
@@ -51,7 +51,8 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label class="form-label">OpenDate</label>
-                                    <input type="date" asp-for="OpenDate" class="form-control" readonly disabled />
+                                    <input type="date" asp-for="OpenDate" class="form-control" readonly />
+                                    <input hidden asp-for="OpenDate" />
                                     <span asp-validation-for="OpenDate" class="text-danger"></span>
                                 </div>
                                 <div class="col-md-6">
@@ -171,12 +172,13 @@
         </form>
     </div>
 </div>
+
 @section Scripts {
     <script type="text/javascript">
 
         $(document).ready(function () {
             $('.selectpicker').selectpicker();
-            // Функция для установки значений для Ambit
+
             function SetAmbit() {
                 var selectedOriginId = $('#OriginId').val();
 
@@ -233,7 +235,7 @@
                     }
                 });
             }
-            // Вызывайте SetAmbit при изменении значения в OriginId
+
             $('#OriginId').change(SetAmbit);
             $('#AmbitId').change(SetIncidentType);
 
