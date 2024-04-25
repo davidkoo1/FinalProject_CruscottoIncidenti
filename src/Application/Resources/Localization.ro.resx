@@ -120,4 +120,82 @@
   <data name="languageState" xml:space="preserve">
     <value>ro</value>
   </data>
+  <data name="Add" xml:space="preserve">
+    <value>Adăuga</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edita</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Șterge</value>
+  </data>
+  <data name="Detail" xml:space="preserve">
+    <value>Detaluri</value>
+  </data>
+  <data name="Incidents" xml:space="preserve">
+    <value>Incidente</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Utilizatori</value>
+  </data>
+  <data name="Sorry" xml:space="preserve">
+    <value>Scuze</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Autentificare</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Nume de utilizator</value>
+  </data>
+  <data name="Input" xml:space="preserve">
+    <value>Introdu</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Parolă</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>Arată</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Numele complet</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="IsEnabled" xml:space="preserve">
+    <value>Este activat</value>
+  </data>
+  <data name="Roles" xml:space="preserve">
+    <value>Roluri</value>
+  </data>
+  <data name="Choose" xml:space="preserve">
+    <value>Alegeți</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Salvați</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Anulați</value>
+  </data>
+  <data name="CreateUser" xml:space="preserve">
+    <value>Creați utilizator</value>
+  </data>
+  <data name="EditUser" xml:space="preserve">
+    <value>Editați utilizatorul</value>
+  </data>
+  <data name="Created" xml:space="preserve">
+    <value>Creat de</value>
+  </data>
+  <data name="LastModifiedBy" xml:space="preserve">
+    <value>Ultima modificare de</value>
+  </data>
+  <data name="LastModified" xml:space="preserve">
+    <value>Ultima modificare la</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>Utilizator</value>
+  </data>
+  <data name="SureMessageDelete" xml:space="preserve">
+    <value>Ești sigur că vrei să ștergi asta?</value>
+  </data>
 </root>

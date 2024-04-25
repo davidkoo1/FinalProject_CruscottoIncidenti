@@ -27,16 +27,16 @@
             </button>
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-@*                     @if (!User.IsInRole("User"))
+                    @*                     @if (!User.IsInRole("User"))
                     { *@
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Incident" asp-action="Index">Incidents</a>
-                        </li>
-@*                     } *@
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Incident" asp-action="Index">@Localization.Incidents</a>
+                    </li>
+                    @*                     } *@
                     @if (User.IsInRole("Admin"))
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">@Localization.Users</a>
                         </li>
                     }
                 </ul>
@@ -70,25 +70,29 @@
                                     case "ro":
                                         <img src="~/assets/images/flags/ro.png" alt="Header Language" height="16">
                                         break;
+                                    case "it":
+                                        <img src="~/assets/images/flags/italy.jpg" alt="Header Language" height="16">
+                                        break;
                                     default: break;
                                 }
 
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
 
-                                <!-- item-->
                                 <a asp-controller="Base" asp-action="ChangeCulture" asp-route-shortLang="ro" asp-route-returnUrl="@Context.Request.Path" class="dropdown-item notify-item">
                                     <img src="~/assets/images/flags/ro.png" alt="user-image" class="me-1" height="12"> <span class="align-middle">Ro</span>
                                 </a>
 
-                                <!-- item-->
                                 <a asp-controller="Base" asp-action="ChangeCulture" asp-route-shortLang="ru" asp-route-returnUrl="@Context.Request.Path" class="dropdown-item notify-item">
                                     <img src="~/assets/images/flags/russia.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">Ru</span>
                                 </a>
 
-                                <!-- item-->
                                 <a asp-controller="Base" asp-action="ChangeCulture" asp-route-shortLang="en" asp-route-returnUrl="@Context.Request.Path" class="dropdown-item notify-item">
                                     <img src="~/assets/images/flags/us.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">En</span>
+                                </a>
+
+                                <a asp-controller="Base" asp-action="ChangeCulture" asp-route-shortLang="it" asp-route-returnUrl="@Context.Request.Path" class="dropdown-item notify-item">
+                                    <img src="~/assets/images/flags/italy.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">It</span>
                                 </a>
                             </div>
                         </div>

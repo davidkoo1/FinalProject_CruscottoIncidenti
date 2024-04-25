@@ -95,7 +95,7 @@ namespace WebUI.Controllers
         {
 
 
-            List<string> cultures = new() { "en", "ro", "ru" };
+            List<string> cultures = new() { "en", "ro", "ru", "it" };
             if (!cultures.Contains(shortLang))
             {
                 shortLang = "en";

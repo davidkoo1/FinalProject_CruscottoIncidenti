@@ -22,7 +22,7 @@ namespace WebUI.Controllers
             {
                 //Log.Information($"ChangeCulture | {shortLang}");
                 var uiLanguage = EnUiLanguage.RU;
-                List<string> cultures = new List<string>() { "en", "ro", "ru" };
+                List<string> cultures = new List<string>() { "en", "ro", "ru", "it" };
                 if (!cultures.Contains(shortLang))
                 {
                     shortLang = "en";
@@ -38,6 +38,9 @@ namespace WebUI.Controllers
                         break;
                     case "ru":
                         uiLanguage = EnUiLanguage.RU;
+                        break;
+                    case "it":
+                        uiLanguage = EnUiLanguage.IT;
                         break;
                     default:
                         uiLanguage = EnUiLanguage.EN;
@@ -77,7 +80,7 @@ namespace WebUI.Controllers
             }
             catch (Exception ex)
             {
-                var uiLanguage = EnUiLanguage.RU;
+                var uiLanguage = EnUiLanguage.EN;
                 return await ChangeCulture(nameof(uiLanguage), returnUrl);
             }
         }

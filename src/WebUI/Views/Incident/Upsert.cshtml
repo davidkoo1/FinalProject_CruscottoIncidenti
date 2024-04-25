@@ -36,13 +36,13 @@
                                 }
                                 else
                                 {
-                                    <input type="text" asp-for="RequestNr"  class="form-control" maxlength="17" />
+                                    <input type="text" asp-for="RequestNr" placeholder="Example: HOST0000000000000" class="form-control" maxlength="17" />
                                 }
                                 <span asp-validation-for="RequestNr" class="text-danger"></span>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Subsystem</label>
-                                <input type="text" asp-for="Subsystem" class="form-control" maxlength="2" />
+                                <input type="text" asp-for="Subsystem" class="form-control" placeholder="Example: OS" maxlength="2" />
                                 <span asp-validation-for="Subsystem" class="text-danger"></span>
                             </div>
                         </div>
@@ -65,43 +65,43 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label class="form-label">Type</label>
-                                <input type="text" asp-for="Type" class="form-control" maxlength="35" />
+                                <input type="text" asp-for="Type" placeholder="Enter Type" class="form-control" maxlength="35" />
                                 <span asp-validation-for="Type" class="text-danger"></span>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Application Type</label>
-                                <input type="text" asp-for="ApplicationType" class="form-control" maxlength="35" />
+                                <input type="text" asp-for="ApplicationType" placeholder="Enter Application Type" class="form-control" maxlength="35" />
                                 <span asp-validation-for="ApplicationType" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <label class="form-label">Urgency</label>
-                                <input type="text" asp-for="Urgency" class="form-control" maxlength="35" />
+                                <input type="text" asp-for="Urgency" placeholder="Enter Urgency" class="form-control" maxlength="35" />
                                 <span asp-validation-for="Urgency" class="text-danger"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">SubCause</label>
-                                <input type="text" asp-for="SubCause" class="form-control" maxlength="35" />
+                                <label class="form-label">Sub Cause</label>
+                                <input type="text" asp-for="SubCause" placeholder="Enter Sub Cause" class="form-control" maxlength="35" />
                                 <span asp-validation-for="SubCause" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <label class="form-label">Problem Summary</label>
-                                <textarea id="ProblemSummary" rows="5" class="form-control" maxlength="255" style="resize: none;" asp-for="@Model.ProblemSummary"></textarea>
+                                <textarea id="ProblemSummary" rows="5" placeholder="Enter problem summary" class="form-control" maxlength="255" style="resize: none;" asp-for="@Model.ProblemSummary"></textarea>
                                 <span asp-validation-for="ProblemSummary" class="text-danger"></span>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Solution</label>
-                                <textarea id="ProblemSummary" rows="5" class="form-control" maxlength="250" style="resize: none;" asp-for="@Model.Solution"></textarea>
+                                <textarea id="ProblemSummary" rows="5" placeholder="Enter solution" class="form-control" maxlength="250" style="resize: none;" asp-for="@Model.Solution"></textarea>
                                 <span asp-validation-for="Solution" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <label for="ProblemSummary" class="col-md-4 col-form-label">Problem Description</label>
-                                <textarea id="ProblemSummary" rows="3" class="form-control" maxlength="500" style="resize: none;" asp-for="@Model.ProblemDescription"></textarea>
+                                <label class="col-md-4 col-form-label">Problem Description</label>
+                                <textarea id="ProblemDescription" rows="3" placeholder="Enter problem description" class="form-control" maxlength="500" style="resize: none;" asp-for="@Model.ProblemDescription"></textarea>
                                 <span asp-validation-for="ProblemDescription" class="text-danger"></span>
                             </div>
                         </div>
@@ -141,7 +141,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">ThirdParty</label>
-                                <input type="text" asp-for="ThirdParty" class="form-control" maxlength="35" />
+                                <input type="text" asp-for="ThirdParty" placeholder="Enter third party" class="form-control" maxlength="35" />
                                 <span asp-validation-for="ThirdParty" class="text-danger"></span>
                             </div>
                         </div>

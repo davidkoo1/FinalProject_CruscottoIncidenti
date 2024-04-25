@@ -118,84 +118,84 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="languageState" xml:space="preserve">
-    <value>ru</value>
+    <value>it</value>
   </data>
   <data name="Add" xml:space="preserve">
-    <value>Добавить</value>
+    <value>Aggiungere</value>
   </data>
   <data name="Edit" xml:space="preserve">
-    <value>Редактировать</value>
+    <value>Modificare</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Удалить</value>
+    <value>Cancellare</value>
   </data>
   <data name="Detail" xml:space="preserve">
-    <value>Детали</value>
+    <value>Dettaglio</value>
   </data>
   <data name="Incidents" xml:space="preserve">
-    <value>Инциденты</value>
+    <value>Incidenti</value>
   </data>
   <data name="Users" xml:space="preserve">
-    <value>Пользователи</value>
+    <value>Utenti</value>
   </data>
   <data name="Sorry" xml:space="preserve">
-    <value>Извините</value>
+    <value>Scusa</value>
   </data>
   <data name="Login" xml:space="preserve">
-    <value>Вход</value>
+    <value>Accesso</value>
   </data>
   <data name="Username" xml:space="preserve">
-    <value>Имя пользователя</value>
+    <value>Nome utente</value>
   </data>
   <data name="Input" xml:space="preserve">
-    <value>Введите</value>
+    <value>Enter</value>
   </data>
   <data name="Password" xml:space="preserve">
-    <value>Пароль</value>
+    <value>Password</value>
   </data>
   <data name="Show" xml:space="preserve">
-    <value>Показать</value>
+    <value>Mostrare</value>
   </data>
   <data name="FullName" xml:space="preserve">
-    <value>Полное имя</value>
+    <value>Nome completo</value>
   </data>
   <data name="Email" xml:space="preserve">
-    <value>Электронная почта</value>
+    <value>Email</value>
   </data>
   <data name="IsEnabled" xml:space="preserve">
-    <value>Активирован</value>
+    <value>È abilitato</value>
   </data>
   <data name="Roles" xml:space="preserve">
-    <value>Роли</value>
+    <value>Ruoli</value>
   </data>
   <data name="Choose" xml:space="preserve">
-    <value>Выберите</value>
+    <value>Scegliete</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>Сохранить</value>
+    <value>Salvare</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Отменить</value>
+    <value>Annullare</value>
   </data>
   <data name="CreateUser" xml:space="preserve">
-    <value>Создать пользователя</value>
+    <value>Creare utente</value>
   </data>
   <data name="EditUser" xml:space="preserve">
-    <value>Редактировать пользователя</value>
+    <value>Modifica utente</value>
   </data>
   <data name="Created" xml:space="preserve">
-    <value>Созданный</value>
+    <value>Creato</value>
   </data>
   <data name="LastModifiedBy" xml:space="preserve">
-    <value>Последние изменения от</value>
+    <value>Ultima modificato da</value>
   </data>
   <data name="LastModified" xml:space="preserve">
-    <value>Последние изменения</value>
+    <value>Ultima modificato la</value>
   </data>
   <data name="User" xml:space="preserve">
-    <value>Пользователь</value>
+    <value>Utente</value>
   </data>
   <data name="SureMessageDelete" xml:space="preserve">
-    <value> Вы уверены, что хотите удалить это?</value>
+    <value>Sei sicuro di voler eliminare questo?</value>
   </data>
 </root>

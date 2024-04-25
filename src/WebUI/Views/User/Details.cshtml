@@ -1,16 +1,16 @@
 ﻿@using Application.DTO
 @model UserDto
 
-<h1>Details</h1>
+<h1>@Localization.Detail</h1>
 
 <div>
     <div class="modal-body">
-        <h4>User</h4>
+        <h4>@Localization.User</h4>
         @{
             await Html.RenderPartialAsync("_Detail", Model);
         }
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-light waves-secondary" data-bs-dismiss="modal">Cancel</button>
+    <button type="button" class="btn btn-light waves-secondary" data-bs-dismiss="modal">@Localization.Cancel</button>
 </div>

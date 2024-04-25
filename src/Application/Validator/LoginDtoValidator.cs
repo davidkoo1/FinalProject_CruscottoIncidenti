@@ -1,4 +1,5 @@
 ﻿using Application.DTO;
+using Application.Resources;
 using FluentValidation;
 
 namespace Application.Validator
@@ -7,8 +8,8 @@ namespace Application.Validator
     {
         public LoginDtoValidator()
         {
-            RuleFor(x => x.Username).NotEmpty().WithName("tEST"/*Localization.username*/);
-            RuleFor(x => x.Password).NotEmpty().NotNull().MinimumLength(4);//.WithName(Localization.password);
+            RuleFor(x => x.Username).NotEmpty().WithName(Localization.Username);
+            RuleFor(x => x.Password).NotEmpty().NotNull().MinimumLength(4).WithName(Localization.Password);
         }
     }
 }

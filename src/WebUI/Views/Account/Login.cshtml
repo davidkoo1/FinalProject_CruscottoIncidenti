@@ -76,30 +76,30 @@
     @if (TempData["ErrorAccount"] != null)
     {
         <div class="alert alert-danger">
-            <strong>Sorry!</strong> - @TempData["ErrorAccount"]
+            <strong>@Localization.Sorry!</strong> - @TempData["ErrorAccount"]
         </div>
     }
-    <h2>Login</h2>
+    <h2>@Localization.Login</h2>
     <form id="login-form" asp-action="Login" asp-controller="Account" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Username"><b>Username</b></label>
-            <input type="text" class="form-control" placeholder="Enter Username" asp-for="Username">
+            <label asp-for="Username"><b>@Localization.Username</b></label>
+            <input type="text" class="form-control" placeholder="@Localization.Input @Localization.Username" asp-for="Username">
             <span asp-validation-for="Username" class="text-danger"></span>
         </div>
 
         <div class="form-group">
             <label asp-for="Password"><b>Password</b></label>
-            <input type="password" class="form-control" placeholder="Enter Password" asp-for="Password" id="password">
+            <input type="password" class="form-control" placeholder="@Localization.Input @Localization.Password" asp-for="Password" id="password">
             <span asp-validation-for="Password" class="text-danger"></span>
             <div class="form-check">
                 <input type="checkbox" class="form-check-input" id="showPassword" onclick="togglePasswordVisibility()">
-                <label class="form-check-label" for="showPassword">Show Password</label>
+                <label class="form-check-label" for="showPassword">@Localization.Show @Localization.Password</label>
             </div>
             
         </div>
 
-        <button type="submit">Login</button>
+        <button type="submit">@Localization.Login</button>
         <div class="dropdown">
             <button type="button" class="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 @switch (Localization.languageState)
@@ -117,6 +117,9 @@
                     case "ro":
                         <img src="~/assets/images/flags/ro.png" alt="Header Language" height="12"> <span class="align-middle"> Română</span>
                         break;
+                        case "it":
+                        <img src="~/assets/images/flags/italy.jpg" alt="Header Language" height="12"> <span class="align-middle"> Italy</span>
+                        break;
                     default:
                         <img src="~/assets/images/flags/us.jpg" alt="Header Language" height="12">
                         <span class="align-middle"> English</span>
@@ -133,6 +136,9 @@
                 </a>
                 <a class="dropdown-item" asp-controller="Account" asp-action="ChangeCultureLogin" asp-route-shortLang="en">
                     <img src="~/assets/images/flags/us.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle"> English</span>
+                </a>
+                <a class="dropdown-item" asp-controller="Account" asp-action="ChangeCultureLogin" asp-route-shortLang="it">
+                    <img src="~/assets/images/flags/italy.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle"> Italy</span>
                 </a>
             </div>
         </div>

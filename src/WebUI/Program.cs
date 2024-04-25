@@ -22,7 +22,7 @@ builder.Services.AddMvc()
 
 builder.Services.Configure<RequestLocalizationOptions>(opt =>
 {
-    var supportedCultures = new[] { "en", "ro", "ru" };
+    var supportedCultures = new[] { "en", "ro", "ru", "it"};
     opt.SetDefaultCulture(supportedCultures[0])
         .AddSupportedCultures(supportedCultures)
         .AddSupportedUICultures(supportedCultures);
@@ -50,7 +50,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 var app = builder.Build();
 
 
-var supportedCultures = new[] { "en", "ro", "ru" };
+var supportedCultures = new[] { "en", "ro", "ru", "it" };
 var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
 .AddSupportedCultures(supportedCultures)
 .AddSupportedUICultures(supportedCultures);
