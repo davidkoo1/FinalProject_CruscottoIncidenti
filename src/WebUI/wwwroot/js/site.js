@@ -53,11 +53,11 @@ function importFile() {
         cache: false,
         success: function (data) {
             if (data.statusCode === 200) {
-                toastr.success("Success", "Import");
+                toastr.success(localizations.success);
                 $('#fileUpload').val('');
                 $('#IncidentDatatable').DataTable().ajax.reload(null, false);
             } else {
-                toastr.error("Error", data.message);
+                toastr.error(localizations.error, data.message);
             }
         }
     });
@@ -163,6 +163,24 @@ function initializeIncidentDataTable() {
     var table = $('#IncidentDatatable').DataTable({
         "processing": true,
         "serverSide": true,
+        language: {
+            processing: localizations.processing,
+            search: localizations.search,
+            lengthMenu: localizations.lengthMenu,
+            info: localizations.info,
+            infoEmpty: localizations.infoEmpty,
+            /*infoFiltered: localizations.infoFiltered,*/
+            infoPostFix: "",
+            loadingRecords: localizations.loadingRecords,
+            zeroRecords: localizations.zeroRecords,
+            emptyTable: localizations.emptyTable,
+            paginate: {
+                first: localizations.first,
+                previous: localizations.previous,
+                next: localizations.next,
+                last: localizations.last
+            }
+        },
         "ajax": {
             "url": "/Incident/LoadDatatable",
             "type": "POST",
@@ -173,11 +191,11 @@ function initializeIncidentDataTable() {
         },
         "columns": [
             { "data": "id", "title": "id", "name": "id", "visible": false },
-            { "data": "requestNr", "title": "Request Number", "name": "requestNr" },
-            { "data": "subsystem", "title": "Subsystem", "name": "subsystem" },
+            { "data": "requestNr", "title": localizations.requestNr, "name": "requestNr" },
+            { "data": "subsystem", "title": localizations.subsystem, "name": "subsystem" },
             {
                 "data": "openDate",
-                "title": "Open Date",
+                "title": localizations.openDate,
                 "name": "openDate",
                 "render": function (data, type, row) {
                     return data ? new Date(data).toLocaleDateString() : ''; 
@@ -185,14 +203,14 @@ function initializeIncidentDataTable() {
             },
             {
                 "data": "closeDate",
-                "title": "Close Date",
+                "title": localizations.closeDate,
                 "name": "closeDate",
                 "render": function (data, type, row) {
                     return data ? new Date(data).toLocaleDateString() : ''; 
                 }
             },
-            { "data": "type", "title": "Type", "name": "type" },
-            { "data": "urgency", "title": "Urgency", "name": "urgency" }
+            { "data": "type", "title": localizations.type, "name": "type" },
+            { "data": "urgency", "title": localizations.urgency, "name": "urgency" }
         ],
         "columnDefs": [
             { "width": "10%", "targets": [0, 1, 2, 5, 6] },
@@ -236,15 +254,15 @@ function deleteCurrentIncident(IncidentId) {
         contentType: "application/json; charset=utf-8",
         success: function (response) {
             if (response.success) {
-                toastr.success("Success", "Delete");
+                toastr.success(localizations.success, localizations.delete);
                 $('#actions').hide();
                 $('#IncidentDatatable').DataTable().ajax.reload(null, false);
             } else {
-                toastr.alert("SuccessError", "Delete" + response.message);
+                toastr.alert(localizations.error, "Delete" + response.message);
             }
         },
         error: function () {
-            toastr.alert("Global error");
+            toastr.alert(localizations.error);
         }
     });
 }
@@ -264,14 +282,14 @@ function initializeUserDataTable() {
             infoEmpty: localizations.infoEmpty,
             /*infoFiltered: localizations.infoFiltered,*/
             infoPostFix: "",
-            loadingRecords: "@Localization.loadingRecords",
-            zeroRecords: "@Localization.zeroRecords",
-            emptyTable: "@Localization.emptyTable",
+            loadingRecords: localizations.loadingRecords,
+            zeroRecords: localizations.zeroRecords,
+            emptyTable: localizations.emptyTable,
             paginate: {
-                first: "@Localization.first",
-                previous: "@Localization.previous",
-                next: "@Localization.next",
-                last: "@Localization.last"
+                first: localizations.first,
+                previous: localizations.previous,
+                next: localizations.next,
+                last: localizations.last
             }
         },
         ajax: {
@@ -328,15 +346,15 @@ function deleteCurrentItem(userId) {
         contentType: "application/json; charset=utf-8",
         success: function (response) {
             if (response.success) {
-                toastr.error("Success", "Delete");
+                toastr.success(localizations.success, localizations.delete);
                 $('#actions').hide();
                 $('#UserDatatable').DataTable().ajax.reload(null, false); 
             } else {
-                toastr.alert("SuccessError", "Delete" + response.message);
+                toastr.alert(localizations.error, "Delete" + response.message);
             }
         },
         error: function () {
-            toastr.alert("Global error");
+            toastr.alert(localizations.error);
         }
     });
 }
@@ -376,10 +394,10 @@ $(document).on('submit', '#SaveUserForm', function (e) {
                 $('#xlModal').modal('hide');
                 $('#UserDatatable').DataTable().ajax.reload(null, false);
                 if (CurrentIdUser === '0') {
-                    toastr.success("Success", "Created");
+                    toastr.success(localizations.success, "Created");
                 }
                 else {
-                    toastr.info("Success", "Edited");
+                    toastr.info(localizations.success, "Edited");
                 }
                 $('#actions').hide();
                 //location.reload();

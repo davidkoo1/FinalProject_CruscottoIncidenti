@@ -216,4 +216,127 @@
   <data name="InfoFiltered" xml:space="preserve">
     <value>(отфильтровано из _MAX_ записей)</value>
   </data>
+  <data name="LoadingRecords" xml:space="preserve">
+    <value>Загрузка...</value>
+  </data>
+  <data name="ZeroRecords" xml:space="preserve">
+    <value>Записи отсутствуют</value>
+  </data>
+  <data name="EmptyTable" xml:space="preserve">
+    <value>Таблица пуста</value>
+  </data>
+  <data name="First" xml:space="preserve">
+    <value>Первое</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Предыдущая</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Следующая</value>
+  </data>
+  <data name="Last" xml:space="preserve">
+    <value>Последняя</value>
+  </data>
+  <data name="RequestNr" xml:space="preserve">
+    <value>Номер запроса</value>
+  </data>
+  <data name="Subsystem" xml:space="preserve">
+    <value>Подсистема</value>
+  </data>
+  <data name="OpenDate" xml:space="preserve">
+    <value>Дата открытия</value>
+  </data>
+  <data name="CloseDate" xml:space="preserve">
+    <value>Дата закрытия</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="Urgency" xml:space="preserve">
+    <value>Срочность</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Создать</value>
+  </data>
+  <data name="Incident" xml:space="preserve">
+    <value>Инцидент</value>
+  </data>
+  <data name="ApplicationType" xml:space="preserve">
+    <value>Тип приложения</value>
+  </data>
+  <data name="SubCause" xml:space="preserve">
+    <value>Подпричина</value>
+  </data>
+  <data name="ProblemSummary" xml:space="preserve">
+    <value>Краткое описание проблемы</value>
+  </data>
+  <data name="Solution" xml:space="preserve">
+    <value>Решение</value>
+  </data>
+  <data name="ProblemDescription" xml:space="preserve">
+    <value>Описание проблемы</value>
+  </data>
+  <data name="Origin" xml:space="preserve">
+    <value>Источник</value>
+  </data>
+  <data name="Ambit" xml:space="preserve">
+    <value>Область</value>
+  </data>
+  <data name="IncidentType" xml:space="preserve">
+    <value>Тип инцидента</value>
+  </data>
+  <data name="ThirdParty" xml:space="preserve">
+    <value>Третья сторона</value>
+  </data>
+  <data name="Scenary" xml:space="preserve">
+    <value>Сценарий</value>
+  </data>
+  <data name="Threat" xml:space="preserve">
+    <value>Угроза</value>
+  </data>
+  <data name="Example" xml:space="preserve">
+    <value>Пример</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Импорт</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Экспорт в CSV</value>
+  </data>
+  <data name="ChooseCSV" xml:space="preserve">
+    <value>Выберите файл CSV для импорта</value>
+  </data>
+  <data name="StartWith" xml:space="preserve">
+    <value>Начать с</value>
+  </data>
+  <data name="ErrorTryAgain" xml:space="preserve">
+    <value>Пожалуйста, попробуйте снова</value>
+  </data>
+  <data name="ErrorAccount1" xml:space="preserve">
+    <value>Этот пользователь не существует или был введен с ошибкой</value>
+  </data>
+  <data name="ErrorUser1" xml:space="preserve">
+    <value>Этот пользователь уже существует(Имя пользователя или почта уже используется)</value>
+  </data>
+  <data name="ErrorCorrectData" xml:space="preserve">
+    <value>Пожалуйста, укажите правильные данные</value>
+  </data>
+  <data name="ErrorUser2" xml:space="preserve">
+    <value>Не удалось удалить пользователя.</value>
+  </data>
+  <data name="ErrorIncident1" xml:space="preserve">
+    <value>Этот инцидент уже существует.</value>
+  </data>
+  <data name="SignOut" xml:space="preserve">
+    <value>Выход</value>
+  </data>
+  <data name="LoginPage" xml:space="preserve">
+    <value>Страница входа</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Успех</value>
+  </data>
 </root>

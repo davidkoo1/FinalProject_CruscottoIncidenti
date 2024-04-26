@@ -1,6 +1,7 @@
 ﻿using Application.DTO;
 using Application.IncidentCQRS.Commands;
 using Application.IncidentCQRS.Queries;
+using Application.Resources;
 using Application.TableParameters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -202,12 +203,12 @@ namespace WebUI.Controllers
                     }
                     else
                     {
-                        TempData["ErrorIncident"] = "But current incident exist";
+                        TempData["ErrorIncident"] = Localization.ErrorIncident1;
                     }
                 }
                 else
                 {
-                    TempData["ErrorIncident"] = "Give correct data!";
+                    TempData["ErrorIncident"] = Localization.ErrorCorrectData + ".\n" + Localization.ErrorTryAgain;
                 }
                 await InitialViewBags(incidentUpsert);
                 return View(incidentUpsert);

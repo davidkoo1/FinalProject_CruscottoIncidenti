@@ -1,12 +1,12 @@
 ﻿<form id="importForm" enctype="multipart/form-data" class="mb-3">
     <div class="modal-body">
         <div class="form-group">
-            <label for="fileUpload">Choose CSV File to Import:</label>
+            <label for="fileUpload">@Localization.ChooseCSV:</label>
             <input type="file" class="form-control-file" id="fileUpload" name="file" accept=".csv" required>
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-primary" onclick="importFile()">Import</button>
-        <a type="button" class="btn btn-dark" href="@Url.Action("Export", "Incident")">Export to CSV</a>
+        <button type="button" class="btn btn-primary" onclick="importFile()">@Localization.Import</button>
+        <a type="button" class="btn btn-dark" href="@Url.Action("Export", "Incident")">@Localization.Export</a>
     </div>
 </form>

@@ -216,4 +216,127 @@
   <data name="InfoFiltered" xml:space="preserve">
     <value>(filtrato da _MAX_ totale voci)</value>
   </data>
+  <data name="LoadingRecords" xml:space="preserve">
+    <value>Caricamento...</value>
+  </data>
+  <data name="ZeroRecords" xml:space="preserve">
+    <value>Nessun record trovato</value>
+  </data>
+  <data name="EmptyTable" xml:space="preserve">
+    <value>La tabella è vuota</value>
+  </data>
+  <data name="First" xml:space="preserve">
+    <value>Prima</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Precedente</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Prossimo</value>
+  </data>
+  <data name="Last" xml:space="preserve">
+    <value>Ultimo</value>
+  </data>
+  <data name="RequestNr" xml:space="preserve">
+    <value>Numero richiesta</value>
+  </data>
+  <data name="Subsystem" xml:space="preserve">
+    <value>Sottosistema</value>
+  </data>
+  <data name="OpenDate" xml:space="preserve">
+    <value>Data di apertura</value>
+  </data>
+  <data name="CloseDate" xml:space="preserve">
+    <value>Data di chiusura</value>
+  </data>
+  <data name="Urgency" xml:space="preserve">
+    <value>Urgenza</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Creare</value>
+  </data>
+  <data name="Incident" xml:space="preserve">
+    <value>Incidente</value>
+  </data>
+  <data name="ApplicationType" xml:space="preserve">
+    <value>Tipo di Applicazione</value>
+  </data>
+  <data name="SubCause" xml:space="preserve">
+    <value>Sottocausa</value>
+  </data>
+  <data name="ProblemSummary" xml:space="preserve">
+    <value>Sommario del Problema</value>
+  </data>
+  <data name="Solution" xml:space="preserve">
+    <value>Soluzione</value>
+  </data>
+  <data name="ProblemDescription" xml:space="preserve">
+    <value>Descrizione del Problema</value>
+  </data>
+  <data name="Origin" xml:space="preserve">
+    <value>Origine</value>
+  </data>
+  <data name="Ambit" xml:space="preserve">
+    <value>Ambito</value>
+  </data>
+  <data name="IncidentType" xml:space="preserve">
+    <value>Tipo di Incidente</value>
+  </data>
+  <data name="ThirdParty" xml:space="preserve">
+    <value>Terza Parte</value>
+  </data>
+  <data name="Scenary" xml:space="preserve">
+    <value>Scenario</value>
+  </data>
+  <data name="Threat" xml:space="preserve">
+    <value>Minaccia</value>
+  </data>
+  <data name="Example" xml:space="preserve">
+    <value>Esempio</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Importare</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Esporta in CSV</value>
+  </data>
+  <data name="ChooseCSV" xml:space="preserve">
+    <value>Scegliere il File CSV da Importare</value>
+  </data>
+  <data name="StartWith" xml:space="preserve">
+    <value>Iniziare con</value>
+  </data>
+  <data name="ErrorTryAgain" xml:space="preserve">
+    <value>Si prega di riprovare</value>
+  </data>
+  <data name="ErrorAccount1" xml:space="preserve">
+    <value>Questo utente non esiste o è stato inserito con un errore</value>
+  </data>
+  <data name="ErrorUser1" xml:space="preserve">
+    <value>Questo utente esiste già (Il nome utente o l'email è già in uso)</value>
+  </data>
+  <data name="ErrorCorrectData" xml:space="preserve">
+    <value>Si prega di fornire dati corretti</value>
+  </data>
+  <data name="ErrorUser2" xml:space="preserve">
+    <value>Impossibile eliminare l'utente.</value>
+  </data>
+  <data name="ErrorIncident1" xml:space="preserve">
+    <value>Questo incidente esiste già.</value>
+  </data>
+  <data name="SignOut" xml:space="preserve">
+    <value>Esci</value>
+  </data>
+  <data name="LoginPage" xml:space="preserve">
+    <value>Pagina di accesso</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Errore</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Successo</value>
+  </data>
 </root>

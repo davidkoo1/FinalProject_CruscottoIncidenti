@@ -1,4 +1,5 @@
 ﻿using Application.DTO;
+using Application.Resources;
 using Application.RoleCQRS.Queries;
 using Application.TableParameters;
 using Application.UserCQRS.Commands;
@@ -129,13 +130,13 @@ namespace WebUI.Controllers
                     }
                     else
                     {
-                        TempData["ErrorUser"] = "Please try again";
+                        TempData["ErrorUser"] = Localization.ErrorUser1 + ".\n" + Localization.ErrorTryAgain;
                         await SetUserRoleList(createUser);
                         return PartialView("~/Views/User/Upsert.cshtml", createUser);
                     }
 
                 }
-                TempData["ErrorUser"] = "Please give correct input";
+                TempData["ErrorUser"] = Localization.ErrorCorrectData + ".\n" + Localization.ErrorTryAgain;
                 await SetUserRoleList(createUser);
                 return PartialView("~/Views/User/Upsert.cshtml", createUser);
             }
@@ -184,7 +185,9 @@ namespace WebUI.Controllers
                 }
                 else
                 {
-                    return Json(new { success = false, message = "Не удалось удалить пользователя." });
+                    Log.Error($"Error in Else.User.DeleteConfirmed with ID {id}");
+                    return Json(new { success = false, message = Localization.ErrorUser2 + ".\n" + Localization.ErrorTryAgain });
+                    
                 }
             }
             catch (Exception ex)

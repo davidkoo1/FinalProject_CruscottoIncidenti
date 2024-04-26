@@ -216,4 +216,127 @@
   <data name="InfoFiltered" xml:space="preserve">
     <value>(filtrat din înregistrările _MAX_)</value>
   </data>
+  <data name="LoadingRecords" xml:space="preserve">
+    <value>Încărcare...</value>
+  </data>
+  <data name="ZeroRecords" xml:space="preserve">
+    <value>Fără înregistrări</value>
+  </data>
+  <data name="EmptyTable" xml:space="preserve">
+    <value>Tabelul este gol</value>
+  </data>
+  <data name="First" xml:space="preserve">
+    <value>Primu</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Precedentă</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Următore</value>
+  </data>
+  <data name="Last" xml:space="preserve">
+    <value>Ultima</value>
+  </data>
+  <data name="RequestNr" xml:space="preserve">
+    <value>Numărul cererii</value>
+  </data>
+  <data name="Subsystem" xml:space="preserve">
+    <value>Subsistem</value>
+  </data>
+  <data name="OpenDate" xml:space="preserve">
+    <value>Data de deschidere</value>
+  </data>
+  <data name="CloseDate" xml:space="preserve">
+    <value>Data de închidere</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Tip</value>
+  </data>
+  <data name="Urgency" xml:space="preserve">
+    <value>Urgență</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Creare</value>
+  </data>
+  <data name="Incident" xml:space="preserve">
+    <value>Incident</value>
+  </data>
+  <data name="ApplicationType" xml:space="preserve">
+    <value>Tipul Aplicației</value>
+  </data>
+  <data name="SubCause" xml:space="preserve">
+    <value>Subcauză</value>
+  </data>
+  <data name="ProblemSummary" xml:space="preserve">
+    <value>Rezumatul Problemei</value>
+  </data>
+  <data name="Solution" xml:space="preserve">
+    <value>Soluție</value>
+  </data>
+  <data name="ProblemDescription" xml:space="preserve">
+    <value>Descrierea Problemei</value>
+  </data>
+  <data name="Origin" xml:space="preserve">
+    <value>Origine</value>
+  </data>
+  <data name="Ambit" xml:space="preserve">
+    <value>Domeniu</value>
+  </data>
+  <data name="IncidentType" xml:space="preserve">
+    <value>Tipul Incidentului</value>
+  </data>
+  <data name="ThirdParty" xml:space="preserve">
+    <value>Terță Parte</value>
+  </data>
+  <data name="Scenary" xml:space="preserve">
+    <value>Scenariu</value>
+  </data>
+  <data name="Threat" xml:space="preserve">
+    <value>Amenințare</value>
+  </data>
+  <data name="Example" xml:space="preserve">
+    <value>Exemplu</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export în CSV</value>
+  </data>
+  <data name="ChooseCSV" xml:space="preserve">
+    <value>Alegeți Fișierul CSV de Importat</value>
+  </data>
+  <data name="StartWith" xml:space="preserve">
+    <value>Începeți cu</value>
+  </data>
+  <data name="ErrorTryAgain" xml:space="preserve">
+    <value>Vă rugăm să încercați din nou</value>
+  </data>
+  <data name="ErrorAccount1" xml:space="preserve">
+    <value>Acest utilizator nu există sau a fost introdus cu o eroare</value>
+  </data>
+  <data name="ErrorUser1" xml:space="preserve">
+    <value>Acest utilizator deja există (Numele de utilizator sau adresa de email este deja în uz)</value>
+  </data>
+  <data name="ErrorCorrectData" xml:space="preserve">
+    <value>Vă rugăm să furnizați date corecte</value>
+  </data>
+  <data name="ErrorUser2" xml:space="preserve">
+    <value>Nu s-a putut șterge utilizatorul.</value>
+  </data>
+  <data name="ErrorIncident1" xml:space="preserve">
+    <value>Acest incident deja există.</value>
+  </data>
+  <data name="SignOut" xml:space="preserve">
+    <value>Deconectare</value>
+  </data>
+  <data name="LoginPage" xml:space="preserve">
+    <value>Pagina de autentificare</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Eroare</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Succes</value>
+  </data>
 </root>

@@ -63,19 +63,18 @@
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group form-check">
-                        <label class="form-check-label">
-                            <label class="control-label">@Localization.IsEnabled</label>
-                            <input class="form-check-input" asp-for="IsEnabled" />
-                        </label>
-                    </div>
-
                 </div>
                 <div class="col-md-2">
                     <!-- Этот div создает пространство между левой и правой колонками -->
                     <!-- Пустой div для отступа -->
                 </div>
                 <div class="col-md-4">
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <label class="control-label">@Localization.IsEnabled</label>
+                            <input class="form-check-input" asp-for="IsEnabled" />
+                        </label>
+                    </div>
                     <div class="form-group">
                         <label for="RolesId">@Localization.Roles</label>
                         @Html.ListBoxFor(model => model.RolesId, new MultiSelectList(ViewBag.Roles, "Value", "Text"), new { @class = "form-control selectpicker", @title = $"{@Localization.Choose}..." })

@@ -1,4 +1,5 @@
 ﻿using Application.DTO;
+using Application.Resources;
 using FluentValidation;
 
 namespace Application.Validator
@@ -8,26 +9,30 @@ namespace Application.Validator
         public UpsertUserDtoValidator()
         {
             RuleFor(x => x.UserName)
-               .NotNull()
-              .NotEmpty()
-              .MaximumLength(7)
-              .MinimumLength(5)
-              .Must(a => a != null && a.StartsWith("Cr") == true).WithMessage("Start Cr00000");
+                .NotNull()
+                .NotEmpty()
+                .MaximumLength(7)
+                .MinimumLength(5)
+                .Must(a => a != null && a.StartsWith("Cr") == true).WithMessage($"{Localization.StartWith} Cr00000")
+                .WithName(Localization.Username);
 
             RuleFor(x => x.FullName)
                 .NotNull()
                 .NotEmpty()
-                .MaximumLength(35);
+                .MaximumLength(35)
+                .WithName(Localization.FullName);
 
             RuleFor(x => x.Email)
                 .NotNull()
                 .NotEmpty()
                 .EmailAddress()
-                .MaximumLength(100);
+                .MaximumLength(100)
+                .WithName(Localization.Email);
 
             RuleFor(x => x.RolesId)
                 .NotNull()
-                .NotEmpty().WithMessage("Select one role");
+                .NotEmpty()
+                .WithName(Localization.Roles);
         }
     }
 }

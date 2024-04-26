@@ -1,10 +1,12 @@
 ﻿using Application.DTO;
+using Application.Resources;
 using Application.UserCQRS.Queries;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Serilog;
 using System.Security.Claims;
 
@@ -12,7 +14,7 @@ namespace WebUI.Controllers
 {
     public class AccountController : BaseController
     {
-
+        
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Login()
@@ -41,7 +43,7 @@ namespace WebUI.Controllers
 
                 if (userVm == null || !userVm.IsEnabled)
                 {
-                    TempData["ErrorAccount"] = "Please try again";
+                    TempData["ErrorAccount"] = Localization.ErrorAccount1 + ".\n" + Localization.ErrorTryAgain;
                     return View(loginVM);
                 }
                 else

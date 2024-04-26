@@ -9,12 +9,12 @@
                 <br />
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label">Request Number</label>
+                        <label class="form-label">@Localization.RequestNr</label>
                         <input type="text" asp-for="RequestNr" class="form-control" value="@Model.RequestNr" readonly disabled />
 
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Subsystem</label>
+                        <label class="form-label">@Localization.Subsystem</label>
                         @*  <label class="form-label">@Model.Subsystem</label> *@
                         <input type="text" asp-for="Subsystem" class="form-control" value="@Model.Subsystem" readonly disabled />
                     </div>
@@ -22,77 +22,77 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label">Open Date</label>
+                        <label class="form-label">@Localization.OpenDate</label>
                         <input type="text" asp-for="OpenDate" class="form-control" value="@Model.OpenDate.ToString("yyyy-MM-dd")" readonly disabled />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Close Date</label>
+                        <label class="form-label">@Localization.CloseDate</label>
                         <input type="text" asp-for="CloseDate" class="form-control" value="@Model.CloseDate?.ToString("yyyy-MM-dd")" readonly disabled />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label">Type</label>
+                        <label class="form-label">@Localization.Type</label>
                         <input type="text" asp-for="Type" class="form-control" value="@Model.Type" readonly disabled />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Application Type</label>
+                        <label class="form-label">@Localization.ApplicationType</label>
                         <input type="text" asp-for="ApplicationType" class="form-control" value="@Model.ApplicationType" readonly disabled />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label">Urgency</label>
+                        <label class="form-label">@Localization.Urgency</label>
                         <input type="text" asp-for="Urgency" class="form-control" value="@Model.Urgency" readonly disabled />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">SubCause</label>
+                        <label class="form-label">@Localization.SubCause</label>
                         <input type="text" asp-for="SubCause" class="form-control" value="@Model.SubCause" readonly disabled />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label">Problem Summary</label>
+                        <label class="form-label">@Localization.ProblemSummary</label>
                         <textarea id="ProblemSummary" rows="5" class="form-control" style="resize: none;" disabled>@Model.ProblemSummary</textarea>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Solution</label>
+                        <label class="form-label">@Localization.Solution</label>
                         <textarea id="ProblemSummary" rows="5" class="form-control" style="resize: none;" disabled>@Model.Solution</textarea>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <label for="ProblemSummary" class="col-md-4 col-form-label">Problem Description</label>
+                        <label for="ProblemSummary" class="col-md-4 col-form-label">@Localization.ProblemDescription</label>
                         <textarea id="ProblemSummary" rows="3" class="form-control" style="resize: none;" disabled>@Model.ProblemDescription</textarea>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label">Origin</label>
+                        <label class="form-label">@Localization.Origin</label>
                         <input type="text" asp-for="Origin" class="form-control" value="@Model.Origin" readonly disabled />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Ambit</label>
+                        <label class="form-label">@Localization.Ambit</label>
                         <input type="text" asp-for="Ambit" class="form-control" value="@Model.Ambit" readonly disabled />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label">IncidentType</label>
+                        <label class="form-label">@Localization.IncidentType</label>
                         <input type="text" asp-for="IncidentType" class="form-control" value="@Model.IncidentType" readonly disabled />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">ThirdParty</label>
+                        <label class="form-label">@Localization.ThirdParty</label>
                         <input type="text" asp-for="ThirdParty" class="form-control" value="@Model.ThirdParty" readonly disabled />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label">Scenary</label>
+                        <label class="form-label">@Localization.Scenary</label>
                         <input type="text" asp-for="Scenary" class="form-control" value="@Model.Scenary" readonly disabled />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Threat</label>
+                        <label class="form-label">@Localization.Threat</label>
                         <input type="text" asp-for="Threat" class="form-control" value="@Model.Threat" readonly disabled />
                     </div>
                 </div>
@@ -105,5 +105,5 @@
 
 
 <div class="modal-footer">
-    <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Cancel</button>
+    <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">@Localization.Cancel</button>
 </div>
