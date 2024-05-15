@@ -1,22 +1,26 @@
 ﻿using Application.Common.Interfaces;
 using Application.DTO;
 using Application.IncidentCQRS.Queries;
+using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.IncidentCQRS.QueryHandlers
 {
     public class GetAllThreatsHandler : IRequestHandler<GetAllThreats, IEnumerable<SimpleDto>>
     {
-        private readonly IIncidentRepository _incidentRepository;
+        private readonly IApplicationDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public GetAllThreatsHandler(IIncidentRepository incidentRepository)
+        public GetAllThreatsHandler(IApplicationDbContext dbContext, IMapper mapper)
         {
-            _incidentRepository = incidentRepository;
+            _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<SimpleDto>> Handle(GetAllThreats request, CancellationToken cancellationToken)
         {
-            return await _incidentRepository.GetAllThreats();
+            return _mapper.Map<IEnumerable<SimpleDto>>(await _dbContext.Threats.ToListAsync(cancellationToken));
         }
     }
 }

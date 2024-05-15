@@ -2,21 +2,22 @@
 using Application.RoleCQRS.Queries;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.RoleCQRS.QueryHandlers
 {
     public class GetAllRolesHandler : IRequestHandler<GetAllRoles, IEnumerable<Role>>
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IApplicationDbContext _dbContext;
 
-        public GetAllRolesHandler(IUserRepository userRepository)
+        public GetAllRolesHandler(IApplicationDbContext dbContext)
         {
-            _userRepository = userRepository;
+            _dbContext = dbContext;
         }
 
         public async Task<IEnumerable<Role>> Handle(GetAllRoles request, CancellationToken cancellationToken)
         {
-            return await _userRepository.GetRolesAsync();
+            return await _dbContext.Roles.ToListAsync(cancellationToken);
         }
     }
 }

@@ -1,21 +1,10 @@
 ﻿# TODO List
 
-## В процессе реализации:
-
-
-- [ ] **бутстрап**
-  - Использовать Bootstrap для стилизации формы логина для улучшения визуальной составляющей и удобства использования.
-
-- [ ] **Иконки**
-  - Добавить иконки для улучшения визуального восприятия интерфейса.
-
 ## Запланировано:
 
-- [ ] **SPA**
-
-
+- [ ] **SPA?**
+- [ ] **Иконки**
+  - Добавить иконки для улучшения визуального восприятия интерфейса.
 - [ ] UserIsDelete(добавить проверку если удален элемент то круд ок)
-- [ ] JS Fix||Optimization(FromPagesClear)
-- [ ] *SplitQueryInRepos
-- [ ] SwitchIsEnableUser
+- [ ] BaseController CreateJsonResponse JS Fix||Optimization(FromPagesClear)
 - [ ] Не очищать ambitId, IncidentTypeId когда делаем add

@@ -1,11 +1,13 @@
-﻿using Domain.Entities;
+﻿using Application.Common.Interfaces;
+using Domain.Entities;
 using Domain.Entities.HelpDesk;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Reflection;
 
 namespace Infrastructure.Persistance
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
 
         public DbSet<User> Users { get; set; }
@@ -26,6 +28,8 @@ namespace Infrastructure.Persistance
 
         }
 
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken()) => await base.SaveChangesAsync(cancellationToken);
+        
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
