@@ -1,41 +1,59 @@
-﻿
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">@Localization.Incidents</h3>
+﻿<div id="Incidenttable">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">@Localization.Incidents</h3>
+                        @if (!User.IsInRole("User"))
+                        {
+                            <div class="d-flex justify-content-between">
+                                <a type="button" style="width: 150px;" class="btn btn-success" id="addIncidentButton">@Localization.Add</a>
+                                <a type="button" style="width: 150px;" class="btn btn-dark" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" onclick="drawPatrialView('/Incident/CSV', 'lgModalBody')">CVS</a>
+                            </div>
+                        }
+
+
+                    </div>
+                    <div class="card-body">
+                        <table id="IncidentDatatable" class="table table-bordered table-hover w-100 mb-1">
+                        </table>
+                    </div>
                     @if (!User.IsInRole("User"))
                     {
-                        <div class="d-flex justify-content-between">
-                            <a type="button" style="width: 150px;" class="btn btn-success" href="@Url.Action("Upsert", "Incident", new { id = 0})">@Localization.Add</a>
-                            <a type="button" style="width: 150px;" class="btn btn-dark" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" onclick="drawPatrialView('/Incident/CSV', 'lgModalBody')">CVS</a>
+                        <div id="actions" style="display:none; padding: 5px;">
+                            <a type="button" style="width: 150px;" class="btn btn-primary" id="editLink">@Localization.Edit</a>
+                            <a type="button" style="width: 150px;" id="detailsLink" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target=".bs-example-modal-xl" onclick="drawPatrialView('/Incident/Details/', 'xlModalBody')">@Localization.Detail</a>
+                            <a type="button" style="width: 150px;" id="deleteLink" class="btn btn-danger" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" onclick="drawPatrialView('/Incident/Delete/', 'lgModalBody')">@Localization.Delete</a>
                         </div>
                     }
-
-
                 </div>
-                <div class="card-body">
-                    <table id="IncidentDatatable" class="table table-bordered table-hover w-100 mb-1">
-                    </table>
-                </div>
-                @if (!User.IsInRole("User"))
-                {
-                    <div id="actions" style="display:none; padding: 5px;">
-                        <a type="button" style="width: 150px;" class="btn btn-primary" id="editLink">@Localization.Edit</a>
-                        <a type="button" style="width: 150px;" id="detailsLink" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target=".bs-example-modal-xl" onclick="drawPatrialView('/Incident/Details/', 'xlModalBody')">@Localization.Detail</a>
-                        <a type="button" style="width: 150px;" id="deleteLink" class="btn btn-danger" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" onclick="drawPatrialView('/Incident/Delete/', 'lgModalBody')">@Localization.Delete</a>
-                    </div>
-                }
             </div>
         </div>
     </div>
 </div>
 
-
 @section scripts {
-    <script>
+    <script type="text/javascript">
         $(document).ready(function () {
+
+            $('#addIncidentButton').click(function () {
+                $.ajax({
+                    url: "../Incident/Upsert/0",
+                    cache: false,
+                    type: "GET",
+                    dataType: "html",
+                    success: function (result, e) {
+                        $('.selectpicker').selectpicker();
+                        $('.selectpicker').selectpicker('refresh');
+                        $('#Incidenttable').empty().html(result);
+                        // $('#Incidenttable').hide();  // Скрыть таблицу
+                        // $('#UpsertFormView').show();     // Показать форму
+
+                    },
+                });
+            });
+
             var IncidentDatatable = initializeIncidentDataTable();
             setupRowClickEvents(IncidentDatatable);
         });

@@ -1,193 +1,192 @@
 ﻿@using Application.DTO
 @model UpsertIncidentDto
+<div id="UpsertFormView">
+    @if (TempData["ErrorIncident"] != null)
+    {
+        <div class="alert alert-danger">
+            <strong>@Localization.Sorry!</strong> - @TempData["ErrorIncident"]
+        </div>
+    }
+    <div class="card">
+        <div class="card-body">
+            <form asp-action="Upsert" asp-controller="Incident" method="post" id="SaveIncidentForm">
+                @* <input hidden asp-for="Id" /> *@
+                @if (Model.Id != 0)
+                {
+                    <input hidden asp-for="RequestNr" />
 
-@if (TempData["ErrorIncident"] != null)
-{
-    <div class="alert alert-danger">
-        <strong>@Localization.Sorry!</strong> - @TempData["ErrorIncident"]
-    </div>
-}
-<div class="card">
-    <div class="card-body">
-        <form asp-action="Upsert" asp-controller="Incident" method="post" id="SaveIncidentForm">
-            @* <input hidden asp-for="Id" /> *@
-            @if (Model.Id != 0)
-            {
-                <input hidden asp-for="RequestNr" />
-                
-            }
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        @{
-                            string title = Model.Id == 0 ? $"{@Localization.Create}" : $"{@Localization.Edit}";
-                        }
-                        <h2 class="text-center mb-4">@title @Localization.Incident</h2>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label class="form-label">@Localization.RequestNr</label>
-                                @if (Model.Id != 0)
-                                {
-                                    <input type="text" asp-for="RequestNr" class="form-control" readonly disabled />
-                                }
-                                else
-                                {
-                                    <input type="text" asp-for="RequestNr" placeholder="@Localization.Example: HOST0000000000000" class="form-control" maxlength="17" />
-                                }
-                                <span asp-validation-for="RequestNr" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">@Localization.Subsystem</label>
-                                <input type="text" asp-for="Subsystem" class="form-control" placeholder="@Localization.Example: OS" maxlength="2" />
-                                <span asp-validation-for="Subsystem" class="text-danger"></span>
-                            </div>
+                }
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            @{
+                                string title = Model.Id == 0 ? $"{@Localization.Create}" : $"{@Localization.Edit}";
+                            }
+                            <h2 class="text-center mb-4">@title @Localization.Incident</h2>
                         </div>
-                        @if (Model.Id != 0)
-                        {
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label class="form-label">@Localization.OpenDate</label>
-                                    <input type="date" asp-for="OpenDate" class="form-control" readonly />
-                                    <input hidden asp-for="OpenDate" />
-                                    <span asp-validation-for="OpenDate" class="text-danger"></span>
+                                    <label class="form-label">@Localization.RequestNr</label>
+                                    @if (Model.Id != 0)
+                                    {
+                                        <input type="text" asp-for="RequestNr" class="form-control" readonly disabled />
+                                    }
+                                    else
+                                    {
+                                        <input type="text" asp-for="RequestNr" placeholder="@Localization.Example: HOST0000000000000" class="form-control" maxlength="17" />
+                                    }
+                                    <span asp-validation-for="RequestNr" class="text-danger"></span>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">@Localization.CloseDate</label>
-                                    <input type="date" asp-for="CloseDate" class="form-control" />
-                                    <span asp-validation-for="CloseDate" class="text-danger"></span>
+                                    <label class="form-label">@Localization.Subsystem</label>
+                                    <input type="text" asp-for="Subsystem" class="form-control" placeholder="@Localization.Example: OS" maxlength="2" />
+                                    <span asp-validation-for="Subsystem" class="text-danger"></span>
                                 </div>
                             </div>
-                        }
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label class="form-label">@Localization.Type</label>
-                                <input type="text" asp-for="Type" placeholder="@Localization.Input @Localization.Type" class="form-control" maxlength="35" />
-                                <span asp-validation-for="Type" class="text-danger"></span>
+                            @if (Model.Id != 0)
+                            {
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="form-label">@Localization.OpenDate</label>
+                                        <input type="date" asp-for="OpenDate" class="form-control" readonly />
+                                        <input hidden asp-for="OpenDate" />
+                                        <span asp-validation-for="OpenDate" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">@Localization.CloseDate</label>
+                                        <input type="date" asp-for="CloseDate" class="form-control" />
+                                        <span asp-validation-for="CloseDate" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            }
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="form-label">@Localization.Type</label>
+                                    <input type="text" asp-for="Type" placeholder="@Localization.Input @Localization.Type" class="form-control" maxlength="35" />
+                                    <span asp-validation-for="Type" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">@Localization.ApplicationType</label>
+                                    <input type="text" asp-for="ApplicationType" placeholder="@Localization.Input @Localization.ApplicationType" class="form-control" maxlength="35" />
+                                    <span asp-validation-for="ApplicationType" class="text-danger"></span>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label">@Localization.ApplicationType</label>
-                                <input type="text" asp-for="ApplicationType" placeholder="@Localization.Input @Localization.ApplicationType" class="form-control" maxlength="35" />
-                                <span asp-validation-for="ApplicationType" class="text-danger"></span>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="form-label">@Localization.Urgency</label>
+                                    <input type="text" asp-for="Urgency" placeholder="@Localization.Input @Localization.Urgency" class="form-control" maxlength="35" />
+                                    <span asp-validation-for="Urgency" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">@Localization.SubCause</label>
+                                    <input type="text" asp-for="SubCause" placeholder="@Localization.Input @Localization.SubCause" class="form-control" maxlength="35" />
+                                    <span asp-validation-for="SubCause" class="text-danger"></span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label class="form-label">@Localization.Urgency</label>
-                                <input type="text" asp-for="Urgency" placeholder="@Localization.Input @Localization.Urgency" class="form-control" maxlength="35" />
-                                <span asp-validation-for="Urgency" class="text-danger"></span>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="form-label">@Localization.ProblemSummary</label>
+                                    <textarea id="ProblemSummary" rows="5" placeholder="@Localization.Input @Localization.ProblemSummary" class="form-control" maxlength="255" style="resize: none;" asp-for="@Model.ProblemSummary"></textarea>
+                                    <span asp-validation-for="ProblemSummary" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">@Localization.Solution</label>
+                                    <textarea id="ProblemSummary" rows="5" placeholder="@Localization.Input @Localization.Solution" class="form-control" maxlength="250" style="resize: none;" asp-for="@Model.Solution"></textarea>
+                                    <span asp-validation-for="Solution" class="text-danger"></span>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label">@Localization.SubCause</label>
-                                <input type="text" asp-for="SubCause" placeholder="@Localization.Input @Localization.SubCause" class="form-control" maxlength="35" />
-                                <span asp-validation-for="SubCause" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label class="form-label">@Localization.ProblemSummary</label>
-                                <textarea id="ProblemSummary" rows="5" placeholder="@Localization.Input @Localization.ProblemSummary" class="form-control" maxlength="255" style="resize: none;" asp-for="@Model.ProblemSummary"></textarea>
-                                <span asp-validation-for="ProblemSummary" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">@Localization.Solution</label>
-                                <textarea id="ProblemSummary" rows="5" placeholder="@Localization.Input @Localization.Solution" class="form-control" maxlength="250" style="resize: none;" asp-for="@Model.Solution"></textarea>
-                                <span asp-validation-for="Solution" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label class="col-md-4 col-form-label">@Localization.ProblemDescription</label>
-                                <textarea id="ProblemDescription" rows="3" placeholder="@Localization.Input @Localization.ProblemDescription" class="form-control" maxlength="500" style="resize: none;" asp-for="@Model.ProblemDescription"></textarea>
-                                <span asp-validation-for="ProblemDescription" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label class="form-label">@Localization.Origin</label>
-                                @Html.DropDownListFor(model => model.OriginId, new SelectList(ViewBag.Origins, "Value", "Text")/* , "Choose...", */, new { @class = "form-control selectpicker", @title = $"{@Localization.Choose}..." })
-                                <span asp-validation-for="OriginId" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">@Localization.Ambit</label>
-                                @if (Model.Id != 0)
-                                {
-                                    @Html.DropDownListFor(model => model.AmbitId, new SelectList(ViewBag.Ambits, "Value", "Text"), new { @class = "form-control selectpicker", @id = "AmbitId", @title = $"{@Localization.Choose}..." })
-                                }
-                                else
-                                {
-                                    @Html.DropDownListFor(model => model.AmbitId, Enumerable.Empty<SelectListItem>(), new { @class = "form-control selectpicker", @id = "AmbitId", @title = $"{@Localization.Choose}..." })
-                                }
-                                <span asp-validation-for="AmbitId" class="text-danger"></span>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label class="col-md-4 col-form-label">@Localization.ProblemDescription</label>
+                                    <textarea id="ProblemDescription" rows="3" placeholder="@Localization.Input @Localization.ProblemDescription" class="form-control" maxlength="500" style="resize: none;" asp-for="@Model.ProblemDescription"></textarea>
+                                    <span asp-validation-for="ProblemDescription" class="text-danger"></span>
+                                </div>
                             </div>
 
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label class="form-label">@Localization.IncidentType</label>
-                                @if (Model.Id != 0)
-                                {
-                                    @Html.DropDownListFor(model => model.IncidentTypeId, new SelectList(ViewBag.IncidentTypes, "Value", "Text"), new { @class = "form-control selectpicker", @id = "IncidentTypeId", @title = $"{@Localization.Choose}..." })
-                                }
-                                else
-                                {
-                                    @Html.DropDownListFor(model => model.IncidentTypeId, Enumerable.Empty<SelectListItem>(), new { @class = "form-control selectpicker", @id = "IncidentTypeId", @title = $"{@Localization.Choose}..." })
-                                }
-                                <span asp-validation-for="IncidentTypeId" class="text-danger"></span>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="form-label">@Localization.Origin</label>
+                                    @Html.DropDownListFor(model => model.OriginId, new SelectList(ViewBag.Origins, "Value", "Text")/* , "Choose...", */, new { @class = "form-control selectpicker", @title = $"{@Localization.Choose}..." })
+                                    <span asp-validation-for="OriginId" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">@Localization.Ambit</label>
+                                    @if (Model.Id != 0)
+                                    {
+                                        @Html.DropDownListFor(model => model.AmbitId, new SelectList(ViewBag.Ambits, "Value", "Text"), new { @class = "form-control selectpicker", @id = "AmbitId", @title = $"{@Localization.Choose}..." })
+                                    }
+                                    else
+                                    {
+                                        @Html.DropDownListFor(model => model.AmbitId, Enumerable.Empty<SelectListItem>(), new { @class = "form-control selectpicker", @id = "AmbitId", @title = $"{@Localization.Choose}..." })
+                                    }
+                                    <span asp-validation-for="AmbitId" class="text-danger"></span>
+                                </div>
+
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label">@Localization.ThirdParty</label>
-                                <input type="text" asp-for="ThirdParty" placeholder="@Localization.Input @Localization.ThirdParty" class="form-control" maxlength="35" />
-                                <span asp-validation-for="ThirdParty" class="text-danger"></span>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="form-label">@Localization.IncidentType</label>
+                                    @if (Model.Id != 0)
+                                    {
+                                        @Html.DropDownListFor(model => model.IncidentTypeId, new SelectList(ViewBag.IncidentTypes, "Value", "Text"), new { @class = "form-control selectpicker", @id = "IncidentTypeId", @title = $"{@Localization.Choose}..." })
+                                    }
+                                    else
+                                    {
+                                        @Html.DropDownListFor(model => model.IncidentTypeId, Enumerable.Empty<SelectListItem>(), new { @class = "form-control selectpicker", @id = "IncidentTypeId", @title = $"{@Localization.Choose}..." })
+                                    }
+                                    <span asp-validation-for="IncidentTypeId" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">@Localization.ThirdParty</label>
+                                    <input type="text" asp-for="ThirdParty" placeholder="@Localization.Input @Localization.ThirdParty" class="form-control" maxlength="35" />
+                                    <span asp-validation-for="ThirdParty" class="text-danger"></span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label class="form-label">@Localization.Scenary</label>
-                                @Html.DropDownListFor(model => model.ScenaryId, new SelectList(ViewBag.Scenaries, "Value", "Text"), new { @class = "form-control selectpicker", @title = $"{@Localization.Choose}..." })
-                                @Html.ValidationMessageFor(model => model.ScenaryId, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">@Localization.Threat</label>
-                                @Html.DropDownListFor(model => model.ThreatId, new SelectList(ViewBag.Threats, "Value", "Text"), new { @class = "form-control selectpicker", @title = $"{@Localization.Choose}..." })
-                                @Html.ValidationMessageFor(model => model.ThreatId, "", new { @class = "text-danger" })
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="form-label">@Localization.Scenary</label>
+                                    @Html.DropDownListFor(model => model.ScenaryId, new SelectList(ViewBag.Scenaries, "Value", "Text"), new { @class = "form-control selectpicker", @title = $"{@Localization.Choose}..." })
+                                    @Html.ValidationMessageFor(model => model.ScenaryId, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">@Localization.Threat</label>
+                                    @Html.DropDownListFor(model => model.ThreatId, new SelectList(ViewBag.Threats, "Value", "Text"), new { @class = "form-control selectpicker", @title = $"{@Localization.Choose}..." })
+                                    @Html.ValidationMessageFor(model => model.ThreatId, "", new { @class = "text-danger" })
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
 
-                <div class="row mt-4">
-                    <div class="col-md-12 text-end">
-                        <button type="submit" style="width: 150px;" class="btn btn-success me-2">@Localization.Save</button>
-                        <a type="button" style="width: 150px;" class="btn btn-secondary" asp-action="Index" asp-controller="Incident">@Localization.Cancel</a>
+                    <div class="row mt-4">
+                        <div class="col-md-12 text-end">
+                            <button type="submit" style="width: 150px;" class="btn btn-success me-2">@Localization.Save</button>
+                            <a type="button" style="width: 150px;" class="btn btn-secondary" asp-action="Index" asp-controller="Incident">@Localization.Cancel</a>
+                        </div>
                     </div>
-                </div>
 
-            </div>
-        </form>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-@section Scripts {
-    <script type="text/javascript">
+<script>
 
-        $(document).ready(function () {
-            $('.selectpicker').selectpicker();
+    $(document).ready(function () {
+        $('.selectpicker').selectpicker();
 
-            $('#OriginId').change(SetAmbit);
-            $('#AmbitId').change(SetIncidentType);
+        $('#OriginId').change(SetAmbit);
+        $('#AmbitId').change(SetIncidentType);
 
-            if (@Model.Id === 0) {
+        if (@Model.Id === 0) {
 
-                SetAmbit();
-                SetIncidentType();
-            }
-        });
+            SetAmbit();
+            SetIncidentType();
+        }
+    });
 
-    </script>
-}
+</script>
