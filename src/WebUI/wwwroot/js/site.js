@@ -1,10 +1,70 @@
-﻿function togglePasswordVisibility() {
+﻿function AddIncident() {
+    $.ajax({
+        url: "../Incident/Upsert/0",
+        cache: false,
+        type: "GET",
+        dataType: "html",
+        success: function (result, e) {
+            //$('.selectpicker').selectpicker();
+            //$('.selectpicker').selectpicker('refresh');
+            $('#mainDiv').empty().html(result);
+            // $('#Incidenttable').hide();  // Скрыть таблицу
+            // $('#UpsertFormView').show(); // Показать форму
+
+        },
+    });
+}
+
+
+$(document).on('submit', '#SaveIncidentForm', function (e) {
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+    e.preventDefault();
+    var $form = $(this);
+
+    $.ajax({
+        type: $form.attr('method'),
+        url: $form.attr('action'),
+        data: $form.serialize(),
+        success: function (response) {
+            if (response.success) {
+                $('#mainDiv').hide(); 
+                $('#actions').hide();
+                //location.reload();
+            } else {
+
+                $('#mainDiv').html(response);
+                $('.selectpicker').selectpicker();
+            }
+        },
+        error: function (xhr, status, error) {
+            alert("Произошла ошибка: " + error);
+        }
+    });
+});
+
+function togglePasswordVisibility() {
     var password = document.getElementById("password");
     var checkbox = document.getElementById("showPassword");
     password.type = checkbox.checked ? 'text' : 'password';
 }
 
-function drawPatrialView(url, divId, callback) {
+function drawPatrialView(url, divId) {
     $.ajax({
         url: url,
         cache: false,
@@ -17,7 +77,6 @@ function drawPatrialView(url, divId, callback) {
         },
         success: function (result, e) {
             $('#' + divId).html(result);
-            if (callback) callback();
 
         },
     });

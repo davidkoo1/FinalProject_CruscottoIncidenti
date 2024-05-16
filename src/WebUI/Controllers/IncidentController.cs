@@ -212,7 +212,7 @@ namespace WebUI.Controllers
                     TempData["ErrorIncident"] = Localization.ErrorCorrectData + ".\n" + Localization.ErrorTryAgain;
                 }
                 await InitialViewBags(incidentUpsert);
-                return View(incidentUpsert);
+                return PartialView(incidentUpsert);
             }
             catch (Exception ex)
             {
