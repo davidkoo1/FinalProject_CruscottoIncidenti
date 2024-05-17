@@ -8,7 +8,7 @@
                         @if (!User.IsInRole("User"))
                         {
                             <div class="d-flex justify-content-between">
-                                <a type="button" style="width: 150px;" class="btn btn-success" onclick="AddIncident()">@Localization.Add</a>
+                                <a type="button" style="width: 150px;" class="btn btn-success" onclick="AddIncident(0)">@Localization.Add</a>
                                 <a type="button" style="width: 150px;" class="btn btn-dark" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" onclick="drawPatrialView('/Incident/CSV', 'lgModalBody')">CVS</a>
                             </div>
                         }

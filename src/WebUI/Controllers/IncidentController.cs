@@ -200,7 +200,7 @@ namespace WebUI.Controllers
                     var result = await Mediator.Send(new UpsertIncident { UpsertIncidentDto = incidentUpsert });
                     if (result)
                     {
-                        return RedirectToAction("Index", "Incident");
+                        return Json(new { success = true });
                     }
                     else
                     {

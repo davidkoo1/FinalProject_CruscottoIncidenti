@@ -1,9 +1,37 @@
-﻿function AddIncident() {
+﻿function LoadBeforeSend(divId) {
+    $(divId).html('<div id="spinner-content" class="d-flex justify-content-center">' +
+        '<div class="" name="Growing-Spinners">' +
+        '<div class="spinner-grow text-primary" role = "status" style="height:3rem;width:3rem;" >' +
+        '<span class="sr-only">Loading...</span>' +
+        '</div >' +
+        '<div class="spinner-grow text-secondary" role="status" style="height:3rem;width:3rem;">' +
+        ' <span class="sr-only">Loading...</span>' +
+        '</div>' +
+        '<div class="spinner-grow text-success" role="status" style="height:3rem;width:3rem;">' +
+        '<span class="sr-only">Loading...</span>' +
+        '</div>' +
+        '<div class="spinner-grow text-danger" role="status"style="height:3rem;width:3rem;">' +
+        '<span class="sr-only">Loading...</span>' +
+        '</div>' +
+        '<div class="spinner-grow text-warning" role="status" style="height:3rem;width:3rem;">' +
+        '<span class="sr-only">Loading...</span>' +
+        '</div>' +
+        '<div class="spinner-grow text-info" role="status" style="height:3rem;width:3rem;">' +
+        '<span class="sr-only">Loading...</span>' +
+        '</div>' +
+        '</div >' +
+        '</div >');
+}
+function AddIncident(id) {
     $.ajax({
-        url: "../Incident/Upsert/0",
+        url: `../Incident/Upsert/${id}`,
         cache: false,
         type: "GET",
         dataType: "html",
+        beforeSend: function () {
+            LoadBeforeSend("#mainDiv");
+
+        },
         success: function (result, e) {
             //$('.selectpicker').selectpicker();
             //$('.selectpicker').selectpicker('refresh');
@@ -41,11 +69,15 @@ $(document).on('submit', '#SaveIncidentForm', function (e) {
         type: $form.attr('method'),
         url: $form.attr('action'),
         data: $form.serialize(),
+        beforeSend: function () {
+            LoadBeforeSend("#mainDiv");
+
+        },
         success: function (response) {
             if (response.success) {
-                $('#mainDiv').hide(); 
+                //$('#mainDiv').hide(); 
                 $('#actions').hide();
-                //location.reload();
+                location.reload();
             } else {
 
                 $('#mainDiv').html(response);
@@ -282,8 +314,7 @@ function initializeIncidentDataTable() {
 }
 
 function updateButtonIncidentLinks(id) {
-    var url = `../Incident/Upsert/${id}`;
-    $('#editLink').attr('onclick', `window.location.href = '${url}'`);
+    $('#editLink').attr('onclick', `AddIncident(${id})`);
     $('#detailsLink').attr('onclick', `drawPatrialView('/Incident/Details/'+${id}, 'xlModalBody')`);
     $('#deleteLink').attr('onclick', `drawPatrialView('/Incident/Delete/'+${id}, 'lgModalBody')`);
 }
