@@ -12,7 +12,7 @@ namespace Infrastructure
         {
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(configuration.GetConnectionString("LocalConnection"));
             });
 
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();

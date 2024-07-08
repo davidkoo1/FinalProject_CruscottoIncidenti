@@ -1,12 +1,9 @@
-﻿namespace Domain.Entities.HelpDesk
+﻿using Domain.Common;
+
+namespace Domain.Entities.HelpDesk
 {
-    public class Incident
+    public class Incident : AuditableEntity
     {
-        public int Id { get; set; }
-        public int? CreatedBy { get; set; }
-        public DateTime Created { get; set; }
-        public int? LastModifiedBy { get; set; }
-        public DateTime? LastModified { get; set; }
         public string RequestNr { get; set; }
         public string Subsystem { get; set; }
         public DateTime OpenDate { get; set; }

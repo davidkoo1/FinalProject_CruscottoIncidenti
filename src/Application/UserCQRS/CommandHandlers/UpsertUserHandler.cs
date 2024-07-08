@@ -7,6 +7,8 @@ using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Application.UserCQRS.CommandHandlers
 {
@@ -37,11 +39,10 @@ namespace Application.UserCQRS.CommandHandlers
             if (request.UpsertUserDto.Id == 0)
             {
 
-                //string defaultPW = "Cedacri1234567!";
 
                 userToUpsert.Created = DateTime.UtcNow;
                 userToUpsert.CreatedBy = currentUser;
-                userToUpsert.Password = "e17c8fa0a351caf1138741f0862208a250ecfa122ce3f4cbba637a2e510e2920";
+                userToUpsert.Password = HashPW("DefaultPw123!");//"e17c8fa0a351caf1138741f0862208a250ecfa122ce3f4cbba637a2e510e2920";
                 userToUpsert.UserRoles = request.UpsertUserDto.RolesId.Select(id => new UserRole { RoleId = id }).ToList();
 
                 _dbContext.Users.Add(userToUpsert);
@@ -66,6 +67,17 @@ namespace Application.UserCQRS.CommandHandlers
                 _dbContext.Users.Update(userToUpsert);
                 return await _dbContext.SaveChangesAsync(cancellationToken) > 0 ? true : false;
 
+            }
+        }
+
+        private string HashPW(string password)
+        {
+
+            using (SHA256 hash = SHA256.Create())
+            {
+                return string.Concat(hash
+                    .ComputeHash(Encoding.UTF8.GetBytes(password))
+                    .Select(item => item.ToString("x2")));
             }
         }
     }

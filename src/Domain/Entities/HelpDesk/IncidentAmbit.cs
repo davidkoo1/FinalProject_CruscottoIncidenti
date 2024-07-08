@@ -1,8 +1,9 @@
-﻿namespace Domain.Entities.HelpDesk
+﻿using Domain.Common;
+
+namespace Domain.Entities.HelpDesk
 {
-    public class IncidentAmbit
+    public class IncidentAmbit : Entity<int>
     {
-        public int Id { get; set; }
         public string Name { get; set; }
 
         public List<OriginsToAmbit> OriginsToAmbits { get; set; }

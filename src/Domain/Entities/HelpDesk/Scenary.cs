@@ -1,9 +1,9 @@
-﻿namespace Domain.Entities.HelpDesk
-{
-    public class Scenary //: Threat
-    {
+﻿using Domain.Common;
 
-        public int Id { get; set; }
+namespace Domain.Entities.HelpDesk
+{
+    public class Scenary : Entity<int>
+    {
         public string Name { get; set; }
         public List<Incident> Incidents { get; set; }
 
